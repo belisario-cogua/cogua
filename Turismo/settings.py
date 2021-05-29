@@ -39,7 +39,7 @@ SECRET_KEY = 'e(ap(#0*o43#5cgyvuz_$+6chi+6)q4z2%#pi&6t=&b&w&i)yl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['381934c8b406.ngrok.io', "localhost"]
+ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240']
 
 
 # Application definition
@@ -110,11 +110,11 @@ WSGI_APPLICATION = 'Turismo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'BDTesisTur',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': '127.0.0.1',
-        'DATABASE_PORT': '5432',
+        'NAME': 'dimpage',
+        'USER': 'david',
+        'PASSWORD': 'david123',
+        'PORT': '5432',
+        'HOST': 'localhost',
     }
 }
 

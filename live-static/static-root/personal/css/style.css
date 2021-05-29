@@ -242,13 +242,14 @@ width: 100%;
     font-weight: 400;
 }
 .cambiar-button-nuevo{
-	border-radius: 0px;
+  background-color: #16ba21;
+  border-color: #16ba21;
+	border-radius: 5px;
+  margin-right: 20px;
 }
 .cambiar-icon-nuevo{
-	margin-top: center;
-	font-size: 12px;
-	padding-left: 3px;
-
+  margin-right: 10px;
+	font-size: 14px;
 }
 /* fin: css para perfil_listarDeporte.html*/
 
@@ -381,11 +382,12 @@ width: 100%;
     margin-top: 150px;
   }
   .perfil-user-image{
-    margin-left: 40px;
+    margin-top: 50px;
+    margin-left: 90px;
     background-color: #fff;
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     overflow: hidden;
     border-radius: 100%;
     margin-bottom: 20px;
@@ -393,12 +395,9 @@ width: 100%;
     justify-content: center;
     align-items: center;
   }
-  .perfil-user-image:hover{
-    filter: drop-shadow(0px 0px 3px #ff0a0a) !important;
-  }
   .perfil-user-image img{
     width: auto;
-    height: 300px;
+    height: 200px;
   }
   .perfil-user-titulo{
     margin-top: 40px;
@@ -416,12 +415,15 @@ width: 100%;
   /* fin: imagen de perfil*/
   /* inicio: css para el menu del perfil de la barra lateral(sidebar)*/
   .mi-nav-link{
-    background-color:#5b5c5fc2 !important;
+    background-color:#ffbf66 !important;
   }
   .mi-nav-link p{
-    color:#fff !important;
+    color:#5c5a59 !important;
   }
-
+  .mi-nav-link i{
+    color:#5c5a59 !important;
+    font-weight: bold;
+  }
   /* fin: imagen de perfil*/
   /* inicio: div imagen de reservas user*/
   .perfil-user-div-imagenes img{
@@ -485,20 +487,15 @@ display: -webkit-box;
     }
   /* fin: css la paginacion de table*/
   /* inicio: css para el titulo*/
+    .titulo-table{
+      background-color: #499ce3;color: #fff; font-family: Arial, sans-serif;
+    }
     .titulo-table th{
-      font-size: 12px;
-      font-weight: 200;
-      font-weight: inherit;
-      font-weight: initial;
-      font-weight: unset;
-      line-height: 1.4;
+      font-size: 0.68571rem;
     }
     .fila-table{
-      font-size: 14.8px;
-      font-weight: 200;
-      font-weight: inherit;
-      font-weight: initial;
-      font-weight: unset;
+      font-size: 14px;
+      
       border-top: 0px solid #fff !important;
       border-bottom: 1px solid #dee2e6;
     }

@@ -1,0 +1,92 @@
+@media only screen and (max-width: 576px){
+	.modal-chatbot-responsive{
+		height: 450px;
+	}
+}
+@media only screen and (max-width: 540px){
+	.modal-chatbot-responsive{
+		width: 480px;
+		height: 470px;
+	}
+}
+@media only screen and (max-width: 493px){
+	.modal-chatbot-responsive{
+		width: 450px;
+	}
+}
+@media only screen and (max-width: 464px){
+	.modal-chatbot-responsive{
+		width: 430px;
+	}
+}
+@media only screen and (max-width: 444px){
+	.modal-chatbot-responsive{
+		width: 420px;
+		height: 485px;
+	}
+}
+@media only screen and (max-width: 431px){
+	.modal-chatbot-responsive{
+		width: 400px;
+	}
+}
+@media only screen and (max-width: 411px){
+	.modal-chatbot-responsive{
+		width: 390px;
+	}
+	.informacion-calendario-chatbot .informacion-calendario-chatbot-indicaciones{
+		text-align: center;
+	}
+}
+@media only screen and (max-width: 401px){
+	.modal-chatbot-responsive{
+		width: 380px;
+		height: 505px;
+	}
+}
+@media only screen and (max-width: 395px){
+	.modal-chatbot-responsive{
+		width: 370px;
+	}
+}
+@media only screen and (max-width: 393px){
+	.modal-chatbot-responsive{
+		width: 360px;
+	}
+}
+@media only screen and (max-width: 373px){
+	.modal-chatbot-responsive{
+		width: 350px;
+		height: 520px;
+	}
+}
+@media only screen and (max-width: 363px){
+	.modal-chatbot-responsive{
+		width: 340px;
+	}
+}
+@media only screen and (max-width: 353px){
+	.modal-chatbot-responsive{
+		width: 330px;
+	}
+}
+@media only screen and (max-width: 343px){
+	.modal-chatbot-responsive{
+		width: 320px;
+	}
+}
+@media only screen and (max-width: 333px){
+	.modal-chatbot-responsive{
+		width: 310px;
+	}
+}
+@media only screen and (max-width: 323px){
+	.modal-chatbot-responsive{
+		width: 300px;
+	}
+}
+@media only screen and (max-width: 313px){
+	.modal-chatbot-responsive{
+		width: 285px;
+	}
+}

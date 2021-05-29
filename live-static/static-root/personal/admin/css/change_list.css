@@ -1,0 +1,44 @@
+.tools-items-importar{
+	background-color: #44c9c6; 
+	color: #fff; 
+	font-size: 15px;
+	width: 100px;
+}
+.tools-items-importar i{
+	font-size: 12px;
+	margin-right: 5px;
+}
+.tools-items-exportar{
+	background-color: #44c9c6; 
+	color: #fff; 
+	font-size: 15px;
+	width: 100px;
+}
+.tools-items-exportar i{
+	font-size: 12px;
+	margin-right: 5px;
+}
+.tools-items-añadir{
+	background-color: #44c9c6; 
+	color: #fff; 
+	font-size: 15px;
+
+}
+.tools-items-añadir i{
+	font-size: 12px;
+	margin-right: 5px;
+}
+.actions select{
+	position: relative;
+	background-color: #fff;
+    border: 0px solid #354052; /* ESTA ES LA PROPIEDAD */
+    cursor: pointer;
+    height: 30px;
+    color: #44c9c6;
+    width: 200px;
+    font-size: 0.92857rem; color: #6f7e95;
+
+}
+.actions select:focus{ 
+	outline: none;
+}

@@ -1,0 +1,79 @@
+.color-filas-table{
+	background-color: #fff;
+	padding-right: 100px;
+	border-collapse: collapse;
+}
+.color-filas-table a{
+	font-size: 0.92857rem;
+	color: #47bac1;
+	font-weight: normal;
+}
+.color-filas-table th{
+	line-height: 22px;
+	font-size: 0.92857rem;
+	/*font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif; */
+	height: 35px;
+	padding: 6px;
+	padding-left: 20px;
+	border-collapse: collapse;
+}
+.color-filas-table td{
+	line-height: 22px;
+	font-size: 0.92857rem;
+	border-collapse: collapse;
+}
+.conten-type-color{
+	color: #9c9b92;
+	font-weight: normal;
+	font-size: 12px;
+}
+.icono-agregar{
+	color: #43fa00;
+	font-size: 11px;
+	font-weight: bold;
+}
+.icono-agregar-enlace{
+	padding-right: 30px;
+}
+.icono-editar{
+	font-size: 10px;
+	color: #f29705;
+}
+.icono-eliminar{
+	color: red;
+	font-size: 11px;
+	padding-right: 4px;
+}
+.thead-table{
+	color: #6f7e95; 
+	letter-spacing: 0.5px; 
+	font-size: 0.78571rem;
+	font-weight: bold; 
+	margin-left: 10px;
+}
+
+.diseño-table{
+	border-collapse: collapse;
+	border-style: none;
+  	border-radius: 0.5em;
+  	overflow: hidden;
+  	box-shadow: 0px 2px 1px #bbc2c7;
+  	border-top: #ecf2f6 2px solid;
+ }
+ .div-tabla-mover{
+ 	margin-right: 100px;
+ }
+.titulo-acciones-recientes{
+	background:  #e3e3e3;
+	letter-spacing: 0.5px; 
+	font-size: 0.78571rem;
+	font-weight: bold; 
+	margin-left: 10px;
+}
+.name-objeto-tam-eliminar{
+	color: #9c9b92 !important;
+
+}
+.name-objeto-tam{
+	font-size: 0.92857rem !important;
+}

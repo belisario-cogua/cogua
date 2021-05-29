@@ -1,0 +1,228 @@
+/*enxabezado de detalles*/
+.icon1::before{
+	font-size: 10px;
+	margin-right: 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f09c";
+	font-weight: 900;
+
+}
+.icon2::before{
+	font-size: 10px;
+	margin-right: 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f4ff";
+}
+.icon3::before{
+	font-size: 10px;
+	margin-right: 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f3ed";
+}
+.icon4::before{
+	font-size: 10px;
+	margin-right: 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f073";
+}
+.active{
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0.12571rem;
+  	border-style: solid;
+ 	border-color: #36a8a6; 
+	
+}
+.active2{
+	color: #66748a !important;
+}
+ul.tabs{
+	list-style: none;
+	display: flex;
+	padding: 0;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+}
+ul.tabs{
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0.12571rem;
+  	border-style: solid;
+ 	border-color: #dae1e6;
+ 	background-color: #fff;
+}
+ul.tabs li{
+
+}
+ul.tabs li a{
+	text-decoration: none;
+	font-size: 0.73571rem;
+	display: block;
+	padding: 10px 10px;
+	font-weight: bold;
+	color: #8695ad;
+	letter-spacing: 0.5px; 
+
+}
+@media screen and (max-width: 700px){
+	ul.tabs li{
+		width: none;
+		flex-basis: 0;
+		flex-grow: 1;
+	}
+}
+@media screen and (max-width: 530px){
+	.icon1::before{
+		font-size: 15px;
+	}
+	.icon2::before{
+		font-size: 15px;
+	}
+	.icon3::before{
+		font-size: 15px;
+	}
+	.icon4::before{
+		font-size: 15px;
+	}
+
+	ul.tabs li a{
+		padding: 10px 0px;
+		text-align: center;
+	}
+	ul.tabs li a .tab-text{
+		display: none;
+	}
+
+}
+
+/* cuerpo de detalles */
+.checkbox-row input[type=checkbox] {
+  visibility: hidden;
+}
+.checkbox-row .chec-div {
+	width: 20px;
+	height: 20px;
+	padding-top: 10px;
+	border: 1px solid #36a8a6; 
+	border-radius: 50%;
+	cursor: pointer;
+}
+.checkbox-row .chec-div div {
+	background: #fff;
+	display: block;
+	border-radius: 50%;
+	cursor: pointer;
+
+	margin-top: -28px;
+	margin-left: 1px;  
+	transition: all .5s ease;
+	transition: all .5s ease;
+}
+.checkbox-row .chec-div input[type=checkbox]:checked + .div-cir {
+	background: #36a8a6; 
+	width: 16px;
+	height: 16px;
+    
+}
+.checkbox-row .div-label label{
+	display: block;
+	margin-top: -19px;
+	width: 200px;
+	padding-left: 40px;
+	cursor: pointer;
+}
+
+/* mensajes de ayuda */
+.help-me{
+	font-size: 0.83571rem;
+	display: block;
+	padding: 10px 10px;
+	color: #8695ad; 
+}
+
+/* inputs de editar datos de las tablas*/
+.titulo-input{
+	display: inline;
+}
+.titulo-input label{ 
+	font-size: 0.83571rem;
+	color: #66748a;
+}
+.mi-input-change{
+	display: inline;
+	padding-left: 40px;
+}
+.mi-input-change input{
+	font-size: 14px;
+	width: 310px;
+	height: 30px;
+	color: #6f7e95;
+
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0.12571rem;
+  	border-style: solid;
+ 	border-color: #dae1e6;
+}
+
+.mi-input-change input:focus{ 
+	outline: none;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0.12571rem;
+  	border-style: solid;
+ 	border-color: #43c4c2;
+ 	font-size: 15px;
+ 	transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+@media screen and (max-width: 463px){
+	.mi-input-change{
+		padding-left: 0px;
+	}
+	.mi-input-change input{
+		width: 340px;
+	}
+}
+@media screen and (max-width: 452px){
+	.mi-input-change input{
+		width: 380px;
+	}
+}
+@media screen and (max-width: 450px){
+	.mi-input-change input{
+		width: 360px;
+	}
+}
+@media screen and (max-width: 424px){
+	.mi-input-change input{
+		width: 330px;
+	}
+}
+@media screen and (max-width: 394px){
+	.mi-input-change input{
+		width: 300px;
+	}
+}
+@media screen and (max-width: 366px){
+	.mi-input-change input{
+		width: 270px;
+	}
+}
+@media screen and (max-width: 336px){
+	.mi-input-change input{
+		width: 250px;
+	}
+}
+@media screen and (max-width: 318px){
+	.mi-input-change input{
+		width: 230px;
+	}
+}
+
+

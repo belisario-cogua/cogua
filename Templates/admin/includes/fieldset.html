@@ -1,0 +1,80 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'personal/admin/css/fieldset.css' %}" />
+<meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<div class="wrap">
+    <ul class="tabs">
+        {% for fieldset in adminform %}
+            {% if fieldset %}
+                <li><a href="#tab{{forloop.counter}}"><span class="icon{{forloop.counter}}"></span><span class="tab-text text{{forloop.counter}}">{{ fieldset.name }}</span></a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    
+    <div class="secciones" style="background-color: #fff; margin-top: -16px;">
+        {% for fieldset in adminform %}
+            <article id="tab{{forloop.counter}}">
+                {% for line in fieldset %}
+                    <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                        {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+                        {% for field in line %}
+                            <div {% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %} style="margin-top: 5px; margin-left: 10px;">
+                                {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                                {% if field.is_checkbox %}
+                                    <div class="chec-div">
+                                    {{ field.field }}
+
+                                    <div class="div-cir"></div>
+                                    </div>
+                                    <div class="div-label"> 
+                                    {{ field.label_tag }} 
+                                    </div>
+                                {% else %}
+                                    <div class="titulo-input">
+                                    {{ field.label_tag }}
+                                    </div>
+                                    {% if field.is_readonly %}
+                                        <div class="readonly">{{ field.contents }}</div>
+                                    {% else %}
+                                    <div class="mi-input-change">
+                                        {{ field.field }}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                <!-- mensajes de ayuda -->
+                                {% if field.field.help_text %}
+                                    <div class="help help-me">{{ field.field.help_text|safe }}</div>
+                                {% endif %}
+                                <!-- termina mensajes de ayuda -->
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </article>
+        {% endfor %}
+        
+    </div>
+</div>
+
+<script src="{% static 'adminLTE3/plugins/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('ul.tabs li a:first').addClass('active active2');
+        $('.secciones article').hide();
+        $('.secciones article:first').show();
+
+        $('ul.tabs li a').click(function(){
+            $('ul.tabs li a').removeClass('active active2');
+            $(this).addClass('active active2');
+
+            $('.secciones article').hide();
+
+            var activeTab = $(this).attr('href');
+            console.log(activeTab);
+
+            $(activeTab).show();
+            return false;
+        });
+    });
+
+</script>

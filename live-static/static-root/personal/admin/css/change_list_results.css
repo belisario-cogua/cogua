@@ -1,0 +1,8 @@
+.diseño-table-listar{
+	border-collapse: collapse;
+	border-style: none;
+  	border-radius: 0.5em;
+  	overflow: hidden;
+  	box-shadow: 0px 2px 1px #bbc2c7;
+  	border-top: #ecf2f6 2px solid;
+}

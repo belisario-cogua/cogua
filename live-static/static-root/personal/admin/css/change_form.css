@@ -1,0 +1,27 @@
+@media screen and (max-width: 530px){
+	.nav-urls a .inicio-icon::before{
+		font-size: 20px;
+		font-family: "Font Awesome 5 Free";
+		content: "\f1ce";
+	}
+	.nav-urls a .inicio-text{
+		display: none;
+	}
+}
+
+@media screen and (max-width: 506px){
+	.nav-urls a .listado-icon::before{
+		font-size: 20px;
+		font-family: "Font Awesome 5 Free";
+		content: "\f0c0";
+	}
+	.nav-urls a .listado-text{
+		display: none;
+	}
+}
+
+@media screen and (max-width: 460px){
+	.nav-urls .detalle-text{
+		display: none;
+	}
+}

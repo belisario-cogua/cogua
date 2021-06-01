@@ -10,6 +10,7 @@ def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Turismo.configuracion.local')
     #en produccion
     #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Turismo.configuracion.produccion')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -1,0 +1,39 @@
+.nav-menu{
+  background: #417690;
+}
+.color-icon-nav{
+  color:#dee2e6;
+}
+.mejorar-posicion-logo{
+	position: relative;
+  height: 57px;
+  overflow: hidden;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mejorar-posicion-logo img{
+	margin-left: -10px;
+	margin-top: 5px;
+  width: 220px;
+  height: 60px;
+}
+.name-perfil{
+  margin-top: 2px;
+}
+.letras-all-menu{
+  font-size: 0.78571rem;
+}
+.menu-basico{
+  font-size: 0.69571rem;
+}
+.letras-menu-app{
+  font-size: 15px;
+}
+.tablatitulo{
+  font-size: 0.89571rem !important;
+  font-weight: bold;
+  color: #6f7e95;
+  margin-top: 100px;
+}

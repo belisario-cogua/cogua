@@ -1,0 +1,160 @@
+/* listar responsive */
+@media only screen and (max-width: 767px){
+	div.dataTables_length{
+	    margin-left: -290px;
+	}
+	div.dataTables_info {
+	    margin-left: -450px;
+	}
+}
+@media only screen and (max-width: 725px){
+	div.dataTables_length{
+	    margin-left: -250px;
+	}
+	div.dataTables_info {
+	    margin-left: -400px;
+	}
+}
+@media only screen and (max-width: 685px){
+	div.dataTables_length{
+	    margin-left: -200px;
+	}
+	div.dataTables_info {
+	    margin-left: -350px;
+	}
+}
+@media only screen and (max-width: 635px){
+	div.dataTables_length{
+	    margin-left: -150px;
+	}
+	div.dataTables_info {
+	    margin-left: -300px;
+	}
+}
+@media only screen and (max-width: 585px){
+	div.dataTables_length{
+	    margin-left: -100px;
+	}
+	div.dataTables_info {
+	    margin-left: -250px;
+	}
+}
+@media only screen and (max-width: 535px){
+	div.dataTables_length{
+	    margin-left: -50px;
+	}
+	div.dataTables_info {
+	    margin-left: -200px;
+	}
+}
+
+@media screen and (max-width: 498px){
+	.plh-button-agregar button{
+		margin-right: 0px !important;
+	}
+}
+@media screen and (max-width: 486px){
+	.box-buscar{
+		height: 150px;
+	}
+	.box-buscar .container-buscar{
+		position: absolute;
+		margin-top: 50px;
+	}
+	.box-buscar .container-buscar {
+		position: absolute;
+		margin-top: 50px;
+		margin-left: 15px;
+	}
+	.icon-buscar{
+		margin-left: 350px !important;
+	}
+	.container-buscar input{
+		width: 400px !important;
+		transition: .5s;
+	}
+	.plh-button-agregar{
+		position: absolute;
+		margin-top: -60px;
+		margin-left: 15px;
+	}
+	.plh-button-agregar button{
+		width: 400px;
+	}
+	div.dataTables_length{
+	    margin-left: 30px;
+	}
+	div.dataTables_info {
+	    margin-left: 40px;
+	}
+
+}
+@media screen and (max-width: 460px){
+	.container-buscar input{
+		width: 350px !important;
+		transition: .5s;
+	}
+	.plh-button-agregar button{
+		width: 350px;
+		transition: .5s;
+	}
+	.icon-buscar{
+		margin-left: 320px !important;
+		transition: .5s;
+	}
+}
+@media screen and (max-width: 420px){
+	.container-buscar input{
+		width: 300px !important;
+		transition: .5s;
+	}
+	.plh-button-agregar button{
+		width: 300px;
+		transition: .5s;
+	}
+	.icon-buscar{
+		margin-left: 280px !important;
+		transition: .5s;
+	}
+}
+@media screen and (max-width: 370px){
+	.container-buscar{
+		width: 100px;
+	}
+	.container-buscar input{
+		width: 250px !important;
+		transition: .5s;
+	}
+	.plh-button-agregar button{
+		width: 250px;
+		transition: .5s;
+	}
+	.icon-buscar{
+		margin-left: 220px !important;
+		transition: .5s;
+	}
+}
+@media screen and (max-width: 320px){
+	
+	.container-buscar input#search{
+		padding-right: 20px;
+		width: 150px !important;
+		transition: .5s;
+	}
+	.plh-button-agregar button{
+		width: 150px;
+		transition: .5s;
+	}
+	.icon-buscar{
+		margin-left: 130px !important;
+		transition: .5s;
+	}
+	div.dataTables_length{
+	    margin-left: -10px;
+	}
+	div.dataTables_info {
+	    margin-left: 0px;
+	}
+}
+
+/* FIN listar responsive */

@@ -391,27 +391,56 @@ class ChatBot(CreateView):
             if intento == 'consultaTurismos - yesVerTurismos' or intento == 'consultaTurismos - verTurismosDirecto':
                 if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
                     hoteles = Hotel.objects.filter(estado=True,cantidad__gt = 0)
-                    response = HttpResponse(serialize('json', hoteles), 'application/json')
-                    response.status_code = 201
-                    return response
+                    if hoteles:
+                        response = HttpResponse(serialize('json', hoteles), 'application/json')
+                        response.status_code = 201
+                        return response
+                    if not hoteles:
+                        mensaje = "False"
+                        error = 'no existe ninguna cabaña en True o la cantidad es cero'
+                        response = JsonResponse({'mensaje':mensaje,'error':error})
+                        response.status_code = 201
+                        return response
 
                 elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
                     turismos = Turismo.objects.filter(estado=True,cantidad__gt = 0)
-                    response = HttpResponse(serialize('json', turismos), 'application/json')
-                    response.status_code = 201
-                    return response
+                    if turismos:
+                        response = HttpResponse(serialize('json', turismos), 'application/json')
+                        response.status_code = 201
+                        return response
+                    if not turismos:
+                        mensaje = "False"
+                        error = 'no existe ningun turismo en True o la cantidad es cero'
+                        response = JsonResponse({'mensaje':mensaje,'error':error})
+                        response.status_code = 201
+                        return response
+
 
                 elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
                     deportes = Deporte.objects.filter(estado=True,cantidad__gt = 0)
-                    response = HttpResponse(serialize('json', deportes), 'application/json')
-                    response.status_code = 201
-                    return response
+                    if deportes:
+                        response = HttpResponse(serialize('json', deportes), 'application/json')
+                        response.status_code = 201
+                        return response
+                    if not deportes:
+                        mensaje = "False"
+                        error = 'no existe ningun deporte en True o la cantidad es cero'
+                        response = JsonResponse({'mensaje':mensaje,'error':error})
+                        response.status_code = 201
+                        return response
 
                 elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
                     platos = Plato.objects.filter(estado=True,cantidad__gt = 0)
-                    response = HttpResponse(serialize('json', platos), 'application/json')
-                    response.status_code = 201
-                    return response
+                    if platos:
+                        response = HttpResponse(serialize('json', platos), 'application/json')
+                        response.status_code = 201
+                        return response
+                    if not platos:
+                        mensaje = "False"
+                        error = 'no existe ningun plato tipico en True o la cantidad es cero'
+                        response = JsonResponse({'mensaje':mensaje,'error':error})
+                        response.status_code = 201
+                        return response
 
             elif intento == 'solicitudReservaTurismo' or intento == 'solicitudReservaTurismo - repeticion':
                 print("tipo de turismo")
@@ -517,8 +546,25 @@ class ChatBot(CreateView):
                 return response
 
             elif intento == 'solicitudReservaTurismo - repeat':
-                print(intento)
-                if tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
+                if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
+                    hoteles = Hotel.objects.filter(estado=True,cantidad__gt = 0)
+                    response = HttpResponse(serialize('json', hoteles), 'application/json')
+                    response.status_code = 201
+                    return response
+
+                elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
+                    turismos = Turismo.objects.filter(estado=True,cantidad__gt = 0)
+                    response = HttpResponse(serialize('json', turismos), 'application/json')
+                    response.status_code = 201
+                    return response
+
+                elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
+                    deportes = Deporte.objects.filter(estado=True,cantidad__gt = 0)
+                    response = HttpResponse(serialize('json', deportes), 'application/json')
+                    response.status_code = 201
+                    return response
+
+                elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
                     platos = Plato.objects.filter(estado=True,cantidad__gt = 0)
                     response = HttpResponse(serialize('json', platos), 'application/json')
                     response.status_code = 201

@@ -1,0 +1,101 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'personal/admin/css/index.css' %}" />
+
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %} 
+<div class="col-md-7">
+    {% if app_list %}
+        {% for app in app_list %}
+            <div class="box"> 
+
+                <div class="box-body">
+                    <h1 colspan="2" class="thead-table">{{ app.name | upper}}</h1>
+                    <table class="table table-hover diseño-table">
+                        
+                        <tbody>
+
+                            {% for model in app.models %}
+                            <tr class="color-filas-table">
+                                {% if model.admin_url %}
+                                    <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+                                {% else %}
+                                    <th scope="row">{{ model.name }}</th>
+                                {% endif %}
+                                <td class="text-right" style="padding: 6px; padding-right: 20px;">
+                                    {% if model.add_url %}
+                                       <a href="{{ model.add_url }}" class="icono-agregar-enlace"><i class="fas fa-plus-square icono-agregar"></i> Añadir</a> 
+                                    {% else %}
+                                        <td>&nbsp;</td>
+                                    {% endif %}
+
+                                    {% if model.admin_url %}
+                                        <a href="{{ model.admin_url }}"><i class="fa fa-edit icono-editar"></i> Modificar</a> 
+                                    {% else %}
+                                         
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %} 
+     
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>{% trans "You don't have permission to edit anything." %}</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+{% block sidebar %}
+    <div class="ml-auto col-md-3 div-tabla-mover">
+        <table class="table table-hover diseño-table" style="border-collapse: collapse;">
+            <thead class="titulo-acciones-recientes">
+                <tr>
+                  <th colspan="2">{% trans 'ACCIONES RECIENTES' %}</th>
+                </tr>
+            </thead>
+            <tbody >
+                {% load log %}
+                {% get_admin_log 10 as admin_log for_user user %}
+                {% if not admin_log %}
+                <p>{% trans 'None available' %}</p>
+                {% else %}
+                    {% for entry in admin_log %}
+                        <tr class="color-filas-table">
+                            <th scope="row" style="border:0px">
+                                {% if entry.is_deletion or not entry.get_admin_url %}
+                                    <i class="fas fa-times icono-eliminar"></i>
+                                    <a class="name-objeto-tam-eliminar">{{ entry.object_repr }}</a>
+                                {% else %} 
+                                    {% if entry.is_addition %}<i class="fas fa-plus-square icono-agregar"></i>{% endif %}
+                                    {% if entry.is_change %}<i class="fa fa-edit icono-editar"></i>{% endif %}
+                                    <a href="{{ entry.get_admin_url }}" class="name-objeto-tam">{{ entry.object_repr }}</a>
+                                {% endif %}
+                                  
+                                {% if entry.content_type %}
+                                    <span class="mini quiet conten-type-color">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
+                                {% else %}
+                                    <span class="mini quiet conten-type-color">{% trans 'Unknown content' %}</span>
+                                {% endif %} 
+                            </th>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

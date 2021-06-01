@@ -1,0 +1,104 @@
+div.dataTables_wrapper div.dataTables_filter label {
+	display: none;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+	display: none;
+}
+div.dataTables_wrapper div.dataTables_length label {
+    padding-left: 10px;
+}
+div.dataTables_wrapper div.dataTables_length label select{
+    margin-left: 15px;
+}
+div.dataTables_wrapper div.row{
+    padding-bottom: 10px;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+    margin-top:40px !important;
+}
+
+.search-perfil p{
+	float: left
+
+}
+
+.box-buscar{
+  width: auto;
+  height: 80px;
+}
+.container-buscar{
+  width: 300px;
+  white-space: nowrap;
+  margin-right: 30px;
+}
+.container-buscar input#search{
+  width: 300px;
+  height: 40px;
+  background: #fff;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom-color: #e6e8eb;
+  font-size: 10pt;
+ 
+  color: #63717f;
+  padding-left: 25px;
+  padding-right: 120px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.container-buscar input#search::-webkit-input-placeholder {
+   color: #65737e;
+}
+ 
+.container-buscar input#search:-moz-placeholder { /* Firefox 18- */
+   color: #65737e;  
+}
+ 
+.container-buscar input#search::-moz-placeholder {  /* Firefox 19+ */
+   color: #65737e;  
+}
+ 
+.container-buscar input#search:-ms-input-placeholder {  
+   color: #65737e;  
+}
+.search-perfil{
+	margin-top: 20px;
+	font-size: 0.91971rem; font-family: Arial,sans-serif
+}
+
+.container-buscar .icon-buscar{
+  position: absolute;
+  margin-left: 250px;
+  margin-top: 10px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+.container-buscar input#search:hover, .container-buscar input#search:focus, .container-buscar input#search:active{
+    outline:none;
+  }
+.plh-nombre-listar{
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 23px;
+	font-weight: bold;
+	color: #878787;
+}
+.plh-tabla-diseño{
+ 	padding-right: 20px;
+}
+.plh-tabla-diseño .cambiar-button-nuevo{
+ 	margin-right: 20px;
+}
+.mi-css-all-tabla{
+	background-color: #fff;
+	border-spacing : 0 0; 
+	border-style: none;
+    border-radius: 0.5em;
+    overflow: hidden;
+    box-shadow: 0px 2px 1px #bbc2c7;
+    border-top: #ecf2f6 2px solid;
+}

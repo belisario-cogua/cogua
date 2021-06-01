@@ -1,0 +1,118 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+<meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+{% block extrahead %}{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'personal/admin/css/change_form.css' %}" />
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+
+{% block navmenu %}
+    {% if not is_popup %}
+        {% block breadcrumbs %}
+            <div class="breadcrumbs nav-urls" style="color: #fff; letter-spacing: 0.5px; font-size: 0.98571rem;margin-left: 10px;">
+                <a href="{% url 'admin:index' %}" style="color: #5dd9d6; letter-spacing: 0.5px;font-weight: bold; font-size: 0.98571rem; margin-left: 10px;">
+                    <span class="inicio-icon"></span>
+                    <span class="inicio-text">{% trans 'Home' %}</span>
+                </a>
+                &rsaquo;
+                {% if has_view_permission %}
+                <a href="{% url opts|admin_urlname:'changelist' %}" style="color: #5dd9d6; letter-spacing: 0.5px;font-weight: bold; font-size: 0.98571rem;">
+                    <span class="listado-icon"></span>
+                    <span class="listado-text">{{ opts.verbose_name_plural|capfirst }}</span>
+                </a>
+                {% else %}
+                    <span class="listado-icon"></span>
+                    <span class="listado-text">{{ opts.verbose_name_plural|capfirst }}</span>
+                {% endif %}
+                &rsaquo; 
+                {% if add %}
+                    {% blocktrans with name=opts.verbose_name %}
+                        Add {{ name }}
+                    {% endblocktrans %}
+                {% else %}
+                    <span class="detalle-text">{{ original|truncatewords:"18" }}</span>
+                    
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endif %}
+{% endblock navmenu %}
+
+{% block content %}
+
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+      {% change_form_object_tools %}
+    {% endblock %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
+ <div class="col-lg-12">
+    <!-- forumalrios -->
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+        {% csrf_token %}
+        {% block form_top %}{% endblock %}
+        <div>
+        {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+        {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+        {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+        {% if errors %}
+            <p class="errornote">
+            {% if errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+            </p>
+            {{ adminform.form.non_field_errors }}
+        {% endif %}
+
+        <!-- comienzan los formularios de editar-->
+
+        {% block field_sets %}
+        
+
+          {% include "admin/includes/fieldset.html" %}
+        
+        {% endblock %}
+        <!-- terminan los formularios de editar-->
+        {% block after_field_sets %}{% endblock %}
+
+        {% block inline_field_sets %}
+        {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+        {% endfor %}
+        {% endblock %}
+
+        {% block after_related_objects %}{% endblock %}
+
+        {% block submit_buttons_bottom %}
+            {% submit_row %}
+        {% endblock %}
+
+        {% block admin_change_form_document_ready %}
+            <script id="django-admin-form-add-constants"
+                    src="{% static 'admin/js/change_form.js' %}"
+                    {% if adminform and add %}
+                        data-model-name="{{ opts.model_name }}"
+                    {% endif %}
+                    async>
+            </script>
+        {% endblock %}
+
+        {# JavaScript for prepopulated fields #}
+        {% prepopulated_fields_js %}
+
+        </div>
+    </form>
+</div>
+{% endblock %}

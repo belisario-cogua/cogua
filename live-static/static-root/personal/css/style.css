@@ -242,24 +242,14 @@ width: 100%;
     font-weight: 400;
 }
 .cambiar-button-nuevo{
-<<<<<<< HEAD
-	border-radius: 0px;
-}
-.cambiar-icon-nuevo{
-	margin-top: center;
-	font-size: 12px;
-	padding-left: 3px;
-
-=======
   background-color: #16ba21;
   border-color: #16ba21;
-	border-radius: 5px;
+  border-radius: 5px;
   margin-right: 20px;
 }
 .cambiar-icon-nuevo{
   margin-right: 10px;
-	font-size: 14px;
->>>>>>> 9e9bc4f852d765924b8b6cc5c1669cd0516f6290
+  font-size: 14px;
 }
 /* fin: css para perfil_listarDeporte.html*/
 
@@ -391,21 +381,13 @@ width: 100%;
   .mover-form-edit-user{
     margin-top: 150px;
   }
-  .perfil-user-image{
-<<<<<<< HEAD
-    margin-left: 40px;
-    background-color: #fff;
-    position: relative;
-    width: 300px;
-    height: 300px;
-=======
+.perfil-user-image{
     margin-top: 50px;
     margin-left: 90px;
     background-color: #fff;
     position: relative;
     width: 200px;
     height: 200px;
->>>>>>> 9e9bc4f852d765924b8b6cc5c1669cd0516f6290
     overflow: hidden;
     border-radius: 100%;
     margin-bottom: 20px;
@@ -413,18 +395,9 @@ width: 100%;
     justify-content: center;
     align-items: center;
   }
-<<<<<<< HEAD
-  .perfil-user-image:hover{
-    filter: drop-shadow(0px 0px 3px #ff0a0a) !important;
-  }
-  .perfil-user-image img{
-    width: auto;
-    height: 300px;
-=======
   .perfil-user-image img{
     width: auto;
     height: 200px;
->>>>>>> 9e9bc4f852d765924b8b6cc5c1669cd0516f6290
   }
   .perfil-user-titulo{
     margin-top: 40px;
@@ -442,14 +415,6 @@ width: 100%;
   /* fin: imagen de perfil*/
   /* inicio: css para el menu del perfil de la barra lateral(sidebar)*/
   .mi-nav-link{
-<<<<<<< HEAD
-    background-color:#5b5c5fc2 !important;
-  }
-  .mi-nav-link p{
-    color:#fff !important;
-  }
-
-=======
     background-color:#ffbf66 !important;
   }
   .mi-nav-link p{
@@ -459,7 +424,6 @@ width: 100%;
     color:#5c5a59 !important;
     font-weight: bold;
   }
->>>>>>> 9e9bc4f852d765924b8b6cc5c1669cd0516f6290
   /* fin: imagen de perfil*/
   /* inicio: div imagen de reservas user*/
   .perfil-user-div-imagenes img{
@@ -523,22 +487,6 @@ display: -webkit-box;
     }
   /* fin: css la paginacion de table*/
   /* inicio: css para el titulo*/
-<<<<<<< HEAD
-    .titulo-table th{
-      font-size: 12px;
-      font-weight: 200;
-      font-weight: inherit;
-      font-weight: initial;
-      font-weight: unset;
-      line-height: 1.4;
-    }
-    .fila-table{
-      font-size: 14.8px;
-      font-weight: 200;
-      font-weight: inherit;
-      font-weight: initial;
-      font-weight: unset;
-=======
     .titulo-table{
       background-color: #499ce3;color: #fff; font-family: Arial, sans-serif;
     }
@@ -548,7 +496,6 @@ display: -webkit-box;
     .fila-table{
       font-size: 14px;
       
->>>>>>> 9e9bc4f852d765924b8b6cc5c1669cd0516f6290
       border-top: 0px solid #fff !important;
       border-bottom: 1px solid #dee2e6;
     }

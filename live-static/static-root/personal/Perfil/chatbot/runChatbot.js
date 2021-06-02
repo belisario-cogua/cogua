@@ -36,27 +36,71 @@ $(document).ready(function() {
             url:"/perfil/chatbot/",
             type: 'POST',
             success:function(response){
-                for(let i = 0;i < response.length;i++){
-                  const payload = [
-                  {
-                    "title": response[i]["fields"]['nombre'],
-                    "type": "accordion",
-                    "subtitle": response[i]["fields"]['descripcion'],
-                    "text": "<img src='/media/' width='400px' height='200px'/><br/><a target='_blank' href='/listado-cabañas-disponibles/' style='float: right;color:#FF9800;text-decoration: none;'>Cabañas Disponibles</a>"
+                if(response.mensaje){
+                  if(tipoTurismos == "cabañas"){
+                    dfMessenger.renderCustomText('Lo siento no están disponibles las cabañas por el momento');
+                  }else if(tipoTurismos == "lugares turísticos"){
+                    dfMessenger.renderCustomText('Lo siento no están disponibles lus lugares turísticos por el momento');
+                  }else if(tipoTurismos == "deportes"){
+                    dfMessenger.renderCustomText('Lo siento no están disponibles los deportes por el momento');
+                  }else if(tipoTurismos == "platos típicos"){
+                    dfMessenger.renderCustomText('Lo siento no están disponibles los platos típicos por el momento');
                   }
-                  ];
-                  dfMessenger.renderCustomCard(payload);
+                }else{
+                  if(tipoTurismos == "cabañas"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-cabañas-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Visita las cabañas</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
+                    dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar alguna cabaña?');
+                  }else if(tipoTurismos == "lugares turísticos"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-lugares-turisticos-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Visita los lugares turísticos</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
+                    dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun lugar turístico?');
+                  }else if(tipoTurismos == "deportes"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-deportes-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Conoce los deportes</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
+                    dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun deporte?');
+                  }else if(tipoTurismos == "platos típicos"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-platos-tipicos-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Conoce los platos típicos</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
+                    dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun plato típico?');
+                  }
                 }
-                if(tipoTurismos == "cabañas"){
-                  dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar alguna cabaña?');
-                }else if(tipoTurismos == "lugares turísticos"){
-                  dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun lugar turístico?');
-                }else if(tipoTurismos == "deportes"){
-                  dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun deporte?');
-                }else if(tipoTurismos == "platos típicos"){
-                  dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun plato típico?');
-                }
-                
             },
             error:function(error){
               console.log("error del intento consultaTurismos - yesVerTurismos")

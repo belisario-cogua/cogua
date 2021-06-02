@@ -23,9 +23,9 @@ function listarPlatos(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + nombre +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">$ ' + response[i]["fields"]['precio']+'</a></td>';
 				if (response[i]["fields"]['imagen']){
-					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');"><i class="fas fa-check" style="color: green;"></i></a></td>';
+					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:30px;height:20px;" src="/media/'+ response[i]["fields"]['imagen']+'"/></a></td>';
 				}else{
-					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');"><i class="fas fa-times" style="color: red;"></i></td>';
+					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:25px;" src="/static/personal/imagen/empty.png"/></a></td>';
 				}
 				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertPlato(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '<button type="button" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="abrir_modal_editar(\'/perfil_admin/editar_plato/'+response[i]['pk']+'/\');"><i class="fas fa-edit"></i></button>';

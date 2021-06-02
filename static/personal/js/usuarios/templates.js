@@ -48,7 +48,7 @@ function listarUsuarios(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');">' + apellidos +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');">' + response[i]["fields"]['email']+'</a></td>';
 				if (response[i]["fields"]['imagen']){
-					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:30px;" src="/media/'+ response[i]["fields"]['imagen']+'"/></a></td>';
+					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:30px;height:22px;" src="/media/'+ response[i]["fields"]['imagen']+'"/></a></td>';
 				}else{
 					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:25px;" src="/static/personal/imagen/empty.png"/></a></td>';
 				}

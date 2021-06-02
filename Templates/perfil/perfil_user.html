@@ -52,6 +52,21 @@
   <link rel="stylesheet" href="{% static 'personal/Perfil/fullcalendar/lib/main.css' %}">
   {% block cssextras %}
   {% endblock cssextras %}
+  <style type="text/css">
+    .chatbot-lista-imagen img{
+   width: 30px !important;
+   height: 20px;
+}
+.chatbot-lista-imagen a{
+   float: right;color:#FF9800;text-decoration: none;
+}
+.prueba{
+   color: green;
+}
+#dfAccordionWrapper img{
+    height: 1000px;
+}
+  </style>
 </head>
 <!--
   SIGLAS
@@ -532,7 +547,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Nombres</td>
+                          <td class="prueba">Nombres</td>
                           <td>{{ user.nombres | title }}</td>
                         </tr>
                         <tr>

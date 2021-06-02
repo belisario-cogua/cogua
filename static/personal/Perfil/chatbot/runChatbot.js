@@ -47,24 +47,57 @@ $(document).ready(function() {
                     dfMessenger.renderCustomText('Lo siento no están disponibles los platos típicos por el momento');
                   }
                 }else{
-                  for(let i = 0;i < response.length;i++){
-                    const payload = [
-                    {
-                      "title": response[i]["fields"]['nombre'],
-                      "type": "accordion",
-                      "subtitle": response[i]["fields"]['descripcion'],
-                      "text": "<img src='/media/' width='400px' height='200px'/><br/><a target='_blank' href='/listado-cabañas-disponibles/' style='float: right;color:#FF9800;text-decoration: none;'>Cabañas Disponibles</a>"
-                    }
-                    ];
-                    dfMessenger.renderCustomCard(payload);
-                  }
                   if(tipoTurismos == "cabañas"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-cabañas-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Visita las cabañas</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
                     dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar alguna cabaña?');
                   }else if(tipoTurismos == "lugares turísticos"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-lugares-turisticos-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Visita los lugares turísticos</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
                     dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun lugar turístico?');
                   }else if(tipoTurismos == "deportes"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-deportes-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Conoce los deportes</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
                     dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun deporte?');
                   }else if(tipoTurismos == "platos típicos"){
+                    for(let i = 0;i < response.length;i++){
+                      const payload = [
+                        {
+                          "title": response[i]["fields"]['nombre'],
+                          "type": "accordion",
+                          "subtitle": '$'+response[i]["fields"]['precio'],
+                          "text": '<img src="/media/'+ response[i]["fields"]['imagen']+'" style="width:305px;height:200px;float:right;"/><br/><a target="_blank" href="/listado-platos-tipicos-disponibles/" style="float: right;color:#FF9800;text-decoration: none;">Conoce los platos típicos</a>'
+                        }
+                      ];
+                      dfMessenger.renderCustomCard(payload);
+                    }
                     dfMessenger.renderCustomText('¿Interesante verdad? ¿Deseas reservar algun plato típico?');
                   }
                 }

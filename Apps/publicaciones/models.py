@@ -7,7 +7,7 @@ class Publicacion(models.Model):
 	nombre = models.CharField(max_length = 200)
 	descripcion = models.TextField('Descripción')
 	estado = models.BooleanField('Estado',default = True)
-	imagen = fields.ImageField('Imagen', upload_to='imagenes/publicaciones/%Y/%m/%d/', max_length=200, blank = True, null = True)
+	imagen = fields.ImageField('Imagen', upload_to='imagenes/publicaciones/%Y/%m/%d/', max_length=200, blank = False, null = False)
 	created = models.DateTimeField('Fecha de publicación', editable=False)
 	modified = models.DateTimeField('Modificación', editable=False)
 

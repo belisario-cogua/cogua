@@ -2,22 +2,15 @@ from django.db import models
 from django.utils import timezone
 from Apps.usuarios.models import Usuario
 from smartfields import fields
-from django.core.exceptions import ValidationError 
 # Create your models here.
 
 class Turismo(models.Model):
-	def validate_image(fieldfile_obj): 
-		filesize = fieldfile_obj.file.size 
-		megabyte_limit = 1.0 
-		if filesize > megabyte_limit*1024*1024: 
-			raise ValidationError("El tamaño maximo de la imagen debe ser %sMB" % str(megabyte_limit))
-			
 	nombre = models.CharField(max_length = 200, blank = False, null = False)
 	precio = models.CharField('Precio',max_length = 200, blank = False, null = False)
 	descripcion = models.TextField('Descripcion',blank=False, null=False)
 	cantidad = models.SmallIntegerField('Cantidad', default = 1)
 	estado = models.BooleanField('Estado',default = False)
-	imagen = fields.ImageField('Imagen', upload_to='imagenes/turismos/%Y/%m/%d/', max_length=200, blank = False, null = False, validators=[validate_image])
+	imagen = fields.ImageField('Imagen', upload_to='imagenes/turismos/%Y/%m/%d/', max_length=200, blank = False, null = False)
 	user_id = models.ForeignKey(Usuario, on_delete=models.CASCADE,blank = True,null = True)
 	created = models.DateTimeField('Fecha de publicacion', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Fecha de modificacion', editable=False, null=True, blank=True)

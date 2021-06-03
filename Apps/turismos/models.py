@@ -9,7 +9,7 @@ class Turismo(models.Model):
 	precio = models.CharField('Precio',max_length = 200, blank = False, null = False)
 	descripcion = models.TextField('Descripcion',blank=False, null=False)
 	cantidad = models.SmallIntegerField('Cantidad', default = 1)
-	estado = models.BooleanField('Estado',default = False)
+	estado = models.BooleanField('Estado',default = True)
 	imagen = fields.ImageField('Imagen', upload_to='imagenes/turismos/%Y/%m/%d/', max_length=200, blank = False, null = False)
 	user_id = models.ForeignKey(Usuario, on_delete=models.CASCADE,blank = True,null = True)
 	created = models.DateTimeField('Fecha de publicacion', editable=False, null=True,blank=True)

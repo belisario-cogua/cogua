@@ -235,4 +235,14 @@
 {% block extrajs %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{% static 'personal/main.js' %}"></script>
+<!--Inicio: script para verificar si el ussuario recargo la pagina actual-->
+<script type="text/javascript">
+     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      console.info( "La pagina se recargo otravez despues de realizar la reserva" );
+      sessionStorage.removeItem('Nombre');
+    } else {
+      console.info( "La pagina no esta recargada");
+    }
+</script>
+<!-- Fin: script para verificar si el ussuario recargo la pagina actual-->
 {% endblock extrajs %}

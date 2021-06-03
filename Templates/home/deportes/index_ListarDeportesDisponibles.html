@@ -78,15 +78,6 @@
                                           </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="range_slider_wrap">
-                                        <span class="range">Prise range</span>
-                                        <div id="slider-range"></div>
-                                        <p>
-                                            <input type="text" id="amount" readonly style="border:0; color:#7A838B; font-weight:400;">
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
 
 
@@ -229,18 +220,22 @@
     </div>
 </div>
 <!-- Contenedor del modal -->
-<div class="modal fade" id="modalReservar" rol="dialog">
+<div class="modal fade" data-backdrop="static" id="modalReservar" rol="dialog">
 </div>
 {% endblock publicaciones %}
 {% block extrajs %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{% static 'personal/main.js' %}"></script>
-
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-
-<script src="{% static 'home/daterangerpicker/daterangepicker.js' %}"></script>
-
+<!--Inicio: script para verificar si el ussuario recargo la pagina actual-->
+<script type="text/javascript">
+     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      console.info( "La pagina se recargo otravez despues de realizar la reserva" );
+      sessionStorage.removeItem('Nombre');
+    } else {
+      console.info( "La pagina no esta recargada");
+    }
+</script>
+<!-- Fin: script para verificar si el ussuario recargo la pagina actual-->
 <!-- Include Date Range Picker 
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />

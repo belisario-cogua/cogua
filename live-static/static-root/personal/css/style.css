@@ -101,6 +101,7 @@
       margin-top: 15px;
       color: #783b0c;
       font-weight: 250;
+      font-weight: bold;
     }
     .parrafo-div-modal{
       font-size: 16px;
@@ -118,27 +119,6 @@
     .parrafo-span-div-modal{
       font-weight: 100;
     }
-    .btn-close-modal{
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      right: -20px;
-      top: -20px;
-      padding: 20px;
-      background:#dc3545;
-      color: white;
-      border-radius: 50%;
-      line-height: 10px;
-    }
-    .btn-close-modal:hover{
-      background:#1EC6B6;
-      transition: all 0.6s ease;
-    }
-    .btn-close-modal i{
-      margin-top: -100px;
-      color: #fff;
-    }
-
     .modal-content h3{
       font-family: 'Montserrat', sans-serif;
       text-align: center;

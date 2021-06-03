@@ -175,6 +175,11 @@ class ReservaHotelDetalles(DetailView):
 	model = Hotel
 	template_name = 'home/hoteles/index_ModalReservarHotel.html'
 
+	def get_context_data(self, **kwargs):
+		context = super(ReservaHotelDetalles, self).get_context_data(**kwargs)
+		context['reserva_hoteles'] = ReservaHotel.objects.all()
+		return context
+
 class RegistrarReservaHotel(CreateView):
 	model = ReservaHotel
 	success_url = reverse_lazy('templates_home:listado_hoteles_disponibles')
@@ -225,18 +230,26 @@ class RegistrarReservaHotel(CreateView):
 							return response
 
 					else:
-						nueva_reserva = self.model(
-							usuario = usuario,
-							hotel = hotel,
-							fecha_inicial = fecha_inicial,
-							fecha_final = fecha_final
-						)
-						nueva_reserva.save()
-						mensaje = f'{self.model.__name__} registrado correctamente!'
-						error = 'No hay error!'
-						response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
-						response.status_code = 201
-						return response
+						validar = ReservaHotel.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),hotel_id=hotel)
+						if validar:
+							mensaje = noveno_error_else
+							error = 'necesita rellenar el campo'
+							response = JsonResponse({'mensaje':mensaje,'error':error})
+							response.status_code = 400
+							return response
+						else:
+							nueva_reserva = self.model(
+								usuario = usuario,
+								hotel = hotel,
+								fecha_inicial = fecha_inicial,
+								fecha_final = fecha_final
+							)
+							nueva_reserva.save()
+							mensaje = f'{self.model.__name__} registrado correctamente!'
+							error = 'No hay error!'
+							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
+							response.status_code = 201
+							return response
 
 				# cuarto error else
 				elif fecha_inicial_a_date < fecha_actual:
@@ -309,6 +322,11 @@ class ReservaPlatoDetalles(DetailView):
 	model = Plato
 	template_name = 'home/platos/index_ModalReservarPlato.html'
 
+	def get_context_data(self, **kwargs):
+		context = super(ReservaPlatoDetalles, self).get_context_data(**kwargs)
+		context['reserva_platos'] = ReservaPlato.objects.all()
+		return context
+
 class RegistrarReservaPlato(CreateView):
 	model = ReservaPlato
 	success_url = reverse_lazy('templates_home:listado_platos_disponibles')
@@ -359,18 +377,26 @@ class RegistrarReservaPlato(CreateView):
 							return response
 
 					else:
-						nueva_reserva = self.model(
-							usuario = usuario,
-							plato = plato,
-							fecha_inicial = fecha_inicial,
-							fecha_final = fecha_final
-						)
-						nueva_reserva.save()
-						mensaje = f'{self.model.__name__} registrado correctamente!'
-						error = 'No hay error!'
-						response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
-						response.status_code = 201
-						return response
+						validar = ReservaPlato.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),plato_id=plato)
+						if validar:
+							mensaje = noveno_error_else
+							error = 'necesita rellenar el campo'
+							response = JsonResponse({'mensaje':mensaje,'error':error})
+							response.status_code = 400
+							return response
+						else:
+							nueva_reserva = self.model(
+								usuario = usuario,
+								plato = plato,
+								fecha_inicial = fecha_inicial,
+								fecha_final = fecha_final
+							)
+							nueva_reserva.save()
+							mensaje = f'{self.model.__name__} registrado correctamente!'
+							error = 'No hay error!'
+							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
+							response.status_code = 201
+							return response
 
 				# cuarto error else
 				elif fecha_inicial_a_date < fecha_actual:
@@ -443,6 +469,11 @@ class ReservaTurismoDetalles(DetailView):
 	model = Turismo
 	template_name = 'home/turismos/index_ModalReservarTurismo.html'
 
+	def get_context_data(self, **kwargs):
+		context = super(ReservaTurismoDetalles, self).get_context_data(**kwargs)
+		context['reserva_turismos'] = ReservaTurismo.objects.all()
+		return context
+
 class RegistrarReservaTurismo(CreateView):
 	model = ReservaTurismo
 	success_url = reverse_lazy('templates_home:listado_turismos_disponibles')
@@ -493,18 +524,26 @@ class RegistrarReservaTurismo(CreateView):
 							return response
 
 					else:
-						nueva_reserva = self.model(
-							usuario = usuario,
-							turismo = turismo,
-							fecha_inicial = fecha_inicial,
-							fecha_final = fecha_final
-						)
-						nueva_reserva.save()
-						mensaje = f'{self.model.__name__} registrado correctamente!'
-						error = 'No hay error!'
-						response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
-						response.status_code = 201
-						return response
+						validar = ReservaTurismo.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),turismo_id=turismo)
+						if validar:
+							mensaje = noveno_error_else
+							error = 'necesita rellenar el campo'
+							response = JsonResponse({'mensaje':mensaje,'error':error})
+							response.status_code = 400
+							return response
+						else:
+							nueva_reserva = self.model(
+								usuario = usuario,
+								turismo = turismo,
+								fecha_inicial = fecha_inicial,
+								fecha_final = fecha_final
+							)
+							nueva_reserva.save()
+							mensaje = f'{self.model.__name__} registrado correctamente!'
+							error = 'No hay error!'
+							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
+							response.status_code = 201
+							return response
 
 				# cuarto error else
 				elif fecha_inicial_a_date < fecha_actual:

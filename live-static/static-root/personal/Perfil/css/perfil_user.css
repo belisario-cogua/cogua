@@ -626,3 +626,39 @@ css para que el df messenger se ponga encima del footer
 	padding-left: 10px;
 	color:#757373;
 }
+.notificacion-solicitudes{
+	position: absolute;
+}
+.notificacion-solicitudes img{
+	position: absolute;
+	width: 20px;
+	margin-top: -22px; 
+	margin-left: 188px;
+	font-size: 21px;
+	font-weight: bold;
+}
+.notificacion-solicitudes span{
+	position: absolute;
+	margin-top: -25px; 
+	margin-left: 194px;
+	font-weight: bold;
+	color: #fff;
+}
+.notificacion-solicitudes-mayor-10{
+	position: absolute;
+}
+.notificacion-solicitudes-mayor-10 img{
+	position: absolute;
+	width: 25px;
+	margin-top: -24px; 
+	margin-left: 185px;
+	font-size: 21px;
+	font-weight: bold;
+}
+.notificacion-solicitudes-mayor-10 span{
+	position: absolute;
+	margin-top: -25px; 
+	margin-left: 189px;
+	font-weight: bold;
+	color: #fff;
+}

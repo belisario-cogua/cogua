@@ -33,6 +33,7 @@ from Apps.turismos.models import Turismo
 from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
+from datetime import date, datetime 
 import copy
 
 # Create your views here.
@@ -216,13 +217,8 @@ class Perfil(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Perfil, self).get_context_data(**kwargs)
-        context['reserva_deportes'] = ReservaDeporte.objects.all()
-        context['reserva_hoteles'] = ReservaHotel.objects.all()
-        context['reserva_platos'] = ReservaPlato.objects.all()
-        context['reserva_turismos'] = ReservaTurismo.objects.all()
         context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user).count() + ReservaTurismo.objects.filter(usuario = self.request.user).count() + ReservaPlato.objects.filter(usuario = self.request.user).count() + ReservaHotel.objects.filter(usuario = self.request.user).count()
-        context['deportes'] = Deporte.objects.all()
-        context['deportessss'] = 'valores'
+        #context['deportes'] = Deporte.objects.all()
         return context
 
 '''class PerfilDatos(TemplateView):
@@ -232,14 +228,6 @@ class Perfil(LoginRequiredMixin, TemplateView):
 #hoteles
 class PerfilListarReservasHotelesAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/hoteles/perfil_listarReservasHoteles.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PerfilListarReservasHotelesAdmin, self).get_context_data(**kwargs)
-        context['reserva_deportes'] = ReservaDeporte.objects.all()
-        context['reserva_hoteles'] = ReservaHotel.objects.all()
-        context['reserva_platos'] = ReservaPlato.objects.all()
-        context['reserva_turismos'] = ReservaTurismo.objects.all()
-        return context
 
 class ListarReservasHotelesAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaHotel
@@ -261,14 +249,6 @@ class HotelPerfilReservaDetallesAdmin(DetailView):
 #deportes
 class PerfilListarReservasDeportesAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/deportes/perfil_listarReservasDeportes.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PerfilListarReservasDeportesAdmin, self).get_context_data(**kwargs)
-        context['reserva_deportes'] = ReservaDeporte.objects.all()
-        context['reserva_hoteles'] = ReservaHotel.objects.all()
-        context['reserva_platos'] = ReservaPlato.objects.all()
-        context['reserva_turismos'] = ReservaTurismo.objects.all()
-        return context
 
 class ListarReservasDeportesAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaDeporte
@@ -292,14 +272,6 @@ class DeportePerfilReservaDetallesAdmin(DetailView):
 class PerfilListarReservasPlatosAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/platos/perfil_listarReservasPlatos.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(PerfilListarReservasPlatosAdmin, self).get_context_data(**kwargs)
-        context['reserva_deportes'] = ReservaDeporte.objects.all()
-        context['reserva_hoteles'] = ReservaHotel.objects.all()
-        context['reserva_platos'] = ReservaPlato.objects.all()
-        context['reserva_turismos'] = ReservaTurismo.objects.all()
-        return context
-
 class ListarReservasPlatosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaPlato
     def get_queryset(self):
@@ -321,14 +293,6 @@ class PlatoPerfilReservaDetallesAdmin(DetailView):
 class PerfilListarReservasTurismosAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/turismos/perfil_listarReservasTurismos.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(PerfilListarReservasTurismosAdmin, self).get_context_data(**kwargs)
-        context['reserva_deportes'] = ReservaDeporte.objects.all()
-        context['reserva_hoteles'] = ReservaHotel.objects.all()
-        context['reserva_platos'] = ReservaPlato.objects.all()
-        context['reserva_turismos'] = ReservaTurismo.objects.all()
-        return context
-
 class ListarReservasTurismosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaTurismo
     def get_queryset(self):
@@ -346,9 +310,34 @@ class TurismoPerfilReservaDetallesAdmin(DetailView):
     model = ReservaTurismo
     template_name = 'perfil/reservas_admin/turismos/perfil_ModalReservaTurismoDetalles.html'
 
+
+#solicitudes de reservas
+class PerfilListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin, TemplateView):
+    template_name = 'perfil/reservas_admin/solicitudes/perfil_listarSolicitudesReservas.html'
+
+class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
+    model1 = ReservaDeporte
+    model2 = ReservaTurismo
+    model3 = ReservaPlato
+    model4 = ReservaHotel
+    
+    def get_queryset(self):
+        fecha_actual = datetime.today()
+        queryset1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual)
+        queryset2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual)
+        queryset3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual)
+        queryset4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual)
+        return list(itertools.chain(queryset1, queryset2, queryset3, queryset4))
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            return HttpResponse(serialize('json', self.get_queryset(),use_natural_foreign_keys = True), 'application/json')
+
+        else:
+            return redirect('templates_perfil:inicio_solicitudes_reservas')
 '''Fin listado de reservas de admin'''
 
-'''Inicio listado de reservas de Usuarios'''
+'''Inicio listado de reservas de Usuarios como clientes'''
 #all
 import itertools 
 class ListarReservasUser(LoginRequiredMixin,ListView):
@@ -369,17 +358,13 @@ class ListarReservasUser(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListarReservasUser, self).get_context_data(**kwargs)
-        context['reserva_deportes_user'] = ReservaDeporte.objects.filter(usuario = self.request.user)
-        context['reserva_turismos_user'] = ReservaTurismo.objects.filter(usuario = self.request.user)
-        context['reserva_platos_user'] = ReservaPlato.objects.filter(usuario = self.request.user)
-        context['reserva_hoteles_user'] = ReservaHotel.objects.filter(usuario = self.request.user)
         context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user).count() + ReservaTurismo.objects.filter(usuario = self.request.user).count() + ReservaPlato.objects.filter(usuario = self.request.user).count() + ReservaHotel.objects.filter(usuario = self.request.user).count()
         return context
 
 class DeportePerfilReservaDetallesUser(LoginRequiredMixin, DetailView):
     model = ReservaDeporte
     template_name = 'perfil/reservas_user/deportes/perfil_ModalReservaDeporteDetalles.html'
-'''Fin listado de reservas de Usuarios'''
+'''Fin listado de reservas de Usuarios como clientes'''
 
 class ChatBot(CreateView):
     def post(self, request, *args, **kwargs):

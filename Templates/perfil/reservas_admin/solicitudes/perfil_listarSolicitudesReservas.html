@@ -15,25 +15,25 @@
   </a>
 </li>
 {% if request.user.is_staff %}
-  <li class="nav-item pu-menu-hover">
-    <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link">
-      <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
-      <p class="pu-color-p">Solicitudes
-        {% if reservas_vigentes < 10 %} 
-        <div class="notificacion-solicitudes">
-          <img src="{% static 'personal/icons/circulo.png' %}">
-          <span>{{reservas_vigentes}}</span>
-        </div>
-        {% else %}
-        <div class="notificacion-solicitudes-mayor-10">
-          <img src="{% static 'personal/icons/circulo.png' %}">
-          <span>{{reservas_vigentes}}</span>
-        </div>
-        {% endif %}
-      </p>
-    </a>
-  </li>
-  {% endif %}
+<li class="nav-item pu-menu-hover">
+  <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link active">
+    <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
+    <p class="pu-color-p">Solicitudes
+      {% if reservas_vigentes < 10 %} 
+      <div class="notificacion-solicitudes">
+        <img src="{% static 'personal/icons/circulo.png' %}">
+        <span>{{reservas_vigentes}}</span>
+      </div>
+      {% else %}
+      <div class="notificacion-solicitudes-mayor-10">
+        <img src="{% static 'personal/icons/circulo.png' %}">
+        <span>{{reservas_vigentes}}</span>
+      </div>
+      {% endif %}
+    </p>
+  </a>
+</li>
+{% endif %}
   {% if request.user.is_staff %}
     <li class="nav-item">
       <a href="#" class="nav-link animar-mi-menu">
@@ -91,9 +91,9 @@
 {% endblock menu_open %}
 
 {% block menu_open_reservaciones %}
-  <li class="nav-item menu-open">
+  <li class="nav-item">
     {% if request.user.is_staff %}
-    <a href="#" class="nav-link active animar-mi-menu">
+    <a href="#" class="nav-link animar-mi-menu">
       <i class="nav-icon fab fa-resolving"></i>
         <p>
           Reservaciones
@@ -131,7 +131,7 @@
             {% endif %}
             {% if reserva_turismos %}
             <li class="nav-item pu-mover-submenu-icon">
-              <a href="{% url 'templates_perfil:listar_reservas_turismos' %}" class="nav-link  active mi-nav-link">
+              <a href="{% url 'templates_perfil:listar_reservas_turismos' %}" class="nav-link ">
                 <i class="nav-icon  fas fa-globe-asia"></i>
                 <p class="pu-mover-submenu-text">Turismos</p>
               </a>
@@ -168,7 +168,7 @@
 
 {% block tablatitulo %}
 <div class="cambiar-titulo-deportes search-perfil" style="">
-    <p class="plh-nombre-listar" style=""> Reservaciones de lugares turísticos</p>
+    <p class="plh-nombre-listar" style=""> Solicitudes de reservas</p>
     <div class="box-buscar" style="">
       <div class="container-buscar" style="float: right;">
           <span class="icon-buscar" style=""><i class="fa fa-search"></i></span>
@@ -185,12 +185,13 @@
 {% block tabla %}
 
       <div class="table-responsive plh-tabla-diseño">
-        <table id="tabla_reservas_turismos" class="table table-hover mi-css-all-tabla" cellpadding="0" cellspacing="2">
+        <table id="tabla-solicitudes-turismos" class="table table-hover mi-css-all-tabla" cellpadding="0" cellspacing="2">
           <thead class="titulo-table">
             <tr>
               <th scope="col">#</th>
               <th scope="col">CLIENTE</th>
-              <th scope="col">LUGAR TURÍSTICO</th>
+              <th scope="col">TURISMO</th>
+              <th scope="col">NOMBRE</th>
               <th scope="col">RESERVADO</th>
               <th scope="col" class="text-center" style="padding-left: 26px;" WIDTH="50">OPCIÓN</th>
             </tr>
@@ -219,18 +220,18 @@
 {% block extrajs %}
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="{% static 'dowloand_bootstrap/js/lib/data-table/dataTables.bootstrap.min.js' %}"></script>
-<script src="{% static 'personal/js/reservas_admin/turismos/templates.js' %}"></script>
+<script src="{% static 'personal/js/reservas_admin/solicitudes/templates.js' %}"></script>
 <script type="text/javascript">
   
-  $('#tabla_reservas_turismos').dataTable({
+  $('#tabla-solicitudes-turismos').dataTable({
     responsive: true,
     "bFilter": true // show search input
   });
-  $("#tabla_reservas_turismos_filter").addClass("hidden"); // hidden search input
+  $("#tabla-solicitudes-turismos_filter").addClass("hidden"); // hidden search input
 
   $("#search").on("input", function (e) {
      e.preventDefault();
-     $('#tabla_reservas_turismos').DataTable().search($(this).val()).draw();
+     $('#tabla-solicitudes-turismos').DataTable().search($(this).val()).draw();
   });
 
 </script>

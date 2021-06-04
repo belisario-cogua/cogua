@@ -171,6 +171,98 @@ class EliminarReservaDeporte(DeleteView):
 		else:
 			return redirect('templates_perfil:listar_reservas_deportes')
 
+class ConfirmarReservaDeporte(CreateView):
+
+	def post(self, request, *args, **kwargs):
+		if request.is_ajax():
+			reserva_id = request.POST.get('reserva')
+			nombre = request.POST.get('modelo')
+			opcion = request.POST.get('opcion')
+			if nombre == "deporte":
+				editar = ReservaDeporte.objects.get(id=reserva_id)
+				if opcion == "confirmar":
+					editar.confirmar = True
+					editar.visita = True
+					editar.save()
+					mensaje = "reserva del deporte aceptado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+				elif opcion == "cancelar":
+					editar.confirmar = False
+					editar.visita = False
+					editar.save()
+					mensaje = "reserva del deporte cancelado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+
+			elif nombre == "turismo":
+				editar = ReservaTurismo.objects.get(id=reserva_id)
+				if opcion == "confirmar":
+					editar.confirmar = True
+					editar.visita = True
+					editar.save()
+					mensaje = "reserva del lugar turistico aceptado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+				elif opcion == "cancelar":
+					editar.confirmar = False
+					editar.visita = False
+					editar.save()
+					mensaje = "reserva del lugar turistico cancelado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+
+			elif nombre == "plato":
+				editar = ReservaPlato.objects.get(id=reserva_id)
+				if opcion == "confirmar":
+					editar.confirmar = True
+					editar.visita = True
+					editar.save()
+					mensaje = "reserva del plato tipico aceptado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+				elif opcion == "cancelar":
+					editar.confirmar = False
+					editar.visita = False
+					editar.save()
+					mensaje = "reserva del plato tipico cancelado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+
+			elif nombre == "hotel":
+				editar = ReservaHotel.objects.get(id=reserva_id)
+				if opcion == "confirmar":
+					editar.confirmar = True
+					editar.visita = True
+					editar.save()
+					mensaje = "reserva de la cabaña aceptado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+				elif opcion == "cancelar":
+					editar.confirmar = False
+					editar.visita = False
+					editar.save()
+					mensaje = "reserva de la cabaña cancelado"
+					response = JsonResponse({'mensaje':mensaje})
+					response.status_code = 201
+					#retorna response para ser interpretado con javascript
+					return response
+		return redirect('templates_perfil:listar_reservas_deportes')
+
 class ReservaHotelDetalles(DetailView):
 	model = Hotel
 	template_name = 'home/hoteles/index_ModalReservarHotel.html'

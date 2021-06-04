@@ -17,6 +17,9 @@ urlpatterns = [
 	path('perfil/editar_perfil/', EditarUserActual.as_view(), name='editar_perfil_actual'),
 	path('perfil/editar_password_perfil/', EditarPasswordUserActual.as_view(), name='editar_perfil_password_actual'),
 	#urls para mostrar reservas de user como admin en perfil
+	path('perfil_admin/solicitudes/reservas/',PerfilListarSolicituedesReservasAdmin.as_view(), name='inicio_solicitudes_reservas'),
+	path('perfil_admin/listar_solicitudes_reservas/',ListarSolicituedesReservasAdmin.as_view(), name='listar_solicitudes_reservas'),
+
 	path('perfil_admin/reservas/deportes/',PerfilListarReservasDeportesAdmin.as_view(), name='inicio_reservas_deportes'),
 	path('perfil_admin/listar_reservas_deportes/', ListarReservasDeportesAdmin.as_view(), name = 'listar_reservas_deportes'),
 	path('perfil_admin/reserva_detalles_deporte/<int:pk>/',DeportePerfilReservaDetallesAdmin.as_view(), name = 'reserva_detalles_deporte'),

@@ -28,7 +28,7 @@ class ReservaDeporteDetalles(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ReservaDeporteDetalles, self).get_context_data(**kwargs)
-		context['reserva_deportes'] = ReservaDeporte.objects.all()
+		context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
 		return context
 
 class RegistrarReservaDeporte(CreateView):
@@ -83,7 +83,7 @@ class RegistrarReservaDeporte(CreateView):
 							return response
 
 					else:
-						validar = ReservaDeporte.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),deporte_id=deporte)
+						validar = ReservaDeporte.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),deporte_id=deporte, estado = True)
 						if validar:
 							mensaje = noveno_error_else
 							error = 'necesita rellenar el campo'
@@ -160,7 +160,9 @@ class EliminarReservaDeporte(DeleteView):
 	def delete(self, request, *args, **kwargs):
 		if request.is_ajax():
 			reservadeporte = self.get_object()
-			reservadeporte.delete()
+			#reservadeporte.delete()
+			reservadeporte.estado = False
+			reservadeporte.save()
 			mensaje = f'{self.model.__name__} eliminado correctamente!'
 			error = 'No hay error!'
 			response = JsonResponse({'mensaje':mensaje,'error':error})
@@ -269,7 +271,7 @@ class ReservaHotelDetalles(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ReservaHotelDetalles, self).get_context_data(**kwargs)
-		context['reserva_hoteles'] = ReservaHotel.objects.all()
+		context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
 		return context
 
 class RegistrarReservaHotel(CreateView):
@@ -322,7 +324,7 @@ class RegistrarReservaHotel(CreateView):
 							return response
 
 					else:
-						validar = ReservaHotel.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),hotel_id=hotel)
+						validar = ReservaHotel.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),hotel_id=hotel, estado = True)
 						if validar:
 							mensaje = noveno_error_else
 							error = 'necesita rellenar el campo'
@@ -399,7 +401,9 @@ class EliminarReservaHotel(DeleteView):
 	def delete(self, request, *args, **kwargs):
 		if request.is_ajax():
 			reservahotel = self.get_object()
-			reservahotel.delete()
+			#reservahotel.delete()
+			reservahotel.estado = False
+			reservahotel.save()
 			mensaje = f'{self.model.__name__} eliminado correctamente!'
 			error = 'No hay error!'
 			response = JsonResponse({'mensaje':mensaje,'error':error})
@@ -416,7 +420,7 @@ class ReservaPlatoDetalles(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ReservaPlatoDetalles, self).get_context_data(**kwargs)
-		context['reserva_platos'] = ReservaPlato.objects.all()
+		context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
 		return context
 
 class RegistrarReservaPlato(CreateView):
@@ -469,7 +473,7 @@ class RegistrarReservaPlato(CreateView):
 							return response
 
 					else:
-						validar = ReservaPlato.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),plato_id=plato)
+						validar = ReservaPlato.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),plato_id=plato, estado = True)
 						if validar:
 							mensaje = noveno_error_else
 							error = 'necesita rellenar el campo'
@@ -545,8 +549,10 @@ class EliminarReservaPlato(DeleteView):
 
 	def delete(self, request, *args, **kwargs):
 		if request.is_ajax():
-			reservahotel = self.get_object()
-			reservahotel.delete()
+			reservaplato = self.get_object()
+			#reservaplato.delete()
+			reservaplato.estado = False
+			reservaplato.save()
 			mensaje = f'{self.model.__name__} eliminado correctamente!'
 			error = 'No hay error!'
 			response = JsonResponse({'mensaje':mensaje,'error':error})
@@ -563,7 +569,7 @@ class ReservaTurismoDetalles(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ReservaTurismoDetalles, self).get_context_data(**kwargs)
-		context['reserva_turismos'] = ReservaTurismo.objects.all()
+		context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
 		return context
 
 class RegistrarReservaTurismo(CreateView):
@@ -616,7 +622,7 @@ class RegistrarReservaTurismo(CreateView):
 							return response
 
 					else:
-						validar = ReservaTurismo.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),turismo_id=turismo)
+						validar = ReservaTurismo.objects.filter(fecha_inicial__gte=datetime.strptime(fecha_inicial, '%Y-%m-%d'),fecha_final__lte=datetime.strptime(fecha_final, '%Y-%m-%d'),turismo_id=turismo, estado = True)
 						if validar:
 							mensaje = noveno_error_else
 							error = 'necesita rellenar el campo'
@@ -692,8 +698,10 @@ class EliminarReservaTurismo(DeleteView):
 
 	def delete(self, request, *args, **kwargs):
 		if request.is_ajax():
-			reservahotel = self.get_object()
-			reservahotel.delete()
+			reservaturismo = self.get_object()
+			#reservaturismo.delete()
+			reservaturismo.estado = False
+			reservaturismo.save()
 			mensaje = f'{self.model.__name__} eliminado correctamente!'
 			error = 'No hay error!'
 			response = JsonResponse({'mensaje':mensaje,'error':error})

@@ -26,7 +26,7 @@ class ListarPublicaciones(ListView):
 	model = Publicacion
 
 	def get_queryset(self):
-		return self.model.objects.all()
+		return self.model.objects.filter(estado=True)
 
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():
@@ -45,7 +45,7 @@ class ListarDeportesDisponibles(ListView):
 	template_name = 'home/deportes/index_ListarDeportesDisponibles.html'
 
 	def get_queryset(self):
-		queryset = self.model.objects.filter(cantidad__gte = 0)
+		queryset = self.model.objects.filter(cantidad__gte = 0, estado=True)
 		return queryset
 
 class ListarHotelesDisponibles(ListView):
@@ -54,7 +54,7 @@ class ListarHotelesDisponibles(ListView):
 	template_name = 'home/hoteles/index_ListarHotelesDisponibles.html'
 
 	def get_queryset(self):
-		queryset = self.model.objects.filter(cantidad__gte = 0)
+		queryset = self.model.objects.filter(cantidad__gte = 0, estado=True)
 		return queryset
 
 class ListarPlatosDisponibles(ListView):
@@ -63,7 +63,7 @@ class ListarPlatosDisponibles(ListView):
 	template_name = 'home/platos/index_ListarPlatosDisponibles.html'
 
 	def get_queryset(self):
-		queryset = self.model.objects.filter(cantidad__gte = 0)
+		queryset = self.model.objects.filter(cantidad__gte = 0, estado=True)
 		return queryset
 
 class ListarTurismosDisponibles(ListView):
@@ -72,7 +72,7 @@ class ListarTurismosDisponibles(ListView):
 	template_name = 'home/turismos/index_ListarTurismosDisponibles.html'
 
 	def get_queryset(self):
-		queryset = self.model.objects.filter(cantidad__gte = 0)
+		queryset = self.model.objects.filter(cantidad__gte = 0, estado=True)
 		return queryset
 
 

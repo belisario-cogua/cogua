@@ -8,6 +8,7 @@ from .forms import PlatoForm
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from Apps.usuarios.models import Usuario
 from Apps.reservas.models import ReservaHotel, ReservaDeporte, ReservaPlato, ReservaTurismo
+from datetime import date, datetime 
 
 # Create your views here.
 class AgregarPlato(LoginAndSuperStaffMixin,CreateView):
@@ -47,10 +48,17 @@ class PerfilListarPlatos(LoginAndSuperStaffMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
     	context = super(PerfilListarPlatos, self).get_context_data(**kwargs)
-    	context['reserva_deportes'] = ReservaDeporte.objects.all()
-    	context['reserva_hoteles'] = ReservaHotel.objects.all()
-    	context['reserva_platos'] = ReservaPlato.objects.all()
-    	context['reserva_turismos'] = ReservaTurismo.objects.all()
+    	context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+    	context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+    	context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+    	context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+    	#contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+    	fecha_actual = datetime.today()
+    	modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
     	return context
 
 class ListarPlatos(LoginAndSuperStaffMixin,ListView):

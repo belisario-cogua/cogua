@@ -6,6 +6,8 @@ from .forms import PublicacionForm
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from django.views.generic import  View, TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from Apps.reservas.models import ReservaHotel, ReservaDeporte, ReservaPlato, ReservaTurismo
+from datetime import date, datetime 
+
 # Create your views here.
 class AgregarPublicacion(LoginAndSuperStaffMixin,CreateView):
 	model = Publicacion
@@ -41,17 +43,24 @@ class PerfilListarPublicaciones(LoginAndSuperStaffMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
     	context = super(PerfilListarPublicaciones, self).get_context_data(**kwargs)
-    	context['reserva_deportes'] = ReservaDeporte.objects.all()
-    	context['reserva_hoteles'] = ReservaHotel.objects.all()
-    	context['reserva_platos'] = ReservaPlato.objects.all()
-    	context['reserva_turismos'] = ReservaTurismo.objects.all()
+    	context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+    	context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+    	context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+    	context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+    	#contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+    	fecha_actual = datetime.today()
+    	modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
     	return context
 
 class ListarPublicaciones(LoginAndSuperStaffMixin,ListView):
 	model = Publicacion
 
 	def get_queryset(self):
-		return self.model.objects.all()
+		return self.model.objects.filter(estado=True)
 
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():
@@ -99,7 +108,9 @@ class EliminarPublicacion(LoginAndSuperStaffMixin,DeleteView):
 	def delete(self, request, *args, **kwargs):
 		if request.is_ajax():
 			publicacion = self.get_object()
-			publicacion.delete()
+			#publicacion.delete()
+			publicacion.estado = False
+			publicacion.save()
 			mensaje = f'{self.model.__name__} eliminado correctamente!'
 			error = 'No hay error!'
 			response = JsonResponse({'mensaje':mensaje,'error':error})

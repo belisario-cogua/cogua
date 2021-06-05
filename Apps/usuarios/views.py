@@ -17,7 +17,7 @@ from Apps.usuarios.models import Usuario
 from .forms import LoginForm, RegistrarUsuarioForm, EditarUsuarioForm, EditarPasswordUsuarioForm
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin, PermisosUsuariosMixin
 from Apps.reservas.models import ReservaHotel, ReservaDeporte, ReservaPlato, ReservaTurismo
-
+from datetime import date, datetime 
 # Create your views here.
 '''class RegistrarUsuario(CreateView):
 	model = Usuario
@@ -58,17 +58,24 @@ class PerfilListarUsuario(PermisosUsuariosMixin,LoginAndSuperStaffMixin, Templat
 
     def get_context_data(self, **kwargs):
     	context = super(PerfilListarUsuario, self).get_context_data(**kwargs)
-    	context['reserva_deportes'] = ReservaDeporte.objects.all()
-    	context['reserva_hoteles'] = ReservaHotel.objects.all()
-    	context['reserva_platos'] = ReservaPlato.objects.all()
-    	context['reserva_turismos'] = ReservaTurismo.objects.all()
+    	context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+    	context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+    	context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+    	context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+    	#contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+    	fecha_actual = datetime.today()
+    	modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+    	context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
     	return context
 
 class ListarUsuario(PermisosUsuariosMixin,LoginAndSuperStaffMixin,ListView):
 	model = Usuario
 
 	def get_queryset(self):
-		return self.model.objects.all()
+		return self.model.objects.filter(is_active=True)
 
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():
@@ -150,7 +157,8 @@ class EliminarUsuario(PermisosUsuariosMixin,LoginAndSuperStaffMixin, DeleteView)
 				#retorna response para ser interpretado con javascript
 				return response
 			else:
-				usuario.delete()
+				usuario.is_active = False
+				usuario.save()
 				mensaje = f'{self.model.__name__} eliminado correctamente!'
 				error = 'No hay error!'
 				response = JsonResponse({'mensaje':mensaje,'error':error})

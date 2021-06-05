@@ -216,9 +216,21 @@ class Perfil(LoginRequiredMixin, TemplateView):
     template_name = 'perfil/perfil_user.html'
 
     def get_context_data(self, **kwargs):
+        #contextos para validar si existen las reservas
         context = super(Perfil, self).get_context_data(**kwargs)
-        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user).count() + ReservaTurismo.objects.filter(usuario = self.request.user).count() + ReservaPlato.objects.filter(usuario = self.request.user).count() + ReservaHotel.objects.filter(usuario = self.request.user).count()
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
         #context['deportes'] = Deporte.objects.all()
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 '''class PerfilDatos(TemplateView):
@@ -229,11 +241,26 @@ class Perfil(LoginRequiredMixin, TemplateView):
 class PerfilListarReservasHotelesAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/hoteles/perfil_listarReservasHoteles.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PerfilListarReservasHotelesAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
+        return context
+
 class ListarReservasHotelesAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaHotel
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.all()
+        return self.model.objects.filter(estado=True)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -250,12 +277,27 @@ class HotelPerfilReservaDetallesAdmin(DetailView):
 class PerfilListarReservasDeportesAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/deportes/perfil_listarReservasDeportes.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PerfilListarReservasDeportesAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
+        return context
+
 class ListarReservasDeportesAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaDeporte
 
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.all()
+        return self.model.objects.filter(estado = True)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -272,11 +314,26 @@ class DeportePerfilReservaDetallesAdmin(DetailView):
 class PerfilListarReservasPlatosAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/platos/perfil_listarReservasPlatos.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PerfilListarReservasPlatosAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
+        return context
+
 class ListarReservasPlatosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaPlato
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.all()
+        return self.model.objects.filter(estado=True)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -293,11 +350,26 @@ class PlatoPerfilReservaDetallesAdmin(DetailView):
 class PerfilListarReservasTurismosAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/turismos/perfil_listarReservasTurismos.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PerfilListarReservasTurismosAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
+        return context
+
 class ListarReservasTurismosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaTurismo
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.all()
+        return self.model.objects.filter(estado=True)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -315,6 +387,22 @@ class TurismoPerfilReservaDetallesAdmin(DetailView):
 class PerfilListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/solicitudes/perfil_listarSolicitudesReservas.html'
 
+    def get_context_data(self, **kwargs):
+        #contextos para validar si existen reservas
+        context = super(PerfilListarSolicituedesReservasAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
+        fecha_actual = datetime.today()
+        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
+        return context
+
 class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
     model1 = ReservaDeporte
     model2 = ReservaTurismo
@@ -323,10 +411,10 @@ class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
     
     def get_queryset(self):
         fecha_actual = datetime.today()
-        queryset1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual)
-        queryset2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual)
-        queryset3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual)
-        queryset4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual)
+        queryset1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True)
+        queryset2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True)
+        queryset3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True)
+        queryset4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True)
         return list(itertools.chain(queryset1, queryset2, queryset3, queryset4))
 
     def get(self,request,*args,**kwargs):
@@ -350,15 +438,19 @@ class ListarReservasUser(LoginRequiredMixin,ListView):
     template_name = 'perfil/reservas_user/perfil_listarReservasUser.html'
 
     def get_queryset(self):
-        queryset1 = ReservaDeporte.objects.filter(usuario = self.request.user)
-        queryset2 = ReservaTurismo.objects.filter(usuario = self.request.user)
-        queryset3 = ReservaPlato.objects.filter(usuario = self.request.user)
-        queryset4 = ReservaHotel.objects.filter(usuario = self.request.user)
+        queryset1 = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True)
+        queryset2 = ReservaTurismo.objects.filter(usuario = self.request.user,estado=True)
+        queryset3 = ReservaPlato.objects.filter(usuario = self.request.user,estado=True)
+        queryset4 = ReservaHotel.objects.filter(usuario = self.request.user,estado=True)
         return list(itertools.chain(queryset1, queryset2, queryset3, queryset4))
 
     def get_context_data(self, **kwargs):
         context = super(ListarReservasUser, self).get_context_data(**kwargs)
-        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user).count() + ReservaTurismo.objects.filter(usuario = self.request.user).count() + ReservaPlato.objects.filter(usuario = self.request.user).count() + ReservaHotel.objects.filter(usuario = self.request.user).count()
+        context['reserva_deportes_user'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True)
+        context['reserva_turismos_user'] = ReservaTurismo.objects.filter(usuario = self.request.user,estado=True)
+        context['reserva_platos_user'] = ReservaPlato.objects.filter(usuario = self.request.user,estado=True)
+        context['reserva_hoteles_user'] = ReservaHotel.objects.filter(usuario = self.request.user,estado=True)
+        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
         return context
 
 class DeportePerfilReservaDetallesUser(LoginRequiredMixin, DetailView):

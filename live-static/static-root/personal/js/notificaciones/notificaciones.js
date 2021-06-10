@@ -207,7 +207,7 @@ $(document).ready(function(){
 				console.log(error);
 			}
 		});
-	}, 10000);
+	}, 1000);
 });
 
 function notificacion_reducir_cero(){

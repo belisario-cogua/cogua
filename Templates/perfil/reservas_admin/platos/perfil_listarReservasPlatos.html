@@ -16,20 +16,10 @@
 </li>
 {% if request.user.is_staff %}
   <li class="nav-item pu-menu-hover">
-    <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link">
+    <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link" onclick="solicitud_reducir_cero();">
       <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
       <p class="pu-color-p">Solicitudes
-        {% if reservas_vigentes < 10 %} 
-        <div class="notificacion-solicitudes">
-          <img src="{% static 'personal/icons/circulo.png' %}">
-          <span>{{reservas_vigentes}}</span>
-        </div>
-        {% else %}
-        <div class="notificacion-solicitudes-mayor-10">
-          <img src="{% static 'personal/icons/circulo.png' %}">
-          <span>{{reservas_vigentes}}</span>
-        </div>
-        {% endif %}
+        <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
       </p>
     </a>
   </li>

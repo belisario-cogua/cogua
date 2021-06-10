@@ -7,7 +7,7 @@ urlpatterns = [
 	path('reservar-deporte/',RegistrarReservaDeporte.as_view(), name = 'reservar_deporte'),
 	path('modal-reserva-deporte-detalles/<int:pk>/',ReservaDeporteDetalles.as_view(), name='modal_reserva_deporte_detalles'),
 	path('perfil_admin/eliminar_reserva_deporte/<int:pk>/',EliminarReservaDeporte.as_view(), name = 'eliminar_reserva_deporte'),
-	path('perfil_admin/confirmar_reserva_deporte/',ConfirmarReservaDeporte.as_view(), name = 'confirmar_reserva_deporte'),
+	path('perfil_admin/confirmar_reserva/',ConfirmarReserva.as_view(), name = 'confirmar_reserva'),
 
 	path('reservar-hotel/',RegistrarReservaHotel.as_view(), name = 'reservar_hotel'),
 	path('modal-reserva-hotel-detalles/<int:pk>/',ReservaHotelDetalles.as_view(), name='modal_reserva_hotel_detalles'),

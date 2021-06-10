@@ -4,6 +4,7 @@
 
 {% block cssextras %}
   <link rel="stylesheet" href="{% static 'dowloand_bootstrap/css/lib/datatable/dataTables.bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'personal/Perfil/css/perfil_listarSolicitudesReservas.css' %}">
 {% endblock cssextras %}
 
 
@@ -16,20 +17,10 @@
 </li>
 {% if request.user.is_staff %}
 <li class="nav-item pu-menu-hover">
-  <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link active">
+  <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link active" onclick="solicitud_reducir_cero();">
     <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
     <p class="pu-color-p">Solicitudes
-      {% if reservas_vigentes < 10 %} 
-      <div class="notificacion-solicitudes">
-        <img src="{% static 'personal/icons/circulo.png' %}">
-        <span>{{reservas_vigentes}}</span>
-      </div>
-      {% else %}
-      <div class="notificacion-solicitudes-mayor-10">
-        <img src="{% static 'personal/icons/circulo.png' %}">
-        <span>{{reservas_vigentes}}</span>
-      </div>
-      {% endif %}
+      <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
     </p>
   </a>
 </li>
@@ -37,7 +28,7 @@
   {% if request.user.is_staff %}
     <li class="nav-item">
       <a href="#" class="nav-link animar-mi-menu">
-        <i class="nav-icon fas fa-user-shield"></i>
+        <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px; margin-left: 4px;"></i>
           <p>
             Administrar
             <i class="right fas fa-angle-left"></i>
@@ -175,6 +166,17 @@
           <input type="search" id="search" placeholder="Buscar..." />
       </div>
     </div>
+    <div id="container-solicitudes-id" class="container-solicitudes" style="display: none;">
+      <div class="t-pendientes" style="display: none;">
+        <span>Solicitudes pendientes: <span id="t-pendientes-num"></span></span>
+      </div>
+      <div id="t-aceptados-id" class="t-aceptados" style="display: none;">
+        <span>Solicitudes aceptados: <span id="t-aceptados-num"></span></span>
+      </div>
+      <div id="t-total-id" class="t-total">
+        <span>Total: <span id="t-total-num"></span></span>
+      </div>
+    </div>
 </div>
 
 
@@ -186,7 +188,7 @@
 
       <div class="table-responsive plh-tabla-diseño">
         <table id="tabla-solicitudes-turismos" class="table table-hover mi-css-all-tabla" cellpadding="0" cellspacing="2">
-          <thead class="titulo-table">
+          <thead class="titulo-table" style="background-color: #6a59b3">
             <tr>
               <th scope="col">#</th>
               <th scope="col">CLIENTE</th>

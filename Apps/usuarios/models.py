@@ -56,6 +56,8 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 	nombres = models.CharField('Nombres', max_length=200, blank = False, null = False)
 	apellidos = models.CharField('Apellidos', max_length=200, blank = False, null = False)
 	imagen = fields.ImageField('Imagen', upload_to='imagenes/usuarios/%Y/%m/%d/', max_length=200, blank = True, null = True)
+	solicitud = models.SmallIntegerField('Solicitud', default = 0)
+	notificacion = models.SmallIntegerField('Notificacion', default = 0)
 	usuario_activo = models.BooleanField(default = True)
 	is_active = models.BooleanField(default = True)
 	is_staff = models.BooleanField(default = False)

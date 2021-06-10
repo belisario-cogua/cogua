@@ -626,39 +626,70 @@ css para que el df messenger se ponga encima del footer
 	padding-left: 10px;
 	color:#757373;
 }
-.notificacion-solicitudes{
-	position: absolute;
+
+
+.container-notificacion{
+	margin-top: 2px;
+	margin-right: -10px;
 }
-.notificacion-solicitudes img{
-	position: absolute;
-	width: 20px;
-	margin-top: -22px; 
-	margin-left: 188px;
-	font-size: 21px;
-	font-weight: bold;
-}
-.notificacion-solicitudes span{
-	position: absolute;
-	margin-top: -25px; 
-	margin-left: 194px;
-	font-weight: bold;
+.container-notificacion li i{
 	color: #fff;
+	font-size: 17px;
 }
-.notificacion-solicitudes-mayor-10{
-	position: absolute;
+.notification-container {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    top: 15px;
+    left: 15px;
 }
-.notificacion-solicitudes-mayor-10 img{
-	position: absolute;
-	width: 25px;
-	margin-top: -24px; 
-	margin-left: 185px;
-	font-size: 21px;
+
+.notification-counter {   
+    position: absolute;
+    top: 3px;
+    left: 25px;
+    
+    background-color: rgba(212, 19, 13, 1);
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 3px;
+    font: 13px Verdana;
+}
+
+
+
+.container-notificacion ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.fake-notification {
+    font: 10px Arial;
+    margin-top: 50px;
+}
+.usuario-notificado{
 	font-weight: bold;
+	color: #000;
 }
-.notificacion-solicitudes-mayor-10 span{
-	position: absolute;
-	margin-top: -25px; 
-	margin-left: 189px;
-	font-weight: bold;
-	color: #fff;
+.reserva-confirmado{
+	color: #000;
+}
+.aceptado-por{
+	float: left;
+}
+.hora-notificacion{
+	float: right;
+}
+
+.solicitud-counter {   
+    position: absolute;
+    top: 10px;
+    left: 205px;
+    
+    background-color: rgba(212, 19, 13, 1);
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 3px;
+    font: 14px Verdana;
 }

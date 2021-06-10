@@ -35,6 +35,10 @@ from Apps.platos.models import Plato
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from datetime import date, datetime 
 import copy
+from notifications.signals import notify
+from notifications.models import *
+from django.db.models.functions import Coalesce
+from django.db.models import Sum
 
 # Create your views here.
 #LoginRequiredMixin es otra manera de de proteger nuestra vista
@@ -223,14 +227,6 @@ class Perfil(LoginRequiredMixin, TemplateView):
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
         context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
-        #context['deportes'] = Deporte.objects.all()
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 '''class PerfilDatos(TemplateView):
@@ -247,13 +243,6 @@ class PerfilListarReservasHotelesAdmin(LoginAndSuperStaffMixin, TemplateView):
         context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 class ListarReservasHotelesAdmin(LoginAndSuperStaffMixin,ListView):
@@ -283,13 +272,6 @@ class PerfilListarReservasDeportesAdmin(LoginAndSuperStaffMixin, TemplateView):
         context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 class ListarReservasDeportesAdmin(LoginAndSuperStaffMixin,ListView):
@@ -320,13 +302,6 @@ class PerfilListarReservasPlatosAdmin(LoginAndSuperStaffMixin, TemplateView):
         context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 class ListarReservasPlatosAdmin(LoginAndSuperStaffMixin,ListView):
@@ -356,13 +331,6 @@ class PerfilListarReservasTurismosAdmin(LoginAndSuperStaffMixin, TemplateView):
         context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
 class ListarReservasTurismosAdmin(LoginAndSuperStaffMixin,ListView):
@@ -394,15 +362,9 @@ class PerfilListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin, TemplateVie
         context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
-        #contexto para agregar el total de solicitudes en la opcion solicitudes del perfil admin
-        fecha_actual = datetime.today()
-        modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-        context['reservas_vigentes'] = modelo1 + modelo2 + modelo3 + modelo4
         return context
 
+#listar solicitudes de todas las reservas en la tabla
 class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
     model1 = ReservaDeporte
     model2 = ReservaTurismo
@@ -423,6 +385,109 @@ class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
 
         else:
             return redirect('templates_perfil:inicio_solicitudes_reservas')
+
+#SOLICITUDES
+#enumerar solicitudes de todas las reservas en el menu de perfil
+class SolicitudesReservasAdmin(LoginAndSuperStaffMixin, ListView):
+    model = Usuario
+    def get_queryset(self):
+        return self.model.objects.filter(is_active=True, id=self.request.user.id)
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            return HttpResponse(serialize('json', self.get_queryset(),use_natural_foreign_keys = True), 'application/json')
+
+        else:
+            return redirect('templates_perfil:inicio_solicitudes_reservas')
+#reducir solicitud en tiempo real a cero
+class SolicitudCero(CreateView):
+    model = Usuario
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            print("estamos en vies solicitud")
+            cero = request.POST.get('cero')
+            usuario = self.model.objects.get(id = request.user.id)
+            usuario.solicitud = 0
+            usuario.save()
+            mensaje = "Solicitud reducido"
+            error = 'No hay error!'
+            response = JsonResponse({'mensaje':mensaje,'error':error})
+            response.status_code = 201
+            return response
+
+#enumerar solicitudes de todas las reservas total
+class EnumerarSolicitudesReservasAdmin(LoginAndSuperStaffMixin, ListView):
+    def get(self, request, *args, **kwargs):
+        if request.is_ajax():
+            fecha_actual = datetime.today()
+            queryset1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+            queryset2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+            queryset3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+            queryset4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
+            total = queryset1 + queryset2 + queryset3 + queryset4
+
+            modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
+            modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
+            modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
+            modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
+            pendiente = modelo1 + modelo2 + modelo3 + modelo4
+
+            queryset5 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
+            queryset6 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
+            queryset7 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
+            queryset8 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
+            aceptado = queryset5 + queryset6 + queryset7 + queryset8
+
+            mensaje = "Notificacion reducido"
+            error = 'No hay error!'
+            response = JsonResponse({'pendiente':pendiente,'total':total,'aceptado':aceptado})
+            response.status_code = 201
+            return response
+
+#NOTIFICACIONES
+#Listar notificaciones del usuario logeado
+class NotificacionesUser(ListView):
+    model = Usuario
+    def get_queryset(self):
+        queryset = Notification.objects.filter(recipient=self.request.user)[:3]
+        return queryset
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            return HttpResponse(serialize('json', self.get_queryset(),use_natural_foreign_keys = True), 'application/json')
+
+        else:
+            return redirect('templates_perfil:inicio_solicitudes_reservas')
+
+#enumerar notificacion en tiempo real cuando el admin aya aceptado la reserva
+class NotificacionConfirmReserva(ListView):
+    model = Usuario
+    def get_queryset(self):
+        return self.model.objects.filter(is_active=True, id=self.request.user.id)
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            return HttpResponse(serialize('json', self.get_queryset(),use_natural_foreign_keys = True), 'application/json')
+
+        else:
+            return redirect('templates_perfil:inicio_solicitudes_reservas')
+
+#reducir notificacion en tiempo real a cero
+class NotificacionCero(CreateView):
+    model = Usuario
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            cero = request.POST.get('cero')
+            usuario = self.model.objects.get(id = request.user.id)
+            usuario.notificacion = 0
+            usuario.save()
+            mensaje = "Notificacion reducido"
+            error = 'No hay error!'
+            response = JsonResponse({'mensaje':mensaje,'error':error})
+            response.status_code = 201
+            return response
 '''Fin listado de reservas de admin'''
 
 '''Inicio listado de reservas de Usuarios como clientes'''
@@ -769,3 +834,47 @@ class ReservaPlatoChatbot(CreateView):
                     return response
 
 '''FIN Reservas chatbot'''
+
+'''INICIO Calendario'''
+class PerfilCalendarioAdmin(LoginAndSuperStaffMixin, ListView):
+    template_name = 'perfil/extras/calendario/calendario_admin.html'
+
+    #el def get_queryset no esta ahciendo nada,se le agrego  porque listview lo pide
+    def get_queryset(self):
+        queryset1 = ReservaDeporte.objects.filter(estado=True)
+        return queryset1
+
+    def get_context_data(self, **kwargs):
+        #contextos para validar si existen las reservas
+        context = super(PerfilCalendarioAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
+        return context
+'''FIN Calendario'''
+
+'''INICIO inteligencia de negocios'''
+class PerfilAnalisisAdmin(LoginAndSuperStaffMixin, TemplateView):
+    template_name = 'perfil/extras/analisis/analisis_admin.html'
+
+    def get_context_data(self, **kwargs):
+        #contextos para validar si existen las reservas
+        print("aqui estoy dentro")
+        context = super(PerfilAnalisisAdmin, self).get_context_data(**kwargs)
+        context['reserva_deportes'] = ReservaDeporte.objects.filter(estado=True)
+        context['reserva_hoteles'] = ReservaHotel.objects.filter(estado=True)
+        context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
+        context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
+        context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
+        #contextos para obtener los datos para el grafico.
+        data = []
+        year = datetime.now().year
+        for mes in range(1,13):
+            totalReservaDeporte = ReservaDeporte.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).aggregate(r=Coalesce(Sum('costo'),0)).get('r')
+            data.append(float(totalReservaDeporte))
+            print(data)
+        context['cantidad_reserva_turismo'] = data
+        return context
+'''FIN inteligencia de negocios'''

@@ -65,6 +65,7 @@
     var endDate;
     var fechaActual = new Date();
     var fechaActualmasUnAño = new Date();
+    var total;
     fechaActualmasUnAño.setFullYear(fechaActual.getFullYear()+1);
 
     $('input[name="daterange"]').val('');
@@ -148,14 +149,15 @@
         }
         total = precio*dias;
         document.getElementById('total').innerHTML='$ '+parseFloat(total);
-    });
 
+    });
     function registrarReserva(){
         data = {
             'usuario': "{{ request.user.id }}",
             'deporte':"{{ object.id }}",
             'fecha1':startDate,
             'fecha2':endDate,
+            'costo':total,
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
         }
         $.ajax({

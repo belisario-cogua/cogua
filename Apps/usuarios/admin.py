@@ -24,7 +24,7 @@ class UsuarioAdmin(ExportActionModelAdmin,ImportExportModelAdmin,BaseUserAdmin):
 	list_display_links = ['image_tag','nombres']
 	fieldsets = (
 		('PRINCIPAL',{'fields':('email','password',)}),
-		('INFORMACIÓN',{'fields':('nombres','apellidos','imagen',)}),
+		('INFORMACIÓN',{'fields':('nombres','apellidos','solicitud','notificacion','imagen',)}),
 		('PERMISOS',{'fields':('is_active','is_staff','is_superuser',)}),
     	('FECHAS', {'fields': ('last_login',)}),
 	)

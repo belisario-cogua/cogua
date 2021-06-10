@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'smartfields',
     'widget_tweaks',
     'preventconcurrentlogins',
+    'notifications',
 ]
 
 
@@ -115,7 +116,7 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'America/Bogota'
+TIME_ZONE = 'America/Guayaquil'
 
 USE_I18N = True
 

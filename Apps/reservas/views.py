@@ -10,6 +10,7 @@ from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
 from Apps.turismos.models import Turismo
 from .forms import ReservaDeporteForm, ReservaHotelForm
+from notifications.signals import notify
 
 # Create your views here.
 primer_error_else = f'La reserva no se ha podido realizar, los campos de fechas aún están vacíos !'
@@ -41,9 +42,11 @@ class RegistrarReservaDeporte(CreateView):
 			deporte = Deporte.objects.filter(id = request.POST.get('deporte')).first()
 			fecha_inicial = request.POST.get('fecha1')
 			fecha_final = request.POST.get('fecha2')
-			fecha_actual = datetime.today()
+			costo = request.POST.get('costo')
 
-			
+			fecha_actual = datetime.today()
+			user = Usuario.objects.get(id=request.user.id)
+			solicitud = Usuario.objects.filter(is_superuser = True)
 
 			if fecha_inicial and fecha_final:
 				#datetime.strptime(fecha_inicial, '%Y-%m-%d') -> permite transformar un string a date
@@ -57,9 +60,14 @@ class RegistrarReservaDeporte(CreateView):
 								usuario = usuario,
 								deporte = deporte,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -95,9 +103,14 @@ class RegistrarReservaDeporte(CreateView):
 								usuario = usuario,
 								deporte = deporte,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -173,19 +186,26 @@ class EliminarReservaDeporte(DeleteView):
 		else:
 			return redirect('templates_perfil:listar_reservas_deportes')
 
-class ConfirmarReservaDeporte(CreateView):
+class ConfirmarReserva(CreateView):
 
 	def post(self, request, *args, **kwargs):
 		if request.is_ajax():
 			reserva_id = request.POST.get('reserva')
 			nombre = request.POST.get('modelo')
 			opcion = request.POST.get('opcion')
+			user = Usuario.objects.get(id=request.user.id)
 			if nombre == "deporte":
 				editar = ReservaDeporte.objects.get(id=reserva_id)
+				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
-					editar.visita = True
 					editar.save()
+
+					notitempo = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.deporte,level='success')
+
 					mensaje = "reserva del deporte aceptado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -193,8 +213,13 @@ class ConfirmarReservaDeporte(CreateView):
 					return response
 				elif opcion == "cancelar":
 					editar.confirmar = False
-					editar.visita = False
 					editar.save()
+
+					notitempo1 = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo1
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.deporte, level='warning')
+
 					mensaje = "reserva del deporte cancelado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -203,10 +228,16 @@ class ConfirmarReservaDeporte(CreateView):
 
 			elif nombre == "turismo":
 				editar = ReservaTurismo.objects.get(id=reserva_id)
+				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
-					editar.visita = True
 					editar.save()
+
+					notitempo = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.turismo,level='success')
+
 					mensaje = "reserva del lugar turistico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -214,8 +245,13 @@ class ConfirmarReservaDeporte(CreateView):
 					return response
 				elif opcion == "cancelar":
 					editar.confirmar = False
-					editar.visita = False
 					editar.save()
+
+					notitempo1 = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo1
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.turismo, level='warning')
+
 					mensaje = "reserva del lugar turistico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -224,10 +260,16 @@ class ConfirmarReservaDeporte(CreateView):
 
 			elif nombre == "plato":
 				editar = ReservaPlato.objects.get(id=reserva_id)
+				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
-					editar.visita = True
 					editar.save()
+
+					notitempo = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.plato,level='success')
+
 					mensaje = "reserva del plato tipico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -235,8 +277,13 @@ class ConfirmarReservaDeporte(CreateView):
 					return response
 				elif opcion == "cancelar":
 					editar.confirmar = False
-					editar.visita = False
 					editar.save()
+
+					notitempo1 = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo1
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.plato, level='warning')
+
 					mensaje = "reserva del plato tipico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -245,10 +292,16 @@ class ConfirmarReservaDeporte(CreateView):
 
 			elif nombre == "hotel":
 				editar = ReservaHotel.objects.get(id=reserva_id)
+				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
-					editar.visita = True
 					editar.save()
+
+					notitempo = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.hotel,level='success')
+
 					mensaje = "reserva de la cabaña aceptado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -256,8 +309,13 @@ class ConfirmarReservaDeporte(CreateView):
 					return response
 				elif opcion == "cancelar":
 					editar.confirmar = False
-					editar.visita = False
 					editar.save()
+
+					notitempo1 = notificacion.notificacion + 1
+					notificacion.notificacion = notitempo1
+					notificacion.save()
+					notify.send(request.user, recipient=notificacion, verb=editar.hotel, level='warning')
+
 					mensaje = "reserva de la cabaña cancelado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -284,8 +342,12 @@ class RegistrarReservaHotel(CreateView):
 			hotel = Hotel.objects.filter(id = request.POST.get('hotel')).first()
 			fecha_inicial = request.POST.get('fecha1')
 			fecha_final = request.POST.get('fecha2')
+			costo = request.POST.get('costo')
+
 			fecha_actual = datetime.today();
-				
+			user = Usuario.objects.get(id=request.user.id)
+			solicitud = Usuario.objects.filter(is_superuser = True)
+
 			if fecha_inicial and fecha_final:
 				#datetime.strptime(fecha_inicial, '%Y-%m-%d') -> permite transformar un string a date
 				fecha_inicial_a_date = datetime.strptime(fecha_inicial, '%Y-%m-%d')
@@ -298,9 +360,14 @@ class RegistrarReservaHotel(CreateView):
 								usuario = usuario,
 								hotel = hotel,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -336,9 +403,14 @@ class RegistrarReservaHotel(CreateView):
 								usuario = usuario,
 								hotel = hotel,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -433,8 +505,12 @@ class RegistrarReservaPlato(CreateView):
 			plato = Plato.objects.filter(id = request.POST.get('plato')).first()
 			fecha_inicial = request.POST.get('fecha1')
 			fecha_final = request.POST.get('fecha2')
+			costo = request.POST.get('costo')
+
 			fecha_actual = datetime.today();
-				
+			user = Usuario.objects.get(id=request.user.id)
+			solicitud = Usuario.objects.filter(is_superuser = True)
+
 			if fecha_inicial and fecha_final:
 				#datetime.strptime(fecha_inicial, '%Y-%m-%d') -> permite transformar un string a date
 				fecha_inicial_a_date = datetime.strptime(fecha_inicial, '%Y-%m-%d')
@@ -447,9 +523,14 @@ class RegistrarReservaPlato(CreateView):
 								usuario = usuario,
 								plato = plato,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -485,9 +566,14 @@ class RegistrarReservaPlato(CreateView):
 								usuario = usuario,
 								plato = plato,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -582,8 +668,12 @@ class RegistrarReservaTurismo(CreateView):
 			turismo = Turismo.objects.filter(id = request.POST.get('turismo')).first()
 			fecha_inicial = request.POST.get('fecha1')
 			fecha_final = request.POST.get('fecha2')
+			costo = request.POST.get('costo')
+			
 			fecha_actual = datetime.today();
-				
+			user = Usuario.objects.get(id=request.user.id)
+			solicitud = Usuario.objects.filter(is_superuser = True)
+
 			if fecha_inicial and fecha_final:
 				#datetime.strptime(fecha_inicial, '%Y-%m-%d') -> permite transformar un string a date
 				fecha_inicial_a_date = datetime.strptime(fecha_inicial, '%Y-%m-%d')
@@ -596,9 +686,14 @@ class RegistrarReservaTurismo(CreateView):
 								usuario = usuario,
 								turismo = turismo,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -634,9 +729,14 @@ class RegistrarReservaTurismo(CreateView):
 								usuario = usuario,
 								turismo = turismo,
 								fecha_inicial = fecha_inicial,
-								fecha_final = fecha_final
+								fecha_final = fecha_final,
+								costo = costo
 							)
 							nueva_reserva.save()
+							for soli in solicitud:
+								solitempo = soli.solicitud + 1
+								soli.solicitud = solitempo
+								soli.save()
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})

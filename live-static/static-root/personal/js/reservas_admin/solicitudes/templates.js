@@ -107,6 +107,7 @@ function listarSolicitudesReservas(){
 //funcion que me permite llamar a la funcion de peticion ajax, en este caso ListarUsuarios
 $(document).ready(function(){
 	listarSolicitudesReservas();
+	enumerar_solicitudes()
 });
 
 
@@ -141,7 +142,7 @@ function confirmarReservaDeporte(pk,usuario,modelo){
 				'opcion': "confirmar",
 				csrfmiddlewaretoken: csrftoken
 			},
-			url: '/perfil_admin/confirmar_reserva_deporte/',
+			url: '/perfil_admin/confirmar_reserva/',
 			type: 'post',
 			success: function(response){
 				Swal.fire({
@@ -151,6 +152,7 @@ function confirmarReservaDeporte(pk,usuario,modelo){
 				  timer: 1500
 				})
 				listarSolicitudesReservas();
+				enumerar_solicitudes()
 			},
 			error: function(error){
 				sweetError(error.responseJSON.mensaje);
@@ -191,7 +193,7 @@ function cancelarReservaDeporte(pk,usuario,modelo){
 				'opcion': "cancelar",
 				csrfmiddlewaretoken: csrftoken
 			},
-			url: '/perfil_admin/confirmar_reserva_deporte/',
+			url: '/perfil_admin/confirmar_reserva/',
 			type: 'post',
 			success: function(response){
 				Swal.fire({
@@ -201,6 +203,7 @@ function cancelarReservaDeporte(pk,usuario,modelo){
 				  timer: 1500
 				})
 				listarSolicitudesReservas();
+				enumerar_solicitudes()
 			},
 			error: function(error){
 				sweetError(error.responseJSON.mensaje);
@@ -208,4 +211,50 @@ function cancelarReservaDeporte(pk,usuario,modelo){
 		});
 	  }
 	})
+}
+
+function enumerar_solicitudes(){
+	//para mostrar el total de solicitues
+	$.ajax({
+		url: "/perfil/enumerar_solicitudes_total/",
+		type: "get",
+		dataType: "json",
+		success: function(response){
+			var temp = response.total;
+			var temp1 = response.pendiente;
+			var temp2 = response.aceptado;
+
+			var total = document.getElementById('t-total-num');
+			var pendiente = document.getElementById('t-pendientes-num');
+			var aceptado = document.getElementById('t-aceptados-num');
+
+			if (temp > 0) {
+				total.innerHTML = temp;
+				
+				aceptado.innerHTML = temp2;
+				$('.t-total').show();
+				$('.container-solicitudes').show();
+
+				if (temp1 > 0 ) {
+					pendiente.innerHTML = temp1;
+					$('.t-pendientes').show();
+				}else{
+					$("#container-solicitudes-id").addClass("container-solicitudes-temp");
+					$("#t-aceptados-id").addClass("t-aceptados-temp");
+					$("#t-total-id").addClass("t-total-temp");
+					$('.t-pendientes').hide();
+				};
+				if (temp2 > 0) {
+					$('.t-aceptados').show();
+				}
+			}else{
+				$('.t-total').hide();
+				$('.t-pendientes').hide();
+				$('.t-aceptados').hide();
+			}
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
 }

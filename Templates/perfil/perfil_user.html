@@ -32,7 +32,7 @@
   <!-- FIN script para cargar la api de google analytcs -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block titulo %}CoGua{% endblock titulo %}</title>
+  <title >{% block titulo %}CoGua{% endblock titulo %}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -90,6 +90,19 @@ sidebar-mini = clase para mantener los iconos al contraer el menu lateral
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <div class="container-notificacion">
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#" onclick="notificacion_reducir_cero();">
+            <i class="fas fa-bell"></i>
+            <span id="notificacion" class="notification-counter" data-value="{{user.notificacion}}" style="display: none;">{{user.notificacion}}</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">Notificaciones</span>
+            <div id="container-notificaiones">
+            </div>
+          </div>
+        </li>
+      </div>
       
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -221,20 +234,10 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
             </li>
             {% if request.user.is_staff %}
             <li class="nav-item pu-menu-hover">
-              <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link">
+              <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link" onclick="solicitud_reducir_cero();">
                 <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
                 <p class="pu-color-p">Solicitudes
-                  {% if reservas_vigentes < 10 %} 
-                  <div class="notificacion-solicitudes">
-                    <img src="{% static 'personal/icons/circulo.png' %}">
-                    <span>{{reservas_vigentes}}</span>
-                  </div>
-                  {% else %}
-                  <div class="notificacion-solicitudes-mayor-10">
-                    <img src="{% static 'personal/icons/circulo.png' %}">
-                    <span>{{reservas_vigentes}}</span>
-                  </div>
-                  {% endif %}
+                  <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
                 </p>
               </a>
             </li>
@@ -387,34 +390,35 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_home:listado_hoteles_disponibles' %}" class="nav-link">
                   <i class="nav-icon fas fa-concierge-bell"></i>
                   <p class="pu-mover-submenu-text">Cabañas</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_home:listado_deportes_disponibles' %}" class="nav-link">
                   <i class="nav-icon fas fa-biking"></i>
                   <p class="pu-mover-submenu-text">Deportes</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_home:listado_turismos_disponibles' %}" class="nav-link">
                   <i class="nav-icon  fas fa-globe-asia"></i>
                   <p class="pu-mover-submenu-text">Turismos</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_home:listado_platos_disponibles' %}" class="nav-link">
                   <i class="nav-icon fas fa-utensils"></i>
-                  <p class="pu-mover-submenu-text">Platos Tipicos</p>
+                  <p class="pu-mover-submenu-text">Platos Típicos</p>
                 </a>
               </li>
             
           
             </ul>
           </li>
+          {% block menu_open_extras %}
            <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-plus-square pu-color-i" style="font-size: 15px;"></i>
@@ -424,21 +428,22 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_actual' %}');" class="nav-link">
-                  <i class="fas fa-pen nav-icon"></i>
-                  <p class="pu-mover-submenu-text">Editar mi perfil</p>
+              <li class="nav-item pu-mover-submenu-icon">
+                <a href="{% url 'templates_perfil:calendario_admin' %}" class="nav-link">
+                  <i class="far fa-calendar-alt nav-icon"></i>
+                  <p class="pu-mover-submenu-text">Calendario</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_password_actual' %}');" class="nav-link">
-                  <i class="fas fa-key nav-icon"></i>
-                  <p class="pu-mover-submenu-text">Cambiar contraseña</p>
+              <li class="nav-item pu-mover-submenu-icon">
+                <a href="{% url 'templates_perfil:analisis_admin' %}" class="nav-link">
+                  <i class="fas fa-chart-bar nav-icon"></i>
+                  <p class="pu-mover-submenu-text">Análisis de datos</p>
                 </a>
               </li>
               
             </ul>
           </li>
+          {% endblock menu_open_extras%}
           <li class="nav-header pu-word-otros" style="color: #616884; font-size: 0.78571rem;">OTROS</li>
 
           <li class="nav-item" style="margin-top: 20px;">
@@ -699,8 +704,11 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
 <!-- Include the CSS that styles the charts. -->
 <!-- FIN script para autenticarse con google y mostrar la api de google analytics -->
 <!-- REQUIRED SCRIPTS -->
-<!-- jQuery -->
+<!-- <script src="{% static 'personal/js/notificaciones/notificaciones.js' %}"></script> -->
 <script src="{% static 'adminLTE3/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'personal/js/notificaciones/notificaciones.js' %}"></script>
 <!-- Bootstrap -->
 <script src="{% static 'adminLTE3/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- overlayScrollbars -->
@@ -725,7 +733,6 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{% static 'personal/main.js' %}"></script>
 <script src="{% static 'personal/js/usuarios/templates.js' %}"></script>
-
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
 

@@ -36,6 +36,17 @@ urlpatterns = [
 	path('perfil_admin/listar_reservas_turismos/', ListarReservasTurismosAdmin.as_view(), name = 'listar_reservas_turismos'),
 	path('perfil_admin/reserva_detalles_turismo/<int:pk>/',TurismoPerfilReservaDetallesAdmin.as_view(), name = 'reserva_detalles_turismo'),
 
+	#SOLICITUDES
+	#url para notificar el numero de solicitudes de todas las reservas
+	path('perfil/solicitudes_reservas_admin/', SolicitudesReservasAdmin.as_view(), name='solicitudes_reservas_admin'),
+	path('perfil/solicitud_confirm_cero/', SolicitudCero.as_view(), name='solicitud_confirm_cero'),
+	path('perfil/enumerar_solicitudes_total/', EnumerarSolicitudesReservasAdmin.as_view(), name='enumerar_solicitudes_total'),
+
+	#NOTIFICACIONES
+	#url para notificar el numero de notificaciones de reservas aceptadas
+	path('perfil/notificaciones/', NotificacionesUser.as_view(), name='notificaciones'),
+	path('perfil/notificacion_confirm_reserva/', NotificacionConfirmReserva.as_view(), name='notificacion_confirm_reservan'),
+	path('perfil/notificacion_confirm_cero/', NotificacionCero.as_view(), name='notificacion_confirm_cero'),
 	#urls para reservas de user en perfil
 	path('perfil/listar_mis_reservas/', ListarReservasUser.as_view(), name = 'listar_reservas_user_deportes'),
 	path('perfil/reserva_detalles_deporte/<int:pk>/',DeportePerfilReservaDetallesUser.as_view(), name = 'reserva_detalles_user_deporte'),
@@ -45,5 +56,11 @@ urlpatterns = [
 	path('perfil/reservar_turismo_chatbot/', ReservaTurismoChatbot.as_view(), name = 'reserva_turismo_chatbot'),
 	path('perfil/reservar_deporte_chatbot/', ReservaDeporteChatbot.as_view(), name = 'reserva_deporte_chatbot'),
 	path('perfil/reservar_plato_chatbot/', ReservaPlatoChatbot.as_view(), name = 'reserva_plato_chatbot'),
+
+	#urls para extra de perfil
+	#calendario
+	path('perfil/calendario_admin/reservas/', PerfilCalendarioAdmin.as_view(), name = 'calendario_admin'),
+	#inteligencia de negocios
+	path('perfil/analisis_admin/reservas/', PerfilAnalisisAdmin.as_view(), name = 'analisis_admin'),
 
 ]

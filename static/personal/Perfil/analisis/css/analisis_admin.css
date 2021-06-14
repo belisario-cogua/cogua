@@ -1,8 +1,16 @@
 .container-analisis{
-	background-color: #fff; 
+	background-color: #ECF0F6; 
 	height: auto; 
 	width: auto;
 	margin-top: 50px;
-	margin-left: -273px;
+	margin-left: -194px;
 	padding-bottom: 20px;
+}
+.reporte-year select{
+	padding: 5px 8px;
+    width: 130px;
+    border: none;
+    box-shadow: none;
+    outline:none;
+
 }

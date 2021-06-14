@@ -868,13 +868,177 @@ class PerfilAnalisisAdmin(LoginAndSuperStaffMixin, TemplateView):
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
         context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
-        #contextos para obtener los datos para el grafico.
-        data = []
-        year = datetime.now().year
-        for mes in range(1,13):
-            totalReservaDeporte = ReservaDeporte.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).aggregate(r=Coalesce(Sum('costo'),0)).get('r')
-            data.append(float(totalReservaDeporte))
-            print(data)
-        context['cantidad_reserva_turismo'] = data
         return context
+
+class PerfilBarrasAnalisisAdmin(LoginAndSuperStaffMixin, TemplateView):
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            year = request.POST.get('year')
+            selectedReporte = request.POST.get('selectedReporte')
+            if selectedReporte == 'general':
+                data1 = []
+                data2 = []
+                data3 = []
+                data4 = []
+
+                for mes in range(1,13):
+                    totalReservaHotel = ReservaHotel.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).count()
+                    totalReservaDeporte = ReservaDeporte.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).count()
+                    totalReservaTurismo = ReservaTurismo.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).count()
+                    totalReservaPlato = ReservaPlato.objects.filter(fecha_inicial__year=year, fecha_inicial__month=mes).count()
+
+                    data1.append(float(totalReservaHotel))
+                    data2.append(float(totalReservaDeporte))
+                    data3.append(float(totalReservaTurismo))
+                    data4.append(float(totalReservaPlato))
+
+                selected = "general"
+                response = JsonResponse({'selected':selected, 'hotel':data1, 'deporte':data2, 'turismo':data3, 'plato':data4})
+                response.status_code = 201
+            elif selectedReporte == 'cabaña':
+                hotel = Hotel.objects.filter(estado=True)
+                hotel1 = Hotel.objects.filter(estado=True).values()
+                data5 = []
+                data6 = []
+                for hot in hotel:
+                    data5.append(hot.id)
+
+                meseYear = [1,2,3,4,5,6,7,8,9,10,11,12]
+                for x in range(len(meseYear)):
+                    data6.append([])
+                    for i in data5:
+                        totalReservaHotel = ReservaHotel.objects.filter(fecha_inicial__year=year, fecha_inicial__month=meseYear[x], hotel=i).count()
+                        data6[x].append(float(totalReservaHotel))
+
+                temp = []
+                diccionario = {}
+                for x,y in enumerate(data5):
+                    temp.append([row[x] for row in data6])
+
+                for i,x in enumerate(temp):
+                    diccionario[i]=x
+
+                selected = "hotel"
+                response = JsonResponse({'selected':selected,'diccionario':diccionario,'hotel':list(hotel1)})
+                response.status_code = 201
+
+            elif selectedReporte == 'deporte':
+                deporte = Deporte.objects.filter(estado=True)
+                deporte1 = Deporte.objects.filter(estado=True).values()
+                data5 = []
+                data6 = []
+                for depor in deporte:
+                    data5.append(depor.id)
+
+                meseYear = [1,2,3,4,5,6,7,8,9,10,11,12]
+                for x in range(len(meseYear)):
+                    data6.append([])
+                    for i in data5:
+                        totalReservaDeporte = ReservaDeporte.objects.filter(fecha_inicial__year=year, fecha_inicial__month=meseYear[x], deporte=i).count()
+                        data6[x].append(float(totalReservaDeporte))
+
+                temp = []
+                diccionario = {}
+                for x,y in enumerate(data5):
+                    temp.append([row[x] for row in data6])
+
+                for i,x in enumerate(temp):
+                    diccionario[i]=x
+
+                selected = "deporte"
+                response = JsonResponse({'selected':selected,'diccionario':diccionario,'deporte':list(deporte1)})
+                response.status_code = 201
+
+            elif selectedReporte == 'plato':
+                plato = Plato.objects.filter(estado=True)
+                plato1 = Plato.objects.filter(estado=True).values()
+                data5 = []
+                data6 = []
+                for pla in plato:
+                    data5.append(pla.id)
+
+                meseYear = [1,2,3,4,5,6,7,8,9,10,11,12]
+                for x in range(len(meseYear)):
+                    data6.append([])
+                    for i in data5:
+                        totalReservaPlato = ReservaPlato.objects.filter(fecha_inicial__year=year, fecha_inicial__month=meseYear[x], plato=i).count()
+                        data6[x].append(float(totalReservaPlato))
+
+                temp = []
+                diccionario = {}
+                for x,y in enumerate(data5):
+                    temp.append([row[x] for row in data6])
+
+                for i,x in enumerate(temp):
+                    diccionario[i]=x
+
+                selected = "plato"
+                response = JsonResponse({'selected':selected,'diccionario':diccionario,'plato':list(plato1)})
+                response.status_code = 201
+
+            elif selectedReporte == 'turismo':
+                turismo = Turismo.objects.filter(estado=True)
+                turismo1 = Turismo.objects.filter(estado=True).values()
+                data5 = []
+                data6 = []
+                for tur in turismo:
+                    data5.append(tur.id)
+
+                meseYear = [1,2,3,4,5,6,7,8,9,10,11,12]
+                for x in range(len(meseYear)):
+                    data6.append([])
+                    for i in data5:
+                        totalReservaTurismo = ReservaTurismo.objects.filter(fecha_inicial__year=year, fecha_inicial__month=meseYear[x], turismo=i).count()
+                        data6[x].append(float(totalReservaTurismo))
+
+                temp = []
+                diccionario = {}
+                for x,y in enumerate(data5):
+                    temp.append([row[x] for row in data6])
+
+                for i,x in enumerate(temp):
+                    diccionario[i]=x
+
+                selected = "turismo"
+                response = JsonResponse({'selected':selected,'diccionario':diccionario,'turismo':list(turismo1)})
+                response.status_code = 201
+            return response
+
+class PerfilCircularAnalisisAdmin(LoginAndSuperStaffMixin, TemplateView):
+    def post(self,request,*args,**kwargs):
+        if request.is_ajax():
+            year = request.POST.get('year')
+            month = datetime.now().month
+            data = []
+            for hotel in Hotel.objects.filter(estado=True):
+                totalReservaHotel = ReservaHotel.objects.filter(estado=True,fecha_inicial__year=year, fecha_inicial__month=month, hotel=hotel.id).count()
+                data.append({
+                    'name': hotel.nombre,
+                    'y': float(totalReservaHotel)
+                })
+
+            for deporte in Deporte.objects.filter(estado=True):
+                totalReservaDeporte = ReservaDeporte.objects.filter(estado=True,fecha_inicial__year=year, fecha_inicial__month=month, deporte=deporte.id).count()
+                data.append({
+                    'name': deporte.nombre,
+                    'y': float(totalReservaDeporte)
+                })
+            
+            for plato in Plato.objects.filter(estado=True):
+                totalReservaPlato = ReservaPlato.objects.filter(estado=True,fecha_inicial__year=year, fecha_inicial__month=month, plato=plato.id).count()
+                data.append({
+                    'name': plato.nombre,
+                    'y': float(totalReservaPlato)
+                })
+
+            for turismo in Turismo.objects.filter(estado=True):
+                totalReservaTurismo = ReservaTurismo.objects.filter(estado=True,fecha_inicial__year=year, fecha_inicial__month=month, turismo=turismo.id).count()
+                data.append({
+                    'name': turismo.nombre,
+                    'y': float(totalReservaTurismo)
+                })
+
+            response = JsonResponse({'data':data})
+            response.status_code = 201
+            return response
 '''FIN inteligencia de negocios'''

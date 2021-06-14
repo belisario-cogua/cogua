@@ -196,15 +196,26 @@
 {% endblock menu_open_extras%}
 {% block tablatitulo %}
 <div class="cambiar-titulo-deportes search-perfil" style="">
-    <p class="plh-nombre-listar" style=""> Inteligencia de negocios</p>
-  
+    <p class="plh-nombre-listar" style=""> Análisis de datos</p>
 </div>
 
 {% endblock tablatitulo %}
 
 {% block tabla %}
   <div class="container-analisis">
-    <div id="container"></div>
+    <p class="reporte-year">Año: <select name="" id="year" onchange="Selected();"></select></p>
+    <p class="reporte-year">Reporte: <select name="" id="selectedReporte" onchange="Selected();">
+      <option value="general">En general</option>
+        <optgroup label="Individual"> 
+        <option value="cabaña">Cabañas</option>
+        <option value="deporte">Deportes</option>
+        <option value="plato">Platos Típicos</option>
+        <option value="turismo">Lugares Turíticos</option>
+        </optgroup> 
+    </select></p>
+    <div id="container-barras"></div>
+    <br>
+    <div id="container-circular"></div>
   </div>
 {% endblock tabla %}
 
@@ -213,61 +224,14 @@
 <script src="{% static 'personal/Perfil/analisis/code/modules/exporting.js' %}"></script>
 <script src="{% static 'personal/Perfil/analisis/code/modules/export-data.js' %}"></script>
 <script src="{% static 'personal/Perfil/analisis/code/modules/accessibility.js' %}"></script>
+<script src="{% static 'personal/Perfil/analisis/js/analisis.js' %}"></script>
 
 <script type="text/javascript">
-  Highcharts.chart('container', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Reporte de reservas al año'
-    },
-    subtitle: {
-        text: 'Reporte de columnas'
-    },
-    xAxis: {
-        categories: [
-            'Enero',
-            'Febrero',
-            'Marzo',
-            'Abril',
-            'Mayo',
-            'Junio',
-            'Julio',
-            'Agosto',
-            'Septiembre',
-            'Octubre',
-            'Noviembre',
-            'Diciembre'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Valores'
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} total</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Porcentaje',
-        colorByPoint: true,
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-    }]
-});
+  function ComboYear(){
+     var n = (new Date()).getFullYear()
+     var select = document.getElementById("year");
+     for(var i = n; i>=2018; i--)select.options.add(new Option(i,i)); 
+  };
+  window.onload = ComboYear;
 </script>
 {% endblock extrajs %}

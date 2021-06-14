@@ -14,7 +14,7 @@ class ReservaDeporte(models.Model):
 	fecha_inicial = models.DateField('Fecha inicial de reserva', blank = False, null = False)
 	fecha_final = models.DateField('Fecha final de reserva', blank = False, null = False)
 	cantidad_dias = models.SmallIntegerField('Tiempo de espera', default = 7)
-	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
+	costo = models.DecimalField('Costo de la reserva', default = 0.00, max_digits=9, decimal_places=2)
 	estado = models.BooleanField('Estado',default = True)
 	#el campo confirmar es validado si el administrador lo solicita, esto quiere decir que el cliente a llegado a la visita
 	confirmar = models.BooleanField('Confirmar',default = False)

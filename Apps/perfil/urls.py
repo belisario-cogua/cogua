@@ -62,5 +62,7 @@ urlpatterns = [
 	path('perfil/calendario_admin/reservas/', PerfilCalendarioAdmin.as_view(), name = 'calendario_admin'),
 	#inteligencia de negocios
 	path('perfil/analisis_admin/reservas/', PerfilAnalisisAdmin.as_view(), name = 'analisis_admin'),
+	path('perfil/barras_analisis_admin/reservas/', PerfilBarrasAnalisisAdmin.as_view(), name = 'barras_analisis_admin'),
+	path('perfil/circular_analisis_admin/reservas/', PerfilCircularAnalisisAdmin.as_view(), name = 'circular_analisis_admin'),
 
 ]

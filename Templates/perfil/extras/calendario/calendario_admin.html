@@ -206,8 +206,7 @@
 {% block tabla %}
   <div class="container-calendario">
     <div id="calendar">
-      
-    </div>
+    </div>   
   </div>
 {% endblock tabla %}
 
@@ -224,36 +223,72 @@
       },
       events:[
         {% for reservas in reserva_deportes %}
+          {% if reservas.fecha_inicial|date:"Y-m-d" == reservas.fecha_final|date:"Y-m-d" %}
           {
             title: '{{ reservas.usuario }}-{{ reservas.deporte }}',
             start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
             end: '{{ reservas.fecha_final | date:"Y-m-d"}}',
             color:"#e36464", 
           },
+          {%else%}
+          {
+            title: '{{ reservas.usuario }}-{{ reservas.deporte }}',
+            start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
+            end: '{{ reservas.fecha_final | date:"Y-m-d"}} 23:59:59',
+            color:"#e36464", 
+          },
+          {% endif %}
         {% endfor %}
         {% for reservas in reserva_hoteles %}
+          {% if reservas.fecha_inicial|date:"Y-m-d" == reservas.fecha_final|date:"Y-m-d" %}
           {
             title: '{{ reservas.usuario }}-{{ reservas.hotel }}',
             start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
             end: '{{ reservas.fecha_final | date:"Y-m-d"}}',
             color:"#544282", 
           },
+          {%else%}
+          {
+            title: '{{ reservas.usuario }}-{{ reservas.hotel }}',
+            start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
+            end: '{{ reservas.fecha_final | date:"Y-m-d"}} 23:59:59',
+            color:"#544282", 
+          },
+          {% endif %}
         {% endfor %}
         {% for reservas in reserva_platos %}
+          {% if reservas.fecha_inicial|date:"Y-m-d" == reservas.fecha_final|date:"Y-m-d" %}
           {
             title: '{{ reservas.usuario }}-{{ reservas.plato }}',
             start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
             end: '{{ reservas.fecha_final | date:"Y-m-d"}}',
             color:"#0e6a6b", 
           },
+          {%else%}
+          {
+            title: '{{ reservas.usuario }}-{{ reservas.plato }}',
+            start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
+            end: '{{ reservas.fecha_final | date:"Y-m-d"}} 23:59:59',
+            color:"#0e6a6b", 
+          },
+          {% endif %}
         {% endfor %}
         {% for reservas in reserva_turismos %}
+          {% if reservas.fecha_inicial|date:"Y-m-d" == reservas.fecha_final|date:"Y-m-d" %}
           {
             title: '{{ reservas.usuario }}-{{ reservas.turismo }}',
             start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
             end: '{{ reservas.fecha_final | date:"Y-m-d"}}',
             color:"#e010b0", 
           },
+          {%else%}
+          {
+            title: '{{ reservas.usuario }}-{{ reservas.turismo }}',
+            start: '{{ reservas.fecha_inicial | date:"Y-m-d"}}',
+            end: '{{ reservas.fecha_final | date:"Y-m-d"}} 23:59:59',
+            color:"#e010b0", 
+          },
+          {% endif %}
         {% endfor %}
       ]
     });

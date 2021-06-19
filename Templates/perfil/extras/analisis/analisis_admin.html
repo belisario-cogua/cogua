@@ -202,10 +202,10 @@
 {% endblock tablatitulo %}
 
 {% block tabla %}
-  <div class="container-analisis">
-    <p class="reporte-year">Año: <select name="" id="year" onchange="Selected();"></select></p>
-    <p class="reporte-year">Reporte: <select name="" id="selectedReporte" onchange="Selected();">
-      <option value="general">En general</option>
+  <div class="container-analisis" id="temp">
+    <p class="reporte-year year">Año: <select name="" id="year" onchange="Selected();"></select></p>
+    <p class="reporte-year reporte">Reporte: <select name="" id="selectedReporte" onchange="Selected();">
+      <option value="general" >En general</option>
         <optgroup label="Individual"> 
         <option value="cabaña">Cabañas</option>
         <option value="deporte">Deportes</option>
@@ -213,10 +213,23 @@
         <option value="turismo">Lugares Turíticos</option>
         </optgroup> 
     </select></p>
-    <div id="container-barras"></div>
+    <div id="container-barras" class="container-barras"></div>
     <br>
     <div id="container-circular"></div>
+    <br>
+    <!-- google analytics-->
+    <header>
+      <div id="embed-api-auth-container"></div>
+      <div id="view-selector-container" class="vista-seleccion" style="display: none;"></div>
+    </header>
+    <div id="status"></div>
+    <div id="container-usuarios-sesiones" style="display: none;"></div>
+    <br>
+    <div id="container-paginas-visitas" style="display: none;"></div>
+    <br>
+    <div id="container-ciudad" style="display: none;"></div>
   </div>
+  
 {% endblock tabla %}
 
 {% block extrajs %}
@@ -225,7 +238,7 @@
 <script src="{% static 'personal/Perfil/analisis/code/modules/export-data.js' %}"></script>
 <script src="{% static 'personal/Perfil/analisis/code/modules/accessibility.js' %}"></script>
 <script src="{% static 'personal/Perfil/analisis/js/analisis.js' %}"></script>
-
+<script src="{% static 'personal/Perfil/analisis/js/google_analytics.js' %}"></script>
 <script type="text/javascript">
   function ComboYear(){
      var n = (new Date()).getFullYear()
@@ -234,4 +247,28 @@
   };
   window.onload = ComboYear;
 </script>
+<script>
+  const nav = document.querySelector(".nav")
+
+anchoVentana = window.innerWidth;
+if (anchoVentana >= 993) {
+  document.querySelector(".nav-item").addEventListener("click", e => {
+  e.preventDefault()
+
+  if (nav.classList.contains("open")) {
+    nav.classList.remove("open")
+    console.log("cerrado")
+    $("#temp").removeClass("container-barras-temp");
+    $("#temp").addClass("container-barras");
+  } else {
+    nav.classList.add("open")
+    console.log("abierto")
+    $("#temp").removeClass("container-barras");
+    $("#temp").addClass("container-barras-temp");
+
+  }
+})
+}
+</script>
+
 {% endblock extrajs %}

@@ -696,3 +696,12 @@ css para que el df messenger se ponga encima del footer
     padding: 1px 3px;
     font: 14px Verdana;
 }
+.home-responsive{
+		display: none;
+	}
+
+@media screen and (max-width: 575px){
+	.home-responsive{
+		display: block;
+	}
+}

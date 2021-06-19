@@ -447,7 +447,16 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
           {% endblock menu_open_extras%}
           <li class="nav-header pu-word-otros" style="color: #616884; font-size: 0.78571rem;">OTROS</li>
 
-          <li class="nav-item" style="margin-top: 20px;">
+          <li class="nav-item home-responsive" style="margin-top: 10px;">
+            <a href="{% url 'templates_home:index' %}" class="nav-link">
+              <i class="nav-icon fas fa-home pu-color-i" style="font-size: 15px;"></i>
+              <p class="pu-color-p" style="color: #F9ECF9">
+                Home
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="pages/gallery.html" class="nav-link">
               <i class="nav-icon far fa-image pu-color-i" style="font-size: 15px;"></i>
               <p class="pu-color-p" style="color: #F9ECF9">

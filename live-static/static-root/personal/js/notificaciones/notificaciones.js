@@ -18,7 +18,6 @@ $(document).ready(function(){
 			success: function(response){
 				$('#container-notificaiones').empty();
 				for(let i = 0;i < response.length;i++){
-					console.log(response)
 					let contenedor = '<div>';
 					var tiempo = response[i]["fields"]["timestamp"];
 
@@ -86,35 +85,28 @@ $(document).ready(function(){
 
 
 			        if (segundos1 < 60) {
-			        	console.log(segundos+" segundos")
 			        	contenedor += '<span class="hora-notificacion">hace '+segundos+' segundos</span>';
 			        }
 			        else if (minutes < 60) {
 			        	if (minutos > 1) {
-			        		console.log(minutos+" minutos")
 			        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minutos</span>';
 			        	}else{
-			        		console.log(minutos+" minuto")
 			        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minuto</span>';
 			        	}
 			            
 			        }
 			        else if (hours < 24) {
 			        	if(horas > 1){
-			        		console.log(horas+" horas")
 			        		contenedor += '<span class="hora-notificacion">hace '+horas+' horas</span>';
 			        	}else{
-			        		console.log(horas+" hora")
 			        		contenedor += '<span class="hora-notificacion">hace '+horas+' hora</span>';
 			        	}
 			            
 			        }
 			        else if (days < 30) {
 			        	if(dias > 1){
-			        		console.log(dias+" dias")
 			        		contenedor += '<span class="hora-notificacion">hace '+dias+' días</span>';
 			        	}else{
-			        		console.log(dias+" dia")
 			        		contenedor += '<span class="hora-notificacion">hace '+dias+' día</span>';
 			        	}
 			            
@@ -143,7 +135,6 @@ $(document).ready(function(){
 	        			}
 			            
 			        }else if(year >= 2){
-		        		console.log(year+"año")
 		        		contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
 		        	}
 

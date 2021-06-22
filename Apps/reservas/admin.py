@@ -1,25 +1,34 @@
 from django.contrib import admin
 from .models import ReservaDeporte, ReservaHotel, ReservaPlato, ReservaTurismo
+from import_export.admin import ImportExportModelAdmin, ExportActionModelAdmin
 # Register your models here.
-class ReservaDeporteAdmin(admin.ModelAdmin):
+class ReservaDeporteAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['usuario']
-	readonly_fields=('usuario','deporte')
-	list_display = ('usuario','deporte','fecha_inicial','fecha_final','created','modified')
+	fieldsets = (
+		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','costo','estado','confirmar','visita','deporte','usuario')}),
+	)
+	list_display = ('usuario','deporte','created','modified')
 
-class ReservaHotelAdmin(admin.ModelAdmin):
+class ReservaHotelAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['usuario']
-	readonly_fields=('usuario','hotel')
-	list_display = ('usuario','hotel','fecha_inicial','fecha_final','created','modified')
+	fieldsets = (
+		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','costo','estado','confirmar','visita','hotel','usuario')}),
+	)
+	list_display = ('usuario','hotel','created','modified')
 
-class ReservaPlatoAdmin(admin.ModelAdmin):
+class ReservaPlatoAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['usuario']
-	readonly_fields=('usuario','plato')
-	list_display = ('usuario','plato','fecha_inicial','fecha_final','created','modified')
+	fieldsets = (
+		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','costo','estado','confirmar','visita','plato','usuario')}),
+	)
+	list_display = ('usuario','plato','created','modified')
 
-class ReservaTurismoAdmin(admin.ModelAdmin):
+class ReservaTurismoAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['usuario']
-	readonly_fields=('usuario','turismo')
-	list_display = ('usuario','turismo','fecha_inicial','fecha_final','created','modified')
+	fieldsets = (
+		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','costo','estado','confirmar','visita','turismo','usuario')}),
+	)
+	list_display = ('usuario','turismo','created','modified')
 	
 admin.site.register(ReservaTurismo, ReservaTurismoAdmin)
 admin.site.register(ReservaDeporte, ReservaDeporteAdmin)

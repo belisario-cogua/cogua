@@ -7,7 +7,7 @@
     {% if field.label %}</label>{% endif %}{% endfor %}
     {% endblock %}
     {% block actions-submit %}
-    <button type="submit" class="button" title="{% trans "Run the selected action" %}" name="index" value="{{ action_index|default:0 }}" style="height: 30px;width: 50px;background-color: #44c9c6; border: 0px solid #354052; border-radius: 3px; color:#fff; font-size: 11px; margin-top: 50px;">{% trans "IR" %}</button>
+    <button type="submit" class="button" title="{% trans 'Run the selected action' %}" name="index" value="{{ action_index|default:0 }}" style="height: 30px;width: 50px;background-color: #44c9c6; border: 0px solid #354052; border-radius: 3px; color:#fff; font-size: 11px; margin-top: 50px;">{% trans "IR" %}</button>
     {% endblock %}
     {% block actions-counter %}
     {% if actions_selection_counter %}

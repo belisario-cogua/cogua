@@ -93,6 +93,14 @@ function mostrarErroresEditar(errores){
 //funciones para sweet alert
 //estas funciones son llamdas cuando agan la peticion
 //es decir son llamadas desde templates.js
+function sweetWarning(mensaje){
+	//Swal.fire()-> es la manera para crear una instancia para sweet alert
+	Swal.fire({
+		title: 'Lo sentimos!',
+		text: mensaje,
+		icon: 'warning'
+	})
+}
 function sweetError(mensaje){
 	//Swal.fire()-> es la manera para crear una instancia para sweet alert
 	Swal.fire({

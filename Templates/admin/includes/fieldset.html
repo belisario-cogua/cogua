@@ -26,7 +26,7 @@
 
                                     <div class="div-cir"></div>
                                     </div>
-                                    <div class="div-label"> 
+                                    <div class="div-label" > 
                                     {{ field.label_tag }} 
                                     </div>
                                 {% else %}
@@ -70,11 +70,9 @@
             $('.secciones article').hide();
 
             var activeTab = $(this).attr('href');
-            console.log(activeTab);
 
             $(activeTab).show();
             return false;
         });
     });
-
 </script>

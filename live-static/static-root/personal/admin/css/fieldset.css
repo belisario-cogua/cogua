@@ -129,7 +129,7 @@ ul.tabs li a{
 .checkbox-row .div-label label{
 	display: block;
 	margin-top: -19px;
-	width: 200px;
+	width: 300px;
 	padding-left: 40px;
 	cursor: pointer;
 }
@@ -226,3 +226,7 @@ ul.tabs li a{
 }
 
 
+.mi-input-change textarea{
+	border-color: #bdc2c7;
+	outline: none;
+}

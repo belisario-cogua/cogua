@@ -164,7 +164,6 @@ $(document).ready(function() {
       }).execute(function(results) {
         $status.html("");
         $('#container-paginas-visitas').show();
-        console.log(results.rows)
         paginas.addSeries({
           data: renderDatosPag(results.rows),
           name: 'Porcentaje',
@@ -181,7 +180,6 @@ $(document).ready(function() {
         'end-date': 'today',
       }).execute(function(results) {
         $('#container-ciudad').show();
-        console.log(results.rows)
         ciudad.addSeries({
           data: renderDatosCiudad(results.rows),
           name: 'Porcentaje',
@@ -191,10 +189,10 @@ $(document).ready(function() {
 
       //ver el numero de ussuarios conectados en neustra pagina -> todavia en prueba
       //gapi.client.analytics.data.realtime.get({
-        //'ids': 'ga:242342842',
+       // 'ids': 'ga:242342842',
           //metrics: 'rt:activeUsers'
       //}).execute(function(results) {
-        //console.log(results)
+       // console.log(results)
       //});
     
   

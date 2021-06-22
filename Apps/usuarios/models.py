@@ -60,7 +60,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 	notificacion = models.SmallIntegerField('Notificacion', default = 0)
 	usuario_activo = models.BooleanField(default = True)
 	is_active = models.BooleanField(default = True)
-	is_staff = models.BooleanField(default = False)
+	is_staff = models.BooleanField('Staff',default = False)
 	created = models.DateTimeField('Registro', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Ultima modificación', editable=False, null=True, blank=True)
 

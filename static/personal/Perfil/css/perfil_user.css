@@ -370,7 +370,7 @@ css para que el df messenger se ponga encima del footer
 	}
 
 }
-@media screen and (max-width: 360px){
+@media screen and (max-width: 359px){
 	.pu-div-perfil-image-responsive .perfil-user-image{
 		margin-left: 50px;
 		transition: 0.8s;

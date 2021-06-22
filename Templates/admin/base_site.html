@@ -15,6 +15,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'adminLTE3/dist/css/adminlte.min.css' %}">
   <link rel="stylesheet" href="{% static 'personal/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'personal/admin/css/submit_line.css' %}">
+  <link rel="stylesheet" href="{% static 'personal/admin/css/delete_confirmation.css' %}">
   <link rel="stylesheet" href="{% static 'personal/admin/css/base_site.css' %}">
 
   {% block cssextras %}
@@ -65,13 +67,13 @@
           </a>
           {% if request.user.is_superuser %}
             <div class="dropdown-divider"></div>
-            <a href="{% url 'admin:index' %}" class="dropdown-item">
+            <a href="{% url 'templates_perfil:perfil' %}" class="dropdown-item">
               <i class="fas fa-cogs mr-2"></i>
-              Administración Cogua
+              Perfil de Cogua
             </a>
           {% endif %}
           <div class="dropdown-divider"></div>
-          <a href="" class="dropdown-item">
+          <a href="{% url 'logout' %}" class="dropdown-item">
             <i class="fas fa-sign-out-alt mr-2"></i>
             Cerrar Sesión
           </a>
@@ -146,145 +148,18 @@
 	            <a href="{% url 'templates_home:index' %}" class="nav-link">
 	              <i class="nav-icon fas fa-home" style="font-size: 14px;"></i>
 	              <p class="menu-basico">
-	                VER SITIO
+	                HOME
 	              </p>
 	            </a>
           	</li>
-            <li class="nav-header" style="font-size: 0.78571rem; font-weight: bold; color: #6f7e95;">APLICACIONES</li>
-          {% block menu_open %}
-            {% if request.user.is_staff %}
-              <li class="nav-item" style="margin-top: 15px">
-                <a href="#" class="nav-link animar-mi-menu">
-                  <i class="nav-icon fas fa-user-shield" style="font-size: 14px; margin-left: 4px;"></i>
-                  <p class="letras-menu-app">
-                    Administrar
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview" style="margin-left: 15px;">
-                  {% if request.user.is_superuser %}
-                    <li class="nav-item">
-                      <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Usuarios</p>
-                      </a>
-                    </li>
-                  {% endif %}
-
-                    <li class="nav-item">
-                      <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-concierge-bell"></i>
-                        <p>Cabañas</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <!-- {% url 'nombre de la url principal:listar_deporte' } -->
-                      <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-biking"></i>
-                        <p>Deportes</p>
-                      </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-utensils"></i>
-                        <p>Platos Tipicos</p>
-                      </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">
-                        <i class="nav-icon  fas fa-globe-asia"></i>
-                        <p>Lugares Turisticos</p>
-                      </a>
-                    </li>
-                </ul>
-              </li>
-            {% endif %}
-          {% endblock menu_open %}
-          {% block menu_open_reservaciones %}
             <li class="nav-item">
-              {% if request.user.is_staff %}
-              <a href="#" class="nav-link animar-mi-menu">
-                <i class="nav-icon fab fa-resolving" style="font-size: 15px;"></i>
-                  <p class="letras-menu-app">
-                    Reservaciones
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
+              <a href="{% url 'templates_perfil:perfil' %}" class="nav-link">
+                <i class="nav-icon fas fa-user-circle" style="font-size: 14px;"></i>
+                <p class="menu-basico">
+                  PERFIL
+                </p>
               </a>
-              {% else %}
-              <a href="#" class="nav-link animar-mi-menu">
-                <i class="nav-icon fab fa-resolving" style="font-size: 15px;"></i>
-                  <p class="letras-menu-app">
-                    Reservaciones
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-              </a>
-              {% endif %}
-              <ul class="nav nav-treeview" style="margin-left: 15px;">
-                {% if request.user.is_staff %}
-                  {% if reserva_deportes or reserva_hoteles or reserva_platos or reserva_turismos%}
-                      {% if reserva_hoteles %}
-                        <li class="nav-item">
-                          <a href="" class="nav-link">
-                            <i class="nav-icon fas fa-concierge-bell"></i>
-                            <p>Cabañas</p>
-                          </a>
-                        </li>
-                      {% endif %}
-                      {% if reserva_deportes %}
-                      <li class="nav-item">
-                        <!-- {% url 'nombre de la url principal:listar_deporte' } -->
-                        <a href=""  class="nav-link">
-                          <i class="nav-icon fas fa-biking"></i>
-                          <p>Deportes</p>
-                        </a>
-                      </li>
-                      {% endif %}
-                      {% if reserva_platos %}
-                      <li class="nav-item">
-                        <a href="" class="nav-link">
-                          <i class="nav-icon fas fa-utensils"></i>
-                          <p>Platos Tipicos</p>
-                        </a>
-                      </li>
-                      {% endif %}
-                      {% if reserva_turismos %}
-                      <li class="nav-item">
-                        <a href="" class="nav-link">
-                          <i class="nav-icon  fas fa-globe-asia"></i>
-                          <p>Lugares Turisticos</p>
-                        </a>
-                      </li>
-                      {% endif %}
-                  {% else %}
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-ban"></i>
-                        <p>No existen Reservas</p>
-                      </a>
-                    </li>
-                  {% endif %}
-                {% else %}
-                  {% if n_reservaciones %}
-                  <li class="nav-item">
-                    <a href="" class="nav-link ">
-                      <i class="nav-icon fas fa-compass"></i>
-                      <p>Mis reservas ({{ n_reservaciones }})</p>
-                    </a>
-                  </li>
-                  {% else %}
-                  <li class="nav-item">
-                    <a href="#" class="nav-link ">
-                      <i class="nav-icon  fab fa-creative-commons-zero"></i>
-                      <p>No existen reservas</p>
-                    </a>
-                  </li>
-                  {% endif %}
-                {% endif %}
-              </ul>
             </li>
-          {% endblock menu_open_reservaciones %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book" style="font-size: 14px;"></i>
@@ -321,40 +196,8 @@
           
             </ul>
           </li>
-           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-plus-square" style="font-size: 15px;"></i>
-              <p class="letras-menu-app">
-                Extras
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview" style="margin-left: 15px;">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fas fa-pen nav-icon"></i>
-                  <p>Editar mi perfil</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fas fa-key nav-icon"></i>
-                  <p>Cambiar contraseña</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
           <li class="nav-header" style="font-size: 0.78571rem; font-weight: bold; color: #6f7e95;">OTROS</li>
 
-          <li class="nav-item" style="margin-top: 15px">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p class="letras-menu-app">
-                Gallería
-              </p>
-            </a>
-          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
@@ -382,7 +225,8 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    <div id="mensaje-succes-admin" class="alert alert-success alert-dismissable" style="margin-left: 17px; margin-right: 17px;display: none;">
+    </div>
     <!-- Main content -->
     <section class="content" >
       <div class="container-fluid">
@@ -492,9 +336,20 @@ la variable messages es llada desde el archivo mixins.py del def dispatch-->
   {% if messages %}
     var html_mensaje = '';
     {% for mensaje in messages %}
+    {% if mensaje.tags == "warning" %}
       html_mensaje += '{{ mensaje }}';
+      sweetWarning(html_mensaje);
+    {%else%}
+      html_mensaje += '{{ mensaje }}';
+      var mens = document.getElementById('mensaje-succes-admin');
+      $('#mensaje-succes-admin').show();
+      mens.innerHTML=html_mensaje
+      $(".alert-dismissable").fadeTo(4000, 500).slideUp(500, function(){
+        $(".alert-dismissable").alert('close');
+      });
+    {% endif %}
     {% endfor %}
-    sweetError(html_mensaje);
+    
   {% endif %}
 </script>
 {% block extrajs %}

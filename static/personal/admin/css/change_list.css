@@ -42,3 +42,199 @@
 .actions select:focus{ 
 	outline: none;
 }
+.button-admin-importar{
+	margin-left: 120px;
+}
+.button-admin-exportar{
+	margin-left: 10px;
+}
+.button-admin-add{
+	width: 110px;
+}
+.button-admin-add .tools-items-añadir{
+	margin-left: 10px;
+}
+@media screen and (max-width: 1360px){
+	.button-admin-importar{
+		margin-left: 110px;
+	}
+}
+@media screen and (max-width: 1305px){
+	.button-admin-importar{
+		margin-left: 95px;
+	}
+}
+@media screen and (max-width: 1265px){
+	.button-admin-importar{
+		margin-left: 80px;
+	}
+}
+@media screen and (max-width: 1232px){
+	.button-admin-importar{
+		margin-left: 60px;
+	}
+}
+@media screen and (max-width: 1185px){
+	.button-admin-importar{
+		margin-left: 0px;
+	}
+	.button-admin-add{
+		margin-right: 10px;
+	}
+	.button-admin-add a{
+		width: 140px;
+	}
+}
+@media screen and (max-width: 1145px){
+	.button-admin-importar{
+		margin-left: -40px;
+	}
+	.button-admin-add{
+		margin-right: 30px;
+	}
+}
+@media screen and (max-width: 1065px){
+	.button-admin-importar{
+		margin-left: -80px;
+	}
+	.button-admin-add{
+		margin-right: 50px;
+	}
+}
+@media screen and (max-width: 992px){
+	.button-admin-importar{
+		margin-left: -30px;
+	}
+	.button-admin-add{
+		margin-right: 30px;
+	}
+}
+@media screen and (max-width: 885px){
+	.button-admin-importar{
+		margin-left: -60px;
+	}
+}
+@media screen and (max-width: 767px){
+	.button-admin-importar{
+		margin-left: 8px;
+	}
+	.button-admin-exportar{
+		margin-top: 40px;
+		margin-left: -100px;
+	}
+}
+@media screen and (max-width: 430px){
+	.button-admin-importar{
+		width: 100%;
+		margin-right: 20px;
+	}
+	.tools-items-importar{
+		width: 100%;
+	}
+	.button-admin-exportar{
+		margin-top: 0px;
+		width: 100%;
+		margin-right: 20px;
+		margin-left: 8px;
+	}
+	.tools-items-exportar{
+		width: 100%;
+	}
+	.button-admin-add{
+		margin-top: 0px;
+		width: 100%;
+		margin-left: -2px;
+	}
+	.tools-items-añadir{
+		width: 100% !important;
+	}
+}
+/*TABLE admin*/
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 0px solid #dee2e6;
+}
+.diseño-table-listar .column-image_tag .text span{
+	color: #fff;
+	font-weight: normal;
+}
+.diseño-table-listar .column-is_superuser{
+	width: 50px;
+}
+.diseño-table-listar .column-is_superuser .text a{
+	visibility: hidden;
+}
+.diseño-table-listar .column-is_superuser .text a:before {
+    visibility: visible;
+    content: "SUPERUSUARIO";
+    
+}
+.diseño-table-listar .column-created{
+	width: 230px;
+}
+.diseño-table-listar .column-created .text a{
+	visibility: hidden;
+}
+.diseño-table-listar .column-created .text a:before {
+    visibility: visible;
+    content: "PUBLICADO";
+    
+}
+.diseño-table-listar .column-modified{
+	width: 230px;
+}
+.diseño-table-listar .column-modified .text a{
+	visibility: hidden;
+}
+.diseño-table-listar .column-modified .text a:before {
+    visibility: visible;
+    content: "CREADO";
+}
+@media screen and (max-width: 1086px){
+	.diseño-table-listar .column-usuario .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-usuario .text a:before {
+	    visibility: visible;
+	    content: "USUARIO";
+	}
+	.diseño-table-listar .column-hotel .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-hotel .text a:before {
+	    visibility: visible;
+	    content: "CABAÑA";
+	}
+	.diseño-table-listar .column-deporte .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-deporte .text a:before {
+	    visibility: visible;
+	    content: "DEPORTE";
+	}
+	.diseño-table-listar .column-turismo .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-turismo .text a:before {
+	    visibility: visible;
+	    content: "LUGAR";
+	}
+	.diseño-table-listar .column-plato .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-plato .text a:before {
+	    visibility: visible;
+	    content: "PLATO";
+	}
+}
+@media screen and (max-width: 690px){
+	.diseño-table-listar .column-estado .text a{
+		visibility: hidden;
+	}
+	.diseño-table-listar .column-estado .text a:before {
+	    visibility: visible;
+	    content: "ESTADO";
+	}
+}
+
+/*FIN TABLE admin*/

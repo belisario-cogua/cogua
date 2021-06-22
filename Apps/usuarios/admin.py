@@ -19,7 +19,7 @@ class UsuarioResource(resources.ModelResource):
 class UsuarioAdmin(ExportActionModelAdmin,ImportExportModelAdmin,BaseUserAdmin):
 	#form = RegistrarUsuarioForm
 	search_fields = ['nombres','apellidos']
-	list_display = ('nombres','apellidos', 'email','image_tag','is_staff','is_superuser','created')
+	list_display = ('nombres','apellidos', 'email','image_tag','is_superuser','created')
 	#list_filter = ('is_staff',)
 	list_display_links = ['image_tag','nombres']
 	fieldsets = (
@@ -28,7 +28,7 @@ class UsuarioAdmin(ExportActionModelAdmin,ImportExportModelAdmin,BaseUserAdmin):
 		('PERMISOS',{'fields':('is_active','is_staff','is_superuser',)}),
     	('FECHAS', {'fields': ('last_login',)}),
 	)
-	add_fieldsets = ((None, {'classes': ('wide',), 'fields': ('email', 'password1', 'password2')}),)
+	add_fieldsets = (('PRINCIPAL', {'classes': ('wide',), 'fields': ('email', 'password1', 'password2')}),)
 	ordering = ('email',)
 	resource_class = UsuarioResource
 

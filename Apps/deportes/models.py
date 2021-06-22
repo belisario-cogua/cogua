@@ -10,7 +10,7 @@ class Deporte(models.Model):
 	descripcion = models.TextField('Descripcion',blank=True, null=True)
 	#estado = models.BooleanField('No Reservado/Reservado',default = False)
 	cantidad = models.SmallIntegerField('Cantidad', default = 1)
-	estado = models.BooleanField('Estado',default = True)
+	estado = models.BooleanField('Estado (Eliminación Lógica)',default = True)
 	imagen = fields.ImageField('Imagen', upload_to='imagenes/deportes/%Y/%m/%d/', max_length=200, blank = False, null = False)
 	#fecha_creacion = models.DateField('Fecha de Creación', auto_now = False, auto_now_add = True)
 	user_id = models.ForeignKey(Usuario, on_delete=models.CASCADE,blank = True,null = True)

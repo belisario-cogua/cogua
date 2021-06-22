@@ -79,7 +79,6 @@
 }
 @media screen and (max-width: 369px){
   	.color-filas-table th{
-  		background-color: #353535;
   		width: 100px;
   	}
 }

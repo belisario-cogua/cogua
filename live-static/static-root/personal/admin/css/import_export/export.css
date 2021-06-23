@@ -1,0 +1,18 @@
+.export{
+	background-color: #fff;
+	margin-left: 30px;
+	border-radius: 10px;
+}
+.cuerpo-exportar select{
+	outline: none;
+	padding: 5px 8px;
+    width: 130%;
+    border-color: #b8b2b2;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    appearance: none;
+}
+.button_admin_export input{
+	width: 100%;
+}

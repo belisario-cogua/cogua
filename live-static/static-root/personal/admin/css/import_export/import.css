@@ -1,0 +1,56 @@
+.container-import{
+	background-color: #fff;
+	margin-left: 20px;
+	margin-right: 20px;
+	border-radius: 10px;
+}
+.campos-import{
+	margin-top: 20px;
+	margin-left: 20px;
+}
+.cuerpo-importar{
+	margin-left: 20px;
+}
+.cuerpo-importar select{
+	outline: none;
+	padding: 5px 8px;
+	width: 200px;
+    border-color: #b8b2b2;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    appearance: none;
+}
+
+.container-import-confirmar{
+	background-color: #fff;
+	margin-left: 20px;
+	margin-right: 20px;
+	border-radius: 10px;
+}
+.container-import-confirmar-p{
+	margin-left: 20px;
+	margin-right: 20px;
+	padding-top: 20px;
+	color: #747896;
+}
+.confirmar-importacion{
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+.table-confirmar-import{
+	background-color: #fff;
+	margin-left: 20px;
+	margin-right: 20px;
+	border-radius: 10px;
+	margin-top: 20px;
+}
+.table-confirmar-import h2{
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #747896;
+}

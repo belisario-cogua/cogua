@@ -3,6 +3,7 @@
 	width: 100%;
 	margin-left: 10px;
 	margin-right: 10px;
+	border-radius: 10px;
 }
 .mensaje-delete{
 	background-color: #b80707;
@@ -11,6 +12,8 @@
 	color: #fff;
 	padding-top: 13px;
 	font-weight: bold;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
 }
 .subcontent-admin-eliminacion{
 	margin-left: 20px;
@@ -20,7 +23,7 @@
 	color: #717896;
 }
 .content-resumen {
-	float: left; padding-right: 300px;
+	padding-right: 300px;
 }
 .content-resumen h2{
 	color: #635f5f;
@@ -40,6 +43,7 @@
 }
 .buttons-eliminacion{
 	float: right;
+	margin-right: 10px;
 }
 
 @media screen and (max-width: 579px){

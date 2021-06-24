@@ -1,0 +1,67 @@
+div.dataTables_wrapper div.dataTables_filter label {
+	display: none;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+	display: none;
+}
+div.dataTables_wrapper div.dataTables_length label {
+    padding-left: 10px;
+}
+div.dataTables_wrapper div.dataTables_length label select{
+    margin-left: 15px;
+}
+div.dataTables_wrapper div.row{
+    padding-bottom: 10px;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+    margin-top:40px !important;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+	display: none;
+}
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff !important;
+    background-color: #FF0E39;
+    border-color: #FF0E39;
+}
+div.dataTables_wrapper ul.pagination li{
+	margin-right: 7px;
+
+}
+div.dataTables_wrapper ul.pagination li.previous a{
+	border-radius:0px;
+}
+div.dataTables_wrapper ul.pagination li a{
+	font-size: 14px;
+}
+.page-item:last-child .page-link {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.publicado-tiempo{
+	float: right;
+	color: #666666;
+	font-size: 14px;
+}
+
+@media screen and (max-width: 432px){
+	.publicado-tiempo{
+		float: left;
+		margin-top: 15px;
+		margin-left: 10px;
+	}
+}
+.titulo-publicaciones{
+	position: absolute;
+	margin-left: 30px;
+	margin-top: -50px;
+	color: #91918e;
+	font-family: "Rubik", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: -1px;
+    font-size: 1.90223em;
+}

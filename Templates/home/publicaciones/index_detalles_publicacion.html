@@ -1,0 +1,70 @@
+{% extends 'home/index.html' %}
+{% load staticfiles %}
+
+{% block titulo %}CoGua | Deportes{% endblock titulo %}
+
+{% block cssextras %}
+{% endblock cssextras %}
+
+<!-- where_togo_area_end  -->
+{% block encabezado %} 
+{% endblock encabezado %}
+{% block publicaciones %}
+<div style="background-color: #F3E3FF;width: auto; height: 1px"></div>
+<section class="blog_area section-padding" style="margin-top: -100px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 posts-list">
+               <div class="single-post">
+                  <div class="feature-img imagen-detalle">
+                     <img class="img-fluid" src="{{object.imagen.url}}" alt="" style="width: 100%;">
+                  </div>
+                  <div class="blog_details">
+                     <h2>{{object.nombre}}</h2>
+                     <ul class="blog-info-link mt-3 mb-4">
+                        <li><a href="#"><i class="fa fa-user"></i> Cogua</a></li>
+                        <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                     </ul>
+                     <p class="excert">{{object.descripcion}}</p>
+                  </div>
+               </div>
+
+               <div class="comments-area" id="comentarios">
+                  <h4>05 Comments</h4>
+               </div>
+               <div class="comment-form">
+                  <h4>Leave a Reply</h4>
+                     <div class="row">
+                        <div class="col-12">
+                           <div class="form-group">
+                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
+                                 placeholder="Write Comment"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <button onclick="realizarComentario()" class="button button-contactForm btn_1 boxed-btn">Comentar</button>
+                     </div>
+
+               </div>
+            </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+
+                        <aside id="publicaciones_recientes" class="single_sidebar_widget popular_post_widget">
+                            <h3 class="widget_title">Publicaciones recientes</h3>                            
+                        </aside>
+                        <button onClick="history.go(-1);" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">Regresar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="temp" data-value="{{ object.id }}"></div>
+{% endblock publicaciones %}
+
+{% block extrajs %}
+<script src="{% static 'personal/js/home/index_detalles_publicacion.js' %}"></script>
+
+{% endblock extrajs %}

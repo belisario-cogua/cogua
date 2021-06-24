@@ -19,6 +19,7 @@ class AgregarPublicacion(LoginAndSuperStaffMixin,CreateView):
 			form = self.form_class(data=request.POST,files=request.FILES)
 			if form.is_valid():
 				obj = form.save(commit=False)
+				obj.usuario = request.user
 				obj.save()
 				mensaje = f'{self.model.__name__} registrado correctamente!'
 				error = 'No hay error!'

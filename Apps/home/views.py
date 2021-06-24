@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from Apps.deportes.models import Deporte
 from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
 from Apps.turismos.models import Turismo
-from Apps.publicaciones.models import Publicacion
+from Apps.publicaciones.models import Publicacion, Comentario
 from Apps.usuarios.models import Usuario
+from Apps.usuarios.mixins import LoginAndSuperStaffMixin
+from django.urls import reverse_lazy
+import itertools 
 # Create your views here.
 
 class Home(TemplateView):
@@ -26,7 +29,8 @@ class ListarPublicaciones(ListView):
 	model = Publicacion
 
 	def get_queryset(self):
-		return self.model.objects.filter(estado=True)
+		queryset = Publicacion.objects.filter(estado=True)
+		return queryset
 
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():
@@ -34,6 +38,75 @@ class ListarPublicaciones(ListView):
 
 		else:
 			return redirect('templates_home:index')
+
+class ListarPublicacionesRecientes(ListView):
+	model = Publicacion
+
+	def get_queryset(self):
+		queryset = Publicacion.objects.filter(estado=True).order_by('-created')[:5]
+		return queryset
+
+	def get(self,request,*args,**kwargs):
+		if request.is_ajax():
+			return HttpResponse(serialize('json', self.get_queryset()), 'application/json')
+
+		else:
+			return redirect('templates_home:index')
+class PublicacionDetalles(DetailView):
+	model = Publicacion
+	template_name = 'home/publicaciones/index_detalles_publicacion.html'
+
+class ListarComentarios(CreateView):
+	model = Usuario
+	def post(self, request, *args, **kwargs):
+		if request.is_ajax():
+			id_publicacion = request.POST.get('id')
+			comentario = Comentario.objects.filter(publicacion = id_publicacion).values()
+			comentario1 = Comentario.objects.filter(publicacion = id_publicacion)
+			data = []
+			for c in comentario1:
+				usuario = Usuario.objects.filter(id = c.usuario.id).values('nombres','apellidos','imagen')
+				data.append({
+                    'comentario': c.comentario,
+                    'creado': c.created,
+                    'usuario': list(usuario)
+                })
+			response = JsonResponse({'comentario':data})
+			response.status_code = 201
+			return response
+
+class AgregarComentario(LoginAndSuperStaffMixin,CreateView):
+	model = Comentario
+	success_url = reverse_lazy('templates_home:index')
+
+	def post(self, request, *args, **kwargs):
+		if request.is_ajax():
+			id_publicacion = request.POST.get('id')
+			publicacion = Publicacion.objects.filter(id = id_publicacion).first()
+			comentario = request.POST.get('comentario')
+			if comentario:
+				usuario = Usuario.objects.filter(id = request.user.id).first()
+
+				nuevo_comentario = self.model(
+					publicacion = publicacion,
+					usuario = usuario,
+					comentario = comentario
+				)
+				nuevo_comentario.save()
+				mensaje = "True"
+				response = JsonResponse({'mensaje':mensaje,'url':self.success_url})
+				response.status_code = 201
+				#retorna response para ser interpretado con javascript
+				return response
+			else:
+				mensaje = "False"
+				response = JsonResponse({'mensaje':mensaje})
+				response.status_code = 201
+				#retorna response para ser interpretado con javascript
+				return response
+
+		else:
+			return redirect('templates_deporte:listar_deporte')
 
 class DeporteDetalles(DetailView):
 	model = Deporte

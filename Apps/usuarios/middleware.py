@@ -1,7 +1,9 @@
 from datetime import timedelta,date, datetime 
 from django.utils import timezone
 from Apps.reservas.models import *
-
+from notifications.models import *
+import json
+from types import SimpleNamespace
 class PruebaMiddleware:
 	def __init__(self, get_response):
 		self.get_response = get_response
@@ -13,7 +15,33 @@ class PruebaMiddleware:
 
 	def process_view(sel, request, view_func, view_args, view_kwargs):
 		url = request.META.get('PATH_INFO')
+		notificacion = Notification.objects.all()
+		ahora = timezone.localtime()
+
+		for noti in notificacion:
+			cantidad = noti.description
+			var = any(chr.isdigit() for chr in noti.verb)
+			if(var == True):
+				obtener_fecha = datetime.strptime(str(noti.verb), '%Y-%m-%d').date()
+				today = date.today()
+				if today > obtener_fecha:
+					if noti.emailed == False and noti.description == '1':
+						noti.emailed = True
+						noti.save()
+
+						notificar = Usuario.objects.get(id=noti.actor_object_id)
+						notitempo = notificar.notificacion + int(cantidad)
+						notificar.notificacion = notitempo
+						notificar.save()
+
+						noti.description = "0"
+						noti.save()
+
+						noti.timestamp = ahora
+						noti.save()
+
 		if request.user.is_authenticated:
+
 			fecha_actual = timezone.localtime()
 
 			reservaDeporte = ReservaDeporte.objects.filter(estado=True, usuario = request.user)
@@ -30,6 +58,10 @@ class PruebaMiddleware:
 				vencimiento = reserva.created + timedelta(days = dias.days)
 				reserva.cantidad_dias = dias.days
 				reserva.save()
+				if reserva.cantidad_dias <= 0:
+					reserva.cantidad_dias = 0
+					reserva.save()
+
 				if reserva.confirmar == False:
 					if fecha_actual > vencimiento:
 						reserva.visita = False
@@ -44,6 +76,10 @@ class PruebaMiddleware:
 				vencimiento = reserva.created + timedelta(days = dias.days)
 				reserva.cantidad_dias = dias.days
 				reserva.save()
+				if reserva.cantidad_dias <= 0:
+					reserva.cantidad_dias = 0
+					reserva.save()
+
 				if reserva.confirmar == False:
 					if fecha_actual > vencimiento:
 						reserva.visita = False
@@ -58,6 +94,9 @@ class PruebaMiddleware:
 				vencimiento = reserva.created + timedelta(days = dias.days)
 				reserva.cantidad_dias = dias.days
 				reserva.save()
+				if reserva.cantidad_dias <= 0:
+					reserva.cantidad_dias = 0
+					reserva.save()
 				if reserva.confirmar == False:
 					if fecha_actual > vencimiento:
 						reserva.visita = False
@@ -72,6 +111,9 @@ class PruebaMiddleware:
 				vencimiento = reserva.created + timedelta(days = dias.days)
 				reserva.cantidad_dias = dias.days
 				reserva.save()
+				if reserva.cantidad_dias <= 0:
+					reserva.cantidad_dias = 0
+					reserva.save()
 				if reserva.confirmar == False:
 					if fecha_actual > vencimiento:
 						reserva.visita = False

@@ -127,7 +127,8 @@ class AgregarComentario(CreateView):
 						apellidos=instance.usuario.apellidos,
 						publicacion_id=instance.publicacion.id,
 						publicacion=instance.publicacion.nombre,
-						comentario=instance.comentario
+						comentario=instance.comentario,
+						tipo="comentario"
 						)
 
 				mensaje = "True"

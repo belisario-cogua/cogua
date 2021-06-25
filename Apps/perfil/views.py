@@ -350,7 +350,7 @@ class TurismoPerfilReservaDetallesAdmin(DetailView):
     model = ReservaTurismo
     template_name = 'perfil/reservas_admin/turismos/perfil_ModalReservaTurismoDetalles.html'
 
-
+#SOLICITUDES
 #solicitudes de reservas
 class PerfilListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin, TemplateView):
     template_name = 'perfil/reservas_admin/solicitudes/perfil_listarSolicitudesReservas.html'
@@ -386,7 +386,6 @@ class ListarSolicituedesReservasAdmin(LoginAndSuperStaffMixin,ListView):
         else:
             return redirect('templates_perfil:inicio_solicitudes_reservas')
 
-#SOLICITUDES
 #enumerar solicitudes de todas las reservas en el menu de perfil
 class SolicitudesReservasAdmin(LoginAndSuperStaffMixin, ListView):
     model = Usuario

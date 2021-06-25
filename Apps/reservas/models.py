@@ -36,15 +36,6 @@ class ReservaDeporte(models.Model):
 	def __str__(self):
 		return '{}'.format(self.deporte)
 
-
-def reducir_cantidad_deporte(sender, instance, **kwargs):
-	deporte = instance.deporte
-	if deporte.cantidad > 0:
-		deporte.cantidad = deporte.cantidad - 1
-		deporte.save()
-
-post_save.connect(reducir_cantidad_deporte,sender = ReservaDeporte)
-
 # Modelo de reserva para platos tipicos
 class ReservaHotel(models.Model):
 	hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, verbose_name = "Cabaña reservado")

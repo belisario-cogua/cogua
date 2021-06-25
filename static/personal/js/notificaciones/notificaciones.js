@@ -18,52 +18,12 @@ $(document).ready(function(){
 			success: function(response){
 				$('#container-notificaiones').empty();
 				for(let i = 0;i < response.length;i++){
-					console.log(response[i])					
+					console.log(response[i]["fields"]["data"]["tipo"])
 					let contenedor = '<div>';
+					//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
 					var tiempo = response[i]["fields"]["timestamp"];
 
-					n1 =  new Date(tiempo);
-					n =  new Date();
-					var diffMs = (n - n1);
-					//para validaciones
-					var segundos1 = (diffMs / 1000).toFixed(1);
-			        var minutes = (diffMs / (1000 * 60)).toFixed(1);
-			        var hours = (diffMs / (1000 * 60 * 60)).toFixed(1);
-			        var days = (diffMs / (1000 * 60 * 60 * 24)).toFixed(1);
-			        var meses1 = (diffMs / (1000 * 60 * 60 * 24 * 30.416666666666668)).toFixed(1);
-			        var years1 = (diffMs / (1000 * 60 * 60 * 24 * 30.416666666666668 * 12)).toFixed(1);
-
-			        //para los calculos
-			        var created = new Date(tiempo)
-					var hoy = new Date()
-
-					var tiempoPasado1= hoy - created
-					var segs = 1000;
-					var mins = segs * 60;
-					var hours1 = mins * 60;
-					var days1 = hours1 * 24;
-					var months = days1 * 30.416666666666668;
-					var years = months * 12;
-
-					//calculo 
-					var year = Math.floor(tiempoPasado1 / years);
-
-					tiempoPasado = tiempoPasado1 - (year * years);
-					var meses = Math.floor(tiempoPasado / months)
-
-					tiempoPasado = tiempoPasado1 - (meses * months);
-					var dias = Math.floor(tiempoPasado / days1)
-
-					tiempoPasado = tiempoPasado1 - (dias * days1);
-					var horas = Math.floor(tiempoPasado / hours1)
-
-					tiempoPasado = tiempoPasado1 - (horas * hours1);
-					var minutos = Math.floor(tiempoPasado / mins)
-
-					tiempoPasado = tiempoPasado1 - (minutos * mins);
-					var segundos = Math.floor(tiempoPasado / segs)
-
-					if (response[i]["fields"]["target_content_type"][1]=="comentario") {
+					if (response[i]["fields"]["data"]["tipo"] == "comentario") {
 						contenedor += '<div>\n\
 						<div class="dropdown-divider divide"></div>';
 						contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
@@ -72,69 +32,13 @@ $(document).ready(function(){
 		                contenedor += '</p><p><span class="reserva-confirmado">Publicación: </span>';
 			            
 		                contenedor += response[i]["fields"]["data"]["publicacion"] + '</p>';
-
-
-				        if (segundos1 < 60) {
-				        	contenedor += '<span class="hora-notificacion">hace '+segundos+' segundos</span>';
-				        }
-				        else if (minutes < 60) {
-				        	if (minutos > 1) {
-				        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minutos</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minuto</span>';
-				        	}
-				            
-				        }
-				        else if (hours < 24) {
-				        	if(horas > 1){
-				        		contenedor += '<span class="hora-notificacion">hace '+horas+' horas</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+horas+' hora</span>';
-				        	}
-				            
-				        }
-				        else if (days < 30) {
-				        	if(dias > 1){
-				        		contenedor += '<span class="hora-notificacion">hace '+dias+' días</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+dias+' día</span>';
-				        	}
-				            
-				        }
-				        else if(meses1 < 30.416666666666668){
-				        	if (meses == 1) {
-				        		if(year > 1){
-					        		contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-					        	}else{
-				        			contenedor += '<span class="hora-notificacion">hace '+meses+' mes</span>';
-				        		}
-				        		
-				        	}else if(meses > 1 && meses < 12){
-				        		if (year > 0) {
-				        			if (year == 1) {
-				        				contenedor += '<span class="hora-notificacion">hace '+year+' año</span>';
-				        			}	
-				        		}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+meses+' meses</span>';
-				        		}
-
-				        	}else if (year == 1) {
-		        				contenedor += '<span class="hora-notificacion">hace '+year+' año</span>';
-		        			}else if (year > 1) {
-		        				contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-		        			}
-				            
-				        }else if(year >= 2){
-			        		contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-			        	}
-
-
-			            contenedor += '</p></a>\n\
+						contenedor += obtenerTiempo(tiempo);
+						contenedor += '</p></a>\n\
 						</div>';
 						contenedor += '</div>';
-						
 						$('#container-notificaiones').append(contenedor);
-					}else if(response[i]["fields"]["target_content_type"][0]=="reservas"){
+
+					}else if(response[i]["fields"]["data"]["tipo"] == "solicitud") {
 						contenedor += '<div>\n\
 						<div class="dropdown-divider divide"></div>';
 						if (response[i]["fields"]["level"]=='success') {
@@ -152,71 +56,63 @@ $(document).ready(function(){
 		                contenedor += response[i]["fields"]["verb"] + '</p>\n\
 		                <p><span class="aceptado-por">Por\n\
 		                <span class="aceptado-de">Belisario quevedo</span></span>';
-
-
-				        if (segundos1 < 60) {
-				        	contenedor += '<span class="hora-notificacion">hace '+segundos+' segundos</span>';
-				        }
-				        else if (minutes < 60) {
-				        	if (minutos > 1) {
-				        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minutos</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+minutos+' minuto</span>';
-				        	}
-				            
-				        }
-				        else if (hours < 24) {
-				        	if(horas > 1){
-				        		contenedor += '<span class="hora-notificacion">hace '+horas+' horas</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+horas+' hora</span>';
-				        	}
-				            
-				        }
-				        else if (days < 30) {
-				        	if(dias > 1){
-				        		contenedor += '<span class="hora-notificacion">hace '+dias+' días</span>';
-				        	}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+dias+' día</span>';
-				        	}
-				            
-				        }
-				        else if(meses1 < 30.416666666666668){
-				        	if (meses == 1) {
-				        		if(year > 1){
-					        		contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-					        	}else{
-				        			contenedor += '<span class="hora-notificacion">hace '+meses+' mes</span>';
-				        		}
-				        		
-				        	}else if(meses > 1 && meses < 12){
-				        		if (year > 0) {
-				        			if (year == 1) {
-				        				contenedor += '<span class="hora-notificacion">hace '+year+' año</span>';
-				        			}	
-				        		}else{
-				        		contenedor += '<span class="hora-notificacion">hace '+meses+' meses</span>';
-				        		}
-
-				        	}else if (year == 1) {
-		        				contenedor += '<span class="hora-notificacion">hace '+year+' año</span>';
-		        			}else if (year > 1) {
-		        				contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-		        			}
-				            
-				        }else if(year >= 2){
-			        		contenedor += '<span class="hora-notificacion">hace '+year+' años</span>';
-			        	}
-
-
-			            contenedor += '</p></a>\n\
+		                contenedor += obtenerTiempo(tiempo);
+		                contenedor += '</p></a>\n\
 						</div>';
 						contenedor += '</div>';
-						
 						$('#container-notificaiones').append(contenedor);
-					}
+				        
+						
+						
+					
+					}else if(response[i]["fields"]["data"]["tipo"] == "caducar"){
+						if (response[i]["fields"]["emailed"] == true && response[i]["fields"]["description"] == "0") {
+							contenedor += '<div>\n\
+							<div class="dropdown-divider divide"></div>';
+							if (response[i]["fields"]["data"]["turismo"] == "cabaña") {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["cabaña"]+'"';
+								contenedor += '</span> a caducado\n\
+				                te esperamos para la próxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+				                contenedor += 'Cabaña</p>';
+							
+							}else if (response[i]["fields"]["data"]["turismo"] == "deporte") {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["deporte"]+'"';
+								contenedor += '</span> a caducado\n\
+				                te esperamos para la próxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+				                contenedor += 'Deporte</p>';
+							
+							}else if (response[i]["fields"]["data"]["turismo"] == "platostipico") {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["plato"]+'"';
+								contenedor += '</span> a caducado\n\
+				                te esperamos para la próxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+				                contenedor += 'Plato Típico</p>';
+							
+							}else if (response[i]["fields"]["data"]["turismo"] == "lugarturistico") {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["lugar"]+'"';
+								contenedor += '</span> a caducado\n\
+				                te esperamos para la próxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+				                contenedor += 'Lugar Turístico</p>';
+							}
+							contenedor += obtenerTiempo(tiempo);
+							contenedor += '</p></a>\n\
+							</div>';
+							contenedor += '</div>';
+							$('#container-notificaiones').append(contenedor);
+						}
+						
+					}					
+					
 					
 
+		            
 				
 
 				}
@@ -272,8 +168,104 @@ $(document).ready(function(){
 		});
 	}, 3000);
 });
-function buscarComentario(pk){
+function obtenerTiempo(tiempo){
+	n1 =  new Date(tiempo);
+	n =  new Date();
+	var diffMs = (n - n1);
+	//para validaciones
+	var segundos1 = (diffMs / 1000).toFixed(1);
+    var minutes = (diffMs / (1000 * 60)).toFixed(1);
+    var hours = (diffMs / (1000 * 60 * 60)).toFixed(1);
+    var days = (diffMs / (1000 * 60 * 60 * 24)).toFixed(1);
+    var meses1 = (diffMs / (1000 * 60 * 60 * 24 * 30.416666666666668)).toFixed(1);
+    var years1 = (diffMs / (1000 * 60 * 60 * 24 * 30.416666666666668 * 12)).toFixed(1);
 
+    //para los calculos
+    var created = new Date(tiempo)
+	var hoy = new Date()
+
+	var tiempoPasado1= hoy - created
+	var segs = 1000;
+	var mins = segs * 60;
+	var hours1 = mins * 60;
+	var days1 = hours1 * 24;
+	var months = days1 * 30.416666666666668;
+	var years = months * 12;
+
+	//calculo 
+	var year = Math.floor(tiempoPasado1 / years);
+
+	tiempoPasado = tiempoPasado1 - (year * years);
+	var meses = Math.floor(tiempoPasado / months)
+
+	tiempoPasado = tiempoPasado1 - (meses * months);
+	var dias = Math.floor(tiempoPasado / days1)
+
+	tiempoPasado = tiempoPasado1 - (dias * days1);
+	var horas = Math.floor(tiempoPasado / hours1)
+
+	tiempoPasado = tiempoPasado1 - (horas * hours1);
+	var minutos = Math.floor(tiempoPasado / mins)
+
+	tiempoPasado = tiempoPasado1 - (minutos * mins);
+	var segundos = Math.floor(tiempoPasado / segs)
+
+	var contenedor = "";
+	if (segundos1 < 60) {
+    	contenedor = '<span class="hora-notificacion">hace '+segundos+' segundos</span>';
+    }
+    else if (minutes < 60) {
+    	if (minutos > 1) {
+    		contenedor = '<span class="hora-notificacion">hace '+minutos+' minutos</span>';
+    	}else{
+    		contenedor = '<span class="hora-notificacion">hace '+minutos+' minuto</span>';
+    	}
+        
+    }
+    else if (hours < 24) {
+    	if(horas > 1){
+    		contenedor = '<span class="hora-notificacion">hace '+horas+' horas</span>';
+    	}else{
+    		contenedor = '<span class="hora-notificacion">hace '+horas+' hora</span>';
+    	}
+        
+    }
+    else if (days < 30) {
+    	if(dias > 1){
+    		contenedor = '<span class="hora-notificacion">hace '+dias+' días</span>';
+    	}else{
+    		contenedor = '<span class="hora-notificacion">hace '+dias+' día</span>';
+    	}
+        
+    }
+    else if(meses1 < 30.416666666666668){
+    	if (meses == 1) {
+    		if(year > 1){
+        		contenedor = '<span class="hora-notificacion">hace '+year+' años</span>';
+        	}else{
+    			contenedor = '<span class="hora-notificacion">hace '+meses+' mes</span>';
+    		}
+    		
+    	}else if(meses > 1 && meses < 12){
+    		if (year > 0) {
+    			if (year == 1) {
+    				contenedor = '<span class="hora-notificacion">hace '+year+' año</span>';
+    			}	
+    		}else{
+    		contenedor = '<span class="hora-notificacion">hace '+meses+' meses</span>';
+    		}
+
+    	}else if (year == 1) {
+			contenedor = '<span class="hora-notificacion">hace '+year+' año</span>';
+		}else if (year > 1) {
+			contenedor = '<span class="hora-notificacion">hace '+year+' años</span>';
+		}
+        
+    }else if(year >= 2){
+		contenedor = '<span class="hora-notificacion">hace '+year+' años</span>';
+	}
+
+	return contenedor
 }
 function notificacion_reducir_cero(){
 	var csrftoken = getCookie('csrftoken'); 

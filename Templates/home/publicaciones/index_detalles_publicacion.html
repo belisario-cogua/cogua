@@ -4,6 +4,7 @@
 {% block titulo %}CoGua | Deportes{% endblock titulo %}
 
 {% block cssextras %}
+<link rel="stylesheet" href="{% static 'personal/css/home/index_detalles_publicacion.css' %}">
 {% endblock cssextras %}
 
 <!-- where_togo_area_end  -->
@@ -22,27 +23,34 @@
                   <div class="blog_details">
                      <h2>{{object.nombre}}</h2>
                      <ul class="blog-info-link mt-3 mb-4">
-                        <li><a href="#"><i class="fa fa-user"></i> Cogua</a></li>
-                        <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                        <li><a ><i class="fas fa-user"></i> Cogua</a></li>
+                        <li><a id="n_comentarios2">comentarios</a></li>
                      </ul>
                      <p class="excert">{{object.descripcion}}</p>
                   </div>
                </div>
 
                <div class="comments-area" id="comentarios">
-                  <h4>05 Comments</h4>
+                  <h4 id="n_comentarios"></h4>
                </div>
                <div class="comment-form">
-                  <h4>Leave a Reply</h4>
+                {% if request.user.is_staff %}
+                  <h4>Comentar como {{ user.nombres.split.0 | title }} {{ user.apellidos.split.0 | title }}</h4>
+                {% else %}
+                <h4>Comentar</h4>
+                {% endif %}
+                    <div class="alert alert-danger alert-dismissable" id="mensaje-sin_comentario" style="display: none;">
+                          <a href="#" class="alert-link">...</a>
+                        </div>
                      <div class="row">
                         <div class="col-12">
                            <div class="form-group">
-                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                 placeholder="Write Comment"></textarea>
+                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="3"
+                                 placeholder="Ingresar comentario"></textarea>
                            </div>
                         </div>
                      </div>
-                     <div class="form-group">
+                     <div class="form-group" style="float: right;">
                         <button onclick="realizarComentario()" class="button button-contactForm btn_1 boxed-btn">Comentar</button>
                      </div>
 
@@ -50,7 +58,6 @@
             </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
-
                         <aside id="publicaciones_recientes" class="single_sidebar_widget popular_post_widget">
                             <h3 class="widget_title">Publicaciones recientes</h3>                            
                         </aside>
@@ -66,5 +73,7 @@
 
 {% block extrajs %}
 <script src="{% static 'personal/js/home/index_detalles_publicacion.js' %}"></script>
-
+<script type="text/javascript">
+    
+</script>
 {% endblock extrajs %}

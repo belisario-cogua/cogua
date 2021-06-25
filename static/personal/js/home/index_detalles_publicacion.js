@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	listarComentarios();
 });
+
 function listarComentarios(){
 	var user = $('#temp').attr('data-value');
 	var id = parseInt(user);
@@ -14,15 +15,11 @@ function listarComentarios(){
         url: '/home/publicacion/comentarios/',
         type: 'post',
         success: function(response){
-            console.log(response.comentario)
             var temp = response.comentario;
+            var count = 0;
             for(let i = 0; i < temp.length;i++){
+            	count = count + 1;
                 let contenedor = '<div style="margin-top:20px;">';
-                console.log(temp[i]["comentario"])
-                console.log(temp[i]["creado"])
-                console.log(temp[i]["usuario"][0]["nombres"])
-                console.log(temp[i]["usuario"][0]["apellidos"])
-                console.log(temp[i]["usuario"][0]["imagen"])
                 created = temp[i]["creado"];
                 date = new Date(created);
                 dia = date.getDate();
@@ -64,10 +61,10 @@ function listarComentarios(){
                  contenedor += '<div class="comment-list">\n\
                      <div class="single-comment justify-content-between d-flex">\n\
                         <div class="user justify-content-between d-flex">\n\
-                           <div class="thumb">\n\
+                           <div class="comentario-imagen-usuario">\n\
                               <img src="'+ imagen+'" alt="">\n\
                            </div>\n\
-                           <div class="desc">\n\
+                           <div class="desc" style="padding-left:20px;">\n\
                               <p class="comment">'+temp[i]["comentario"]+'</p>\n\
                               <div class="d-flex justify-content-between">\n\
                                  <div class="d-flex align-items-center">\n\
@@ -85,10 +82,25 @@ function listarComentarios(){
                 contenedor += '</div>';
                 $('#comentarios').append(contenedor);
             }
+            var mens = document.getElementById('n_comentarios');
+            var mens2 = document.getElementById('n_comentarios2');
+            count = (count < 10 && count > 0 ? "0" : "") + count;
+            total = "";
+            total1 = "";
+            if(count == 1){
+            	total = count + ' comentario';
+              total1 = '<i class="fas fa-comments"></i>'+count + ' comentario';
+            }else{
+            	total = count + ' comentarios';
+              total1 = '<i class="fas fa-comments"></i>'+count + ' comentario';
+            }
+			mens.innerHTML=total;
+			mens2.innerHTML=total1;
         },
         error: function(error){
             sweetError(error.responseJSON.mensaje);
         }
+
     });
 }
 
@@ -97,36 +109,41 @@ function realizarComentario(){
 	var user = $('#temp').attr('data-value');
 	var id = parseInt(user);
 	var csrftoken = getCookie('csrftoken'); 
+	if (comentario == "") {
+    var $input = $("#mensaje-sin_comentario");
+    $input.before('<div class = "alert alert-danger alert-dismissible fade show" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong></strong>Debes ingresar un ccomentario</div>');
+  }else{
+    $.ajax({
+      //el form_agregar es un id y es llamdo desde el template perfil_ModalAgregarUsuario.html
+      data: {
+        "id":id,
+        "comentario": comentario,
+              csrfmiddlewaretoken: csrftoken
+      },
+      //obtenemos la ruta que esta en el action
+      url: "/home/agregar_comentario/",
+      type: 'post',
+      //obtenemos el tipo de informacion que esta definido en method
+      success: function(response){
+        //el response.mensaje es llamado desde usuarios/views.py cuando retorna response
+        setTimeout(function(){
+          window.location.reload();
+        });
+
+        
+      },
+      error: function(error){
+        Swal.fire({
+          title: 'Lo sentimos!',
+          html:'Para realizar cualquier comentario necesitas iniciar sesión<br>'+
+                          '<br>Presiona aquí para '+'<b><a href="/accounts/login/">Iniciar Sesión</a></b><br>'+
+                          '<br>o aquí para '+'<b><a href="/register/cogua/user/">Registrarte</a></b>',
+          icon: 'warning'
+        })
+        
+        
+      }
+    });
+  }
 	
-	$.ajax({
-		//el form_agregar es un id y es llamdo desde el template perfil_ModalAgregarUsuario.html
-		data: {
-			"id":id,
-			"comentario": comentario,
-            csrfmiddlewaretoken: csrftoken
-		},
-		//obtenemos la ruta que esta en el action
-		url: "/home/agregar_comentario/",
-		type: 'post',
-		//obtenemos el tipo de informacion que esta definido en method
-		success: function(response){
-			//el response.mensaje es llamado desde usuarios/views.py cuando retorna response
-			console.log(response);
-			if(response.mensaje == "True"){
-				location.reload();
-			}else{
-				console.log("no existe el comentario")
-			}
-			
-		},
-		error: function(error){
-			//el .mensaje es llamado desde usuarios/views.py cuando retorna response atarvez de responseJSON
-			sweetError(error.responseJSON.mensaje);
-			//aqui se llama la funcion de mostrarErroresAgregar()
-			//que esta en main.js
-			mostrarErroresAgregar(error);
-			//vuelve a desbloquear el button
-			bloquearButton();
-		}
-	});
 }

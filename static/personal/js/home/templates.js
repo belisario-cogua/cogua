@@ -12,13 +12,24 @@ function listarPublicacionesTable(){
 		type: "get",
 		dataType: "json",
 		success: function(response){
+
 			if($.fn.DataTable.isDataTable('#tabla_publicacion')){
 				$('#tabla_publicacion ').DataTable().destroy();
 			}
 			$('#tabla_publicacion tbody').html("");
-			for(let i = 0;i < response.length;i++){
+			var temp = response.data;
+			for(let i = 0;i < temp.length;i++){
+				var t = temp[i]["contador"]
+				var n_coment = t.length;
+				n_coment = (n_coment < 10 && n_coment > 0 ? "0" : "") + n_coment;
+				var ncoment = "";
+				if (n_coment==1) {
+					ncoment = n_coment + " comentario";
+				}else{
+					ncoment = n_coment + " comentarios";
+				}
 				let fila = '<tr>';
-				created = response[i]["fields"]["created"];
+				created = temp[i]["created"];
 				date = new Date(created);
 				dia = date.getDate();
 				mes = date.getMonth();
@@ -52,25 +63,25 @@ function listarPublicacionesTable(){
 				function MaysPrimera(string){
 				  return string.charAt(0).toUpperCase() + string.slice(1);
 				}
-				nombre = response[i]["fields"]['nombre'];
+				nombre = temp[i]['titulo'];
 				nombre = MaysPrimera(nombre.toLowerCase());
 
-				fila += '<td style="border: 0px solid black;"><div class="blog_item_img">\n\
-								<img class="card-img rounded-0" src="/media/'+ response[i]["fields"]['imagen']+'"/">\n\
-								<a href="#" class="blog_item_date">\n\
+				fila += '<td style="border: 0px solid black;"><div class="blog_item_img puntero-pointer">\n\
+								<img class="card-img rounded-0" src="/media/'+ temp[i]['imagen']+'"/">\n\
+								<a onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+temp[i]['id']+'/\');" class="blog_item_date">\n\
 									<h3>' + dia + '</h3>\n\
 							        <p>' + meses[mes] + '</p>\n\
 							    </a>\n\
 							    <p class="publicado-tiempo">' + mostrarHora + '</p>\n\
 							    </div>\n\
-								<div class="blog_details">\n\
-<a href="#" class="link" onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+response[i]['pk']+'/\');" class="d-inline-block" href="single-blog.html">\n\
-										<h2>' + response[i]["fields"]['nombre']+'</h2>\n\
+								<div class="blog_details puntero-pointer">\n\
+				<a onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+temp[i]['id']+'/\');">\n\
+										<h2>' + nombre+'</h2>\n\
 									</a>\n\
-									<p>' + response[i]["fields"]['descripcion']+'</p>\n\
+									<p>' + temp[i]['descripcion']+'</p>\n\
 									<ul class="blog-info-link">\n\
-							            <li><a href="#"><i class="fa fa-user"></i> Cogua</a></li>\n\
-							            <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>\n\
+							            <li><a onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+temp[i]['id']+'/\');"><i class="fas fa-user"></i> Cogua</a></li>\n\
+							            <li><a onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+temp[i]['id']+'/\');"><i class="fas fa-comments"></i>'+ncoment+'</a></li>\n\
 							        </ul>\n\
 								</div></td>';
 				fila += '</tr>';
@@ -129,10 +140,10 @@ function listarPublicacionesRecientes(){
 							  "Noviembre", "Diciembre"
 							]
 
-				contenedor += '<div class="media post_item">\n\
-									<img src="/media/'+ response[i]["fields"]['imagen']+'" alt="post" style="width: 40px;">\n\
-									<div class="media-body">\n\
-								    	<a href="#" onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+response[i]['pk']+'/\');">\n\
+				contenedor += '<div class="media post_item ">\n\
+									<img src="/media/'+ response[i]["fields"]['imagen']+'" alt="post" style="width: 75px; height:80px;">\n\
+									<div class="media-body puntero-pointer">\n\
+								    	<a onclick="abrir_publicacion_detalles(\'/home/detalle/publicacion/'+response[i]['pk']+'/\');">\n\
 								    		<h3>' + response[i]["fields"]['nombre']+'</h3>\n\
 								    	</a>\n\
 										<p>'+meses[mes]+' '+dia+','+year+'</p>\n\

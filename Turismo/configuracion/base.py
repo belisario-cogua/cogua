@@ -138,3 +138,6 @@ EMAIL_HOST_USER = 'gad10cogua@gmail.com'
 EMAIL_HOST_PASSWORD = get_config('EMAIL_HOST_PASSWORD') 
 EMAIL_PORT = 587
 #fin lineas de configuracion para envio de correo electrino de confirmacion al crear nuevos usuarios
+DJANGO_NOTIFICATIONS_CONFIG = {
+      'USE_JSONFIELD': True,
+}

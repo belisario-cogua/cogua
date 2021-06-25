@@ -39,7 +39,7 @@ from notifications.signals import notify
 from notifications.models import *
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
-
+from Apps.publicaciones.models import Publicacion, Comentario
 # Create your views here.
 #LoginRequiredMixin es otra manera de de proteger nuestra vista
 #es decir necesita iniciar sesion para dirgirise al perfil de ussuario
@@ -450,7 +450,7 @@ class EnumerarSolicitudesReservasAdmin(LoginAndSuperStaffMixin, ListView):
 class NotificacionesUser(ListView):
     model = Usuario
     def get_queryset(self):
-        queryset = Notification.objects.filter(recipient=self.request.user)[:3]
+        queryset = Notification.objects.filter(recipient=self.request.user)[:4]
         return queryset
 
     def get(self,request,*args,**kwargs):
@@ -459,6 +459,25 @@ class NotificacionesUser(ListView):
 
         else:
             return redirect('templates_perfil:inicio_solicitudes_reservas')
+#buscar las notificaciones -> en prueba
+class BuscarNotificaciones(CreateView):
+    model = Usuario
+
+    def post(self,request,*args,**kwargs):
+        if request.is_ajax():
+            pk = request.POST.get('pk')
+            comentario = Comentario.objects.filter(id=pk)
+            data = []
+            for com in comentario:
+                data.append({
+                    'nombres': com.usuario.nombres,
+                    'apellidos': com.usuario.apellidos,
+                    'publicacion': com.publicacion.nombre,
+                    'comentario': com.comentario,
+                    'created': com.created
+                    })
+            mensaje = "buscando notificacion"
+            return JsonResponse({'data':data})
 
 #enumerar notificacion en tiempo real cuando el admin aya aceptado la reserva
 class NotificacionConfirmReserva(ListView):

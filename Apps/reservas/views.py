@@ -204,7 +204,7 @@ class ConfirmarReserva(CreateView):
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.deporte,level='success')
+					notify.send(request.user, recipient=notificacion, verb=editar.deporte,description="Reserva de deporte aceptado",target=editar,level='success')
 
 					mensaje = "reserva del deporte aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -218,7 +218,7 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.deporte, level='warning')
+					notify.send(request.user, recipient=notificacion, verb=editar.deporte,description="Reserva de deporte cancelado",target=editar, level='warning')
 
 					mensaje = "reserva del deporte cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -236,7 +236,7 @@ class ConfirmarReserva(CreateView):
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.turismo,level='success')
+					notify.send(request.user, recipient=notificacion, verb=editar.turismo,description="Reserva de lugar turístico aceptado",target=editar,level='success')
 
 					mensaje = "reserva del lugar turistico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -250,7 +250,7 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.turismo, level='warning')
+					notify.send(request.user, recipient=notificacion, verb=editar.turismo,description="Reserva de lugar turístico cancelado",target=editar, level='warning')
 
 					mensaje = "reserva del lugar turistico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -268,7 +268,7 @@ class ConfirmarReserva(CreateView):
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.plato,level='success')
+					notify.send(request.user, recipient=notificacion, verb=editar.plato,description="Reserva de plato típico aceptado",target=editar,level='success')
 
 					mensaje = "reserva del plato tipico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -282,7 +282,7 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.plato, level='warning')
+					notify.send(request.user, recipient=notificacion, verb=editar.plato,description="Reserva de plato típico cancelado",target=editar, level='warning')
 
 					mensaje = "reserva del plato tipico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -300,7 +300,7 @@ class ConfirmarReserva(CreateView):
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.hotel,level='success')
+					notify.send(request.user, recipient=notificacion, verb=editar.hotel,description="Reserva de la cabaña aceptado",target=editar,level='success')
 
 					mensaje = "reserva de la cabaña aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -314,7 +314,7 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb=editar.hotel, level='warning')
+					notify.send(request.user, recipient=notificacion, verb=editar.hotel,description="Reserva de la cabaña cancelado",target=editar, level='warning')
 
 					mensaje = "reserva de la cabaña cancelado"
 					response = JsonResponse({'mensaje':mensaje})

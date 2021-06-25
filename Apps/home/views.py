@@ -9,7 +9,9 @@ from Apps.turismos.models import Turismo
 from Apps.publicaciones.models import Publicacion, Comentario
 from Apps.usuarios.models import Usuario
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from notifications.signals import notify
 import itertools 
 # Create your views here.
 
@@ -18,23 +20,35 @@ class Home(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(Home, self).get_context_data(**kwargs)
-		context['n_deportes'] = Deporte.objects.count()
-		context['n_hoteles'] = Hotel.objects.count()
-		context['n_platos'] = Plato.objects.count()
-		context['n_turismos'] = Turismo.objects.count()
+		context['n_deportes'] = Deporte.objects.filter(estado=True).count()
+		context['n_hoteles'] = Hotel.objects.filter(estado=True).count()
+		context['n_platos'] = Plato.objects.filter(estado=True).count()
+		context['n_turismos'] = Turismo.objects.filter(estado=True).count()
 		context['publicaciones'] = Publicacion.objects.all()
 		return context
 
 class ListarPublicaciones(ListView):
 	model = Publicacion
 
-	def get_queryset(self):
-		queryset = Publicacion.objects.filter(estado=True)
-		return queryset
-
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():
-			return HttpResponse(serialize('json', self.get_queryset()), 'application/json')
+			mensaje = "true"
+			publicacion = Publicacion.objects.filter(estado=True).values()
+			publicacion1 = Publicacion.objects.filter(estado=True)
+			data = []
+			temp = []
+			for query in publicacion1:
+				comentarios = Comentario.objects.filter(publicacion=query.id).values("comentario")
+				temp.append(comentarios)
+				data.append({
+	                    'id': query.id,
+	                    'created': query.created,
+	                    'titulo':query.nombre,
+	                    'imagen':str(query.imagen),
+	                    'descripcion': query.descripcion,
+	                    'contador': list(comentarios),
+	                })
+			return JsonResponse({'data':data})
 
 		else:
 			return redirect('templates_home:index')
@@ -43,7 +57,7 @@ class ListarPublicacionesRecientes(ListView):
 	model = Publicacion
 
 	def get_queryset(self):
-		queryset = Publicacion.objects.filter(estado=True).order_by('-created')[:5]
+		queryset = Publicacion.objects.filter(estado=True).order_by('-created')[:3]
 		return queryset
 
 	def get(self,request,*args,**kwargs):
@@ -75,16 +89,17 @@ class ListarComentarios(CreateView):
 			response.status_code = 201
 			return response
 
-class AgregarComentario(LoginAndSuperStaffMixin,CreateView):
+class AgregarComentario(CreateView):
 	model = Comentario
 	success_url = reverse_lazy('templates_home:index')
 
 	def post(self, request, *args, **kwargs):
 		if request.is_ajax():
-			id_publicacion = request.POST.get('id')
-			publicacion = Publicacion.objects.filter(id = id_publicacion).first()
-			comentario = request.POST.get('comentario')
-			if comentario:
+			if request.user.is_authenticated:
+				id_publicacion = request.POST.get('id')
+				publicacion = Publicacion.objects.filter(id = id_publicacion).first()
+				comentario = request.POST.get('comentario')
+
 				usuario = Usuario.objects.filter(id = request.user.id).first()
 
 				nuevo_comentario = self.model(
@@ -93,20 +108,43 @@ class AgregarComentario(LoginAndSuperStaffMixin,CreateView):
 					comentario = comentario
 				)
 				nuevo_comentario.save()
+				
+				superuser = Usuario.objects.filter(is_superuser = True)
+				url_object = "nombre"
+				for suser in superuser:
+					solitempo = suser.notificacion + 1
+					suser.notificacion = solitempo
+					suser.save()
+					user = Usuario.objects.get(id=suser.id)
+					instance = Comentario.objects.get(id=nuevo_comentario.id)
+					notify.send(
+						request.user, 
+						recipient=user, 
+						verb="comentario",
+						target=instance,
+						level='success',
+						nombres=instance.usuario.nombres,
+						apellidos=instance.usuario.apellidos,
+						publicacion_id=instance.publicacion.id,
+						publicacion=instance.publicacion.nombre,
+						comentario=instance.comentario
+						)
+
 				mensaje = "True"
 				response = JsonResponse({'mensaje':mensaje,'url':self.success_url})
 				response.status_code = 201
 				#retorna response para ser interpretado con javascript
 				return response
 			else:
-				mensaje = "False"
-				response = JsonResponse({'mensaje':mensaje})
-				response.status_code = 201
+				sesion = "sesion"
+				response = JsonResponse({'error':sesion})
+				response.status_code = 400
 				#retorna response para ser interpretado con javascript
 				return response
+			
 
 		else:
-			return redirect('templates_deporte:listar_deporte')
+			return redirect('templates_home:index')
 
 class DeporteDetalles(DetailView):
 	model = Deporte

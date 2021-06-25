@@ -34,7 +34,7 @@ class ReservaDeporte(models.Model):
 		verbose_name_plural = 'Deportes'
 		verbose_name = 'la reserva'
 	def __str__(self):
-		return '{}'.format(self.usuario)
+		return '{}'.format(self.deporte)
 
 
 def reducir_cantidad_deporte(sender, instance, **kwargs):
@@ -69,7 +69,7 @@ class ReservaHotel(models.Model):
 		verbose_name_plural = 'Cabañas'
 		verbose_name = 'la reserva'
 	def __str__(self):
-		return '{}'.format(self.usuario)
+		return '{}'.format(self.hotel)
 
 # Modelo de reserva para platos tipicos
 class ReservaPlato(models.Model):
@@ -95,7 +95,7 @@ class ReservaPlato(models.Model):
 		verbose_name_plural = 'Platos Tipicos'
 		verbose_name = 'la reserva'
 	def __str__(self):
-		return '{}'.format(self.usuario)
+		return '{}'.format(self.plato)
 
 # Modelo de reserva para lugares turisticos
 class ReservaTurismo(models.Model):
@@ -121,4 +121,4 @@ class ReservaTurismo(models.Model):
 		verbose_name_plural = 'Lugares Turísticos'
 		verbose_name = 'la reserva'
 	def __str__(self):
-		return '{}'.format(self.usuario)
+		return '{}'.format(self.turismo)

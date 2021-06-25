@@ -47,6 +47,8 @@ urlpatterns = [
 	path('perfil/notificaciones/', NotificacionesUser.as_view(), name='notificaciones'),
 	path('perfil/notificacion_confirm_reserva/', NotificacionConfirmReserva.as_view(), name='notificacion_confirm_reservan'),
 	path('perfil/notificacion_confirm_cero/', NotificacionCero.as_view(), name='notificacion_confirm_cero'),
+	path('perfil/bucar_notificaciones/', BuscarNotificaciones.as_view(), name='buscar_notificaciones'),
+
 	#urls para reservas de user en perfil
 	path('perfil/listar_mis_reservas/', ListarReservasUser.as_view(), name = 'listar_reservas_user_deportes'),
 	path('perfil/reserva_detalles_deporte/<int:pk>/',DeportePerfilReservaDetallesUser.as_view(), name = 'reserva_detalles_user_deporte'),

@@ -1,0 +1,23 @@
+notificaciones:
+	¡cuidado.
+	*las notificaciones estan realizadas mediante el paquete django-notifications-hq
+	*para este proyecto sus campos principales son actor,recipient,verb,target
+ 		lo cual el campo mas importante es verb
+	 	este campo debe guardarse solamente con mensaje evitando cualquier numero
+	 	debido a que se utiliza para que se utiliza para caducar las fechas de reserva
+	 	es decir:
+	 		en las tablas de reservas, el campo verb se guarda como string una fecha 
+	 			por ejemplo: "2021/06/25"
+
+	 		en al validacion se verifica que exista un numero dentro del string
+	 		si contiene un numero este se transforma a fecha para realizar las respectivas validaciones
+	 	por ello si se guarda en otras notificaciones el campo verb con un mensaje que contenga numeros
+	 	este dara error
+	 	es decir:
+	 		si se guarda en el campo verb con un string
+	 			por ejemplo: "reserva25"
+
+	 		al momento de validar que contenga el numero este lo va a encontrar
+	 		por lo cual dara un error al momento de transformar de string a fecha debido a que 
+	 		el string no tiene una estructura correcta de date.
+

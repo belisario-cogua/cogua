@@ -1,6 +1,6 @@
 from Turismo.configuracion.base import *
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240']
 

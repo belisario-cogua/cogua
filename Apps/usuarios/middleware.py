@@ -15,30 +15,6 @@ class PruebaMiddleware:
 
 	def process_view(sel, request, view_func, view_args, view_kwargs):
 		url = request.META.get('PATH_INFO')
-		notificacion = Notification.objects.all()
-		ahora = timezone.localtime()
-
-		for noti in notificacion:
-			cantidad = noti.description
-			var = any(chr.isdigit() for chr in noti.verb)
-			if(var == True):
-				obtener_fecha = datetime.strptime(str(noti.verb), '%Y-%m-%d').date()
-				today = date.today()
-				if today > obtener_fecha:
-					if noti.emailed == False and noti.description == '1':
-						noti.emailed = True
-						noti.save()
-
-						notificar = Usuario.objects.get(id=noti.actor_object_id)
-						notitempo = notificar.notificacion + int(cantidad)
-						notificar.notificacion = notitempo
-						notificar.save()
-
-						noti.description = "0"
-						noti.save()
-
-						noti.timestamp = ahora
-						noti.save()
 
 		if request.user.is_authenticated:
 

@@ -7,7 +7,7 @@ ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dimpage',
+        'NAME': 'Turcoguabelisario',
         'USER': 'coguabelisarioquevedo',
         'PASSWORD': 'belisario172coguatursetecientos',
         'PORT': '5432',

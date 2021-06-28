@@ -17,105 +17,115 @@ $(document).ready(function(){
 			dataType: "json",
 			success: function(response){
 				$('#container-notificaiones').empty();
-				for(let i = 0;i < response.length;i++){
-					console.log(response[i]["fields"]["data"]["tipo"])
+				if (response == "") {
 					let contenedor = '<div>';
-					//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
-					var tiempo = response[i]["fields"]["timestamp"];
+					contenedor += '<div>\n\
+					<div class="dropdown-divider divide"></div>';
+					contenedor += '<a class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b;">\n\
+					<p style="margin-left:60px;"> No tienes notificaciones';
+					contenedor += '</div>';
+					$('#container-notificaiones').append(contenedor);
+				}else{
+					for(let i = 0;i < response.length;i++){
+						let contenedor = '<div>';
+						//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
+						var tiempo = response[i]["fields"]["timestamp"];
 
-					if (response[i]["fields"]["data"]["tipo"] == "comentario") {
-						contenedor += '<div>\n\
-						<div class="dropdown-divider divide"></div>';
-						contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
-						<p><span class="usuario-notificado">'+response[i]["fields"]["data"]["nombres"]+' '+response[i]["fields"]["data"]["apellidos"]+'</span> a comentado\n\
-		                "'+response[i]["fields"]["data"]["comentario"]+'"';
-		                contenedor += '</p><p><span class="reserva-confirmado">Publicación: </span>';
-			            
-		                contenedor += response[i]["fields"]["data"]["publicacion"] + '</p>';
-						contenedor += obtenerTiempo(tiempo);
-						contenedor += '</p></a>\n\
-						</div>';
-						contenedor += '</div>';
-						$('#container-notificaiones').append(contenedor);
-
-					}else if(response[i]["fields"]["data"]["tipo"] == "solicitud") {
-						contenedor += '<div>\n\
-						<div class="dropdown-divider divide"></div>';
-						if (response[i]["fields"]["level"]=='success') {
-							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
-							<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> te agradecemos por preferirnos\n\
-			                esperamos disfrutes de tu viaje con nosotros.';
-			                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
-						}else if (response[i]["fields"]["level"]=='warning') {
-							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
-							<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> tu reserva ha sido cancelada\n\
-			                te esperamos para la proxima.';
-			                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
-						}
-			            
-		                contenedor += response[i]["fields"]["verb"] + '</p>\n\
-		                <p><span class="aceptado-por">Por\n\
-		                <span class="aceptado-de">Belisario quevedo</span></span>';
-		                contenedor += obtenerTiempo(tiempo);
-		                contenedor += '</p></a>\n\
-						</div>';
-						contenedor += '</div>';
-						$('#container-notificaiones').append(contenedor);
-				        
-						
-						
-					
-					}else if(response[i]["fields"]["data"]["tipo"] == "caducar"){
-						if (response[i]["fields"]["emailed"] == true && response[i]["fields"]["description"] == "0") {
+						if (response[i]["fields"]["data"]["tipo"] == "comentario") {
 							contenedor += '<div>\n\
 							<div class="dropdown-divider divide"></div>';
-							if (response[i]["fields"]["data"]["turismo"] == "cabaña") {
-								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["cabaña"]+'"';
-								contenedor += '</span> a caducado\n\
-				                te esperamos para la próxima.';
-				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
-				                contenedor += 'Cabaña</p>';
-							
-							}else if (response[i]["fields"]["data"]["turismo"] == "deporte") {
-								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["deporte"]+'"';
-								contenedor += '</span> a caducado\n\
-				                te esperamos para la próxima.';
-				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
-				                contenedor += 'Deporte</p>';
-							
-							}else if (response[i]["fields"]["data"]["turismo"] == "platostipico") {
-								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["plato"]+'"';
-								contenedor += '</span> a caducado\n\
-				                te esperamos para la próxima.';
-				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
-				                contenedor += 'Plato Típico</p>';
-							
-							}else if (response[i]["fields"]["data"]["turismo"] == "lugarturistico") {
-								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-								<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["lugar"]+'"';
-								contenedor += '</span> a caducado\n\
-				                te esperamos para la próxima.';
-				                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
-				                contenedor += 'Lugar Turístico</p>';
-							}
+							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
+							<p><span class="usuario-notificado">'+response[i]["fields"]["data"]["nombres"]+' '+response[i]["fields"]["data"]["apellidos"]+'</span> a comentado\n\
+			                "'+response[i]["fields"]["data"]["comentario"]+'"';
+			                contenedor += '</p><p><span class="reserva-confirmado">Publicación: </span>';
+				            
+			                contenedor += response[i]["fields"]["data"]["publicacion"] + '</p>';
 							contenedor += obtenerTiempo(tiempo);
 							contenedor += '</p></a>\n\
 							</div>';
 							contenedor += '</div>';
 							$('#container-notificaiones').append(contenedor);
-						}
+
+						}else if(response[i]["fields"]["data"]["tipo"] == "solicitud") {
+							contenedor += '<div>\n\
+							<div class="dropdown-divider divide"></div>';
+							if (response[i]["fields"]["level"]=='success') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+							}else if (response[i]["fields"]["level"]=='warning') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+							}
+				            
+			                contenedor += response[i]["fields"]["verb"] + '</p>\n\
+			                <p><span class="aceptado-por">Por\n\
+			                <span class="aceptado-de">Belisario quevedo</span></span>';
+			                contenedor += obtenerTiempo(tiempo);
+			                contenedor += '</p></a>\n\
+							</div>';
+							contenedor += '</div>';
+							$('#container-notificaiones').append(contenedor);
+					        
+							
+							
 						
-					}					
-					
+						}else if(response[i]["fields"]["data"]["tipo"] == "caducar"){
+							if (response[i]["fields"]["emailed"] == true && response[i]["fields"]["description"] == "0") {
+								contenedor += '<div>\n\
+								<div class="dropdown-divider divide"></div>';
+								if (response[i]["fields"]["data"]["turismo"] == "cabaña") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["cabaña"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Cabaña</p>';
+								
+								}else if (response[i]["fields"]["data"]["turismo"] == "deporte") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["deporte"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Deporte</p>';
+								
+								}else if (response[i]["fields"]["data"]["turismo"] == "platostipico") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["plato"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Plato Típico</p>';
+								
+								}else if (response[i]["fields"]["data"]["turismo"] == "lugarturistico") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["lugar"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Lugar Turístico</p>';
+								}
+								contenedor += obtenerTiempo(tiempo);
+								contenedor += '</p></a>\n\
+								</div>';
+								contenedor += '</div>';
+								$('#container-notificaiones').append(contenedor);
+							}
+							
+						}					
+						
+						
+
+			            
 					
 
-		            
-				
-
+					}
 				}
+				
 			},
 			error: function(error){
 				console.log(error);

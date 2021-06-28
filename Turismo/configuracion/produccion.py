@@ -1,13 +1,13 @@
 from Turismo.configuracion.base import *
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Turcoguabelisario',
+        'NAME': 'turcoguabelisario',
         'USER': 'coguabelisarioquevedo',
         'PASSWORD': 'belisario172coguatursetecientos',
         'PORT': '5432',

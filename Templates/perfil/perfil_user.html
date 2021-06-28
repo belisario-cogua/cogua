@@ -491,7 +491,11 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
       <div class="container-fluid">
         {% block tablatitulo %}
         <div class=" pu-titulo-todo-div" style="margin-top: 20px;">
-            <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif">PERFIL DE USUARIO</h1><!-- /.col -->
+          {% if request.user.is_staff %}
+            <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif">PERFIL DE USUARIO: ADMINISTRADOR</h1><!-- /.col -->
+          {% else %}
+            <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif">PERFIL DE USUARIO</h1>
+          {% endif %}
         </div><!-- /.row -->
         {% endblock tablatitulo %}
       </div><!-- /.container-fluid -->
@@ -568,30 +572,55 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               </div>
               <!-- Div para mostrar datos del usario responsive -->
                <!-- 3 graficos de colores del perfil de usuario -->
-              <div class="pu-contenedor-inf-global" style="text-align: center; background-color: #ECF1F6">
-                <div class="pu-inf-global1" style="">
-                  <i class="far fa-check-circle" style=""></i>
-                  <div class="pu-inf-global-info">
-                    <p class="pu-info-parrafo1">2</p>
-                    <p class="pu-info-parrafo2">VISITADOS</p>
+              {% if request.user.is_staff %}
+                <div class="pu-contenedor-inf-global" style="text-align: center; background-color: #ECF1F6">
+                  <div class="pu-inf-global1" style="">
+                    <i class="fas fa-users" style="font-size: 40px;"></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1">8</p>
+                      <p class="pu-info-parrafo2">USUARIOS</p>
+                    </div>
+                  </div>
+                  <div class="pu-inf-global2" style="">
+                    <i class="far fa-bell" style=""></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">12</p>
+                      <p class="pu-info-parrafo2">SOLICITUDES PENDIENTES</p>
+                    </div>
+                  </div>
+                  <div class="pu-inf-global3" style="">
+                    <i class="fas fa-calendar-alt" style="font-size: 33px;"></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1">5</p>
+                      <p class="pu-info-parrafo2">RESERVACIONES PARA ESTE MES</p>
+                    </div>
                   </div>
                 </div>
-                <div class="pu-inf-global2" style="">
-                  <i class="far fa-bell" style=""></i>
-                  <div class="pu-inf-global-info">
-                    <p class="pu-info-parrafo1 pu-info-parrafo1-temp">5</p>
-                    <p class="pu-info-parrafo2">RERSERVAS PENDIENTES</p>
+              {% else %}
+                <div class="pu-contenedor-inf-global" style="text-align: center; background-color: #ECF1F6">
+                  <div class="pu-inf-global1" style="">
+                    <i class="far fa-check-circle" style=""></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1">2</p>
+                      <p class="pu-info-parrafo2">VISITADOS</p>
+                    </div>
+                  </div>
+                  <div class="pu-inf-global2" style="">
+                    <i class="far fa-bell" style=""></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">5</p>
+                      <p class="pu-info-parrafo2">RERSERVAS PENDIENTES</p>
+                    </div>
+                  </div>
+                  <div class="pu-inf-global3" style="">
+                    <i class="far fa-calendar-times" style=""></i>
+                    <div class="pu-inf-global-info">
+                      <p class="pu-info-parrafo1">1</p>
+                      <p class="pu-info-parrafo2">SIN VISITAR</p>
+                    </div>
                   </div>
                 </div>
-                <div class="pu-inf-global3" style="">
-                  <i class="far fa-calendar-times" style=""></i>
-                  <div class="pu-inf-global-info">
-                    <p class="pu-info-parrafo1">1</p>
-                    <p class="pu-info-parrafo2">SIN VISITAR</p>
-                  </div>
-                </div>
-              </div>
-
+              {% endif %}
               <!-- FIN 3 graficos de colores del perfil de usuario -->
             {% endblock tabla %}
           </div>

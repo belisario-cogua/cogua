@@ -9,15 +9,14 @@ $(document).ready(function(){
 	if (soli > 0) {
 		$('.solicitud-counter').show();
 	}
-
-	setInterval(function(){
 	$.ajax({
 			url: "/perfil/notificaciones/",
 			type: "get",
 			dataType: "json",
 			success: function(response){
 				$('#container-notificaiones').empty();
-				if (response == "") {
+				numresponse = response.length
+				if (numresponse == 0) {
 					let contenedor = '<div>';
 					contenedor += '<div>\n\
 					<div class="dropdown-divider divide"></div>';
@@ -30,9 +29,7 @@ $(document).ready(function(){
 						let contenedor = '<div>';
 						//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
 						var tiempo = response[i]["fields"]["created"];
-
 						if (response[i]["fields"]["tipo"] == "comentario") {
-							console.log(response[i])
 							contenedor += '<div>\n\
 							<div class="dropdown-divider divide"></div>';
 							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
@@ -48,7 +45,6 @@ $(document).ready(function(){
 							$('#container-notificaiones').append(contenedor);
 
 						}else if(response[i]["fields"]["tipo"] == "solicitud") {
-							console.log(response[i]["fields"]["destinatario"])
 							contenedor += '<div>\n\
 							<div class="dropdown-divider divide"></div>';
 							if (response[i]["fields"]["solicitud"]=='Reserva hotel aceptado') {
@@ -134,7 +130,231 @@ $(document).ready(function(){
 						}else if(response[i]["fields"]["tipo"] == "caducar"){
 
 							if (response[i]["fields"]["enviado"] == true && response[i]["fields"]["notificacion_num"] == 0) {
-								console.log(response[i])
+								contenedor += '<div>\n\
+								<div class="dropdown-divider divide"></div>';
+								if (response[i]["fields"]["solicitud"] == "reserva hotel") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_hotel"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Cabaña</p>';
+								
+								}else if (response[i]["fields"]["solicitud"] == "reserva deporte") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_deporte"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Deporte</p>';
+								
+								}else if (response[i]["fields"]["solicitud"] == "reserva plato") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_plato"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Plato Típico</p>';
+								
+								}else if (response[i]["fields"]["solicitud"] == "reserva turismo") {
+									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_turismo"]+'"';
+									contenedor += '</span> a caducado\n\
+					                te esperamos para la próxima.';
+					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
+					                contenedor += 'Lugar Turístico</p>';
+								
+								}
+								contenedor += obtenerTiempo(tiempo);
+								contenedor += '</p></a>\n\
+								</div>';
+								contenedor += '</div>';
+								$('#container-notificaiones').append(contenedor);
+							}
+							
+						}					
+						
+						
+
+			            
+					
+
+					}
+				}
+				
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	
+		
+	//para mostrar el numero de solicituedes en el menu
+	$.ajax({
+		url: "/perfil/solicitudes_reservas_admin/",
+		type: "get",
+		dataType: "json",
+		success: function(response){
+			for (let i = 0; i < response.length; i++) {
+				var temp = response[i]["fields"]['solicitud'];
+				var solicitud = document.getElementById('solicitud');
+				if (temp > 0) {
+					solicitud.innerHTML = temp;
+					$('.solicitud-counter').show();
+				}else{
+					$('.solicitud-counter').hide();
+				}
+			}
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+	//para mostrar el numero de notificaciones de confirmacion de reserva en el icon campana
+	$.ajax({
+		url: "/perfil/notificacion_confirm_reserva/",
+		type: "get",
+		dataType: "json",
+		success: function(response){
+			for (let i = 0; i < response.length; i++) {
+				var temp = response[i]["fields"]['notificacion'];
+				var notificacion = document.getElementById('notificacion');
+				if (temp > 0) {
+					notificacion.innerHTML = temp;
+					$('.notification-counter').show();
+				}else{
+					$('.notification-counter').hide();
+				}
+				
+			}
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+
+	setInterval(function(){
+	$.ajax({
+			url: "/perfil/notificaciones/",
+			type: "get",
+			dataType: "json",
+			success: function(response){
+				$('#container-notificaiones').empty();
+				numresponse = response.length
+				if (numresponse == 0) {
+					let contenedor = '<div>';
+					contenedor += '<div>\n\
+					<div class="dropdown-divider divide"></div>';
+					contenedor += '<a class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b;">\n\
+					<p style="margin-left:60px;"> No tienes notificaciones';
+					contenedor += '</div>';
+					$('#container-notificaiones').append(contenedor);
+				}else{
+					for(let i = 0;i < response.length;i++){
+						let contenedor = '<div>';
+						//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
+						var tiempo = response[i]["fields"]["created"];
+						if (response[i]["fields"]["tipo"] == "comentario") {
+							contenedor += '<div>\n\
+							<div class="dropdown-divider divide"></div>';
+							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
+							<p><span class="usuario-notificado">'+response[i]["fields"]["actor"]+'</span> a comentado\n\
+			                "'+response[i]["fields"]["comentario"]+'"';
+			                contenedor += '</p><p><span class="reserva-confirmado">Publicación: </span>';
+				            
+			                contenedor += response[i]["fields"]["publicacion"] + '</p>';
+							contenedor += obtenerTiempo(tiempo);
+							contenedor += '</p></a>\n\
+							</div>';
+							contenedor += '</div>';
+							$('#container-notificaiones').append(contenedor);
+
+						}else if(response[i]["fields"]["tipo"] == "solicitud") {
+							contenedor += '<div>\n\
+							<div class="dropdown-divider divide"></div>';
+							if (response[i]["fields"]["solicitud"]=='Reserva hotel aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_hotel"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva hotel cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_hotel"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+							if (response[i]["fields"]["solicitud"]=='Reserva deporte aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_deporte"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva deporte cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_deporte"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+							if (response[i]["fields"]["solicitud"]=='Reserva plato aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_plato"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva plato cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_plato"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+							if (response[i]["fields"]["solicitud"]=='Reserva turismo aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_turismo"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva turismo cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_turismo"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+
+				            
+			                
+			                contenedor += obtenerTiempo(tiempo);
+			                contenedor += '</p></a>\n\
+							</div>';
+							contenedor += '</div>';
+							$('#container-notificaiones').append(contenedor);
+					        
+							
+							
+						
+						}else if(response[i]["fields"]["tipo"] == "caducar"){
+
+							if (response[i]["fields"]["enviado"] == true && response[i]["fields"]["notificacion_num"] == 0) {
 								contenedor += '<div>\n\
 								<div class="dropdown-divider divide"></div>';
 								if (response[i]["fields"]["solicitud"] == "reserva hotel") {
@@ -237,7 +457,7 @@ $(document).ready(function(){
 				console.log(error);
 			}
 		});
-	}, 4000);
+	}, 3000);
 });
 function obtenerTiempo(tiempo){
 	n1 =  new Date(tiempo);
@@ -349,7 +569,7 @@ function notificacion_reducir_cero(){
 		url: '/perfil/notificacion_confirm_cero/',
 		type: 'post',
 		success: function(response){
-			console.log("notificacion reducido")
+			//response d enotificacion reducido
 		},
 		error: function(error){
 			sweetError(error.responseJSON.mensaje);

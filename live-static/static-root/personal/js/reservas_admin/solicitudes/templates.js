@@ -6,28 +6,43 @@ function listarSolicitudesReservas(){
 		type: "get",
 		dataType: "json",
 		success: function(response){
+			var temp = response.length;
+			var total = document.getElementById('total');
+			if (temp > 0) {
+				total.innerHTML = temp;
+				
+				$('.total').show();
+				$('.container-solicitudes').show();
+				
+			}else{
+				$('.t-total').hide();
+			}
+
 			if($.fn.DataTable.isDataTable('#tabla-solicitudes-turismos')){
 				$('#tabla-solicitudes-turismos ').DataTable().destroy();
 			}
 			$('#tabla-solicitudes-turismos tbody').html("");
+			var numSinConfirmar = 0;
+			var numAceptado = 0;
+			var numCancelado = 0;
+			
 			for(let i = 0;i < response.length;i++){
+				if (response[i]["fields"]["activado"]==false) {
+					numSinConfirmar = numSinConfirmar + 1;
+				}
+				if (response[i]["fields"]["activado"]==true && response[i]["fields"]["confirmar"]==true) {
+					numAceptado = numAceptado + 1;
+				}
+				if (response[i]["fields"]["activado"]==true && response[i]["fields"]["confirmar"]==false) {
+					numCancelado = numCancelado + 1;
+				}
+				
+
 				let fila = '<tr>';
 				modelo = response[i]["model"];
 
-				var fecha = response[i]["fields"]['created'];
-				fechaReserva = new Date(fecha);
-				var day = fechaReserva.getDate();
-				var month = fechaReserva.getMonth();
-				var year = fechaReserva.getFullYear();
-				var meses = [
-							  "Enero", "Febrero", "Marzo",
-							  "Abril", "Mayo", "Junio", "Julio",
-							  "Agosto", "Septiembre", "Octubre",
-							  "Noviembre", "Diciembre"
-							]
-				var dias = ["Domingo","Lunes", "Martes", "Miercoles","Jueves", "Viernes", "Sábado"];
-				created  = 'El ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
-
+				var fecha = response[i]["fields"]['fecha_inicial'];
+				
 				var usuario = response[i]["fields"]['usuario'];
 				usuario = usuario.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) { 
 				    return letter.toUpperCase(); 
@@ -38,6 +53,15 @@ function listarSolicitudesReservas(){
 				}
 
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + (i+1) + '</a></td>';
+				if (response[i]["fields"]['activado'] == false) {
+					fila += '<td class="fila-table"><a href="#" class="link" style="background:#a30707; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Sin confirmar</a></td>';
+				}else if (response[i]["fields"]['activado'] == true){
+					if (response[i]["fields"]['confirmar'] == true) {
+						fila += '<td class="fila-table"><a href="#" class="link" style="background:#00A40E; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Aceptado</a></td>';
+					}else{
+						fila += '<td class="fila-table"><a href="#" class="link" style="background:#d47108; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Cancelado</a></td>';
+					}
+				}
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + usuario + '</a></td>';
 				if (modelo == "reservas.reservadeporte") {
 					deporte = response[i]["fields"]['deporte'];
@@ -63,7 +87,7 @@ function listarSolicitudesReservas(){
 					fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Cabaña</a></td>';
 					fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + hotel +'</a></td>';
 				}
-				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + created +'</a></td>';
+				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
 				fila += '<td class="text-center fila-table">';
 				if (response[i]["fields"]['confirmar'] == false) {
 					fila += '<button type="button" class="btn btn-xs tableButton" onclick="confirmarReservaDeporte(\''+response[i]['pk']+'\',\''+usuario+'\',\''+modelo+'\');">';
@@ -72,9 +96,37 @@ function listarSolicitudesReservas(){
 					fila += '<button type="button" class="btn btn-xs tableButton" onclick="cancelarReservaDeporte(\''+response[i]['pk']+'\',\''+usuario+'\',\''+modelo+'\');">';
 					fila += '<img src="/static/personal/icons/comprobar.png" style="width:25px;height:25px;float:right;"/></button></td>';
 				}
-				console.log(modelo)
 				$('#tabla-solicitudes-turismos tbody').append(fila);
 			}
+
+			var sin_confirmar = document.getElementById('t-sin-confirmar-num');
+			var aceptado = document.getElementById('t-aceptados-num');
+			var cancelado = document.getElementById('t-cancelados-num');
+
+			if (numSinConfirmar > 0) {
+				sin_confirmar.innerHTML = numSinConfirmar;
+				$('.t-sin-confirmar').show();
+			}
+			else{
+				$('.t-sin-confirmar').hide();
+			}
+
+			if (numAceptado > 0) {
+				aceptado.innerHTML = numAceptado;
+				$('.t-aceptados').show();
+
+			}else{
+				$('.t-aceptados').hide();
+			}
+
+			if (numCancelado > 0) {
+				cancelado.innerHTML = numCancelado;
+				$('.t-cancelados').show();
+
+			}else{
+				$('.t-cancelados').hide();
+			}
+
 			$('#tabla-solicitudes-turismos').DataTable({
 				//estos son parametros que tiene definido el data table internamente
 				language: {
@@ -107,10 +159,43 @@ function listarSolicitudesReservas(){
 //funcion que me permite llamar a la funcion de peticion ajax, en este caso ListarUsuarios
 $(document).ready(function(){
 	listarSolicitudesReservas();
-	enumerar_solicitudes()
 });
 
+function fechaInicial(fecha){
+	fechaReserva = new Date(fecha.replace(/-/g, '\/'));
+	var day = fechaReserva.getDate();
+	var month = fechaReserva.getMonth();
+	var year = fechaReserva.getFullYear();
+	var meses = [
+				  "Enero", "Febrero", "Marzo",
+				  "Abril", "Mayo", "Junio", "Julio",
+				  "Agosto", "Septiembre", "Octubre",
+				  "Noviembre", "Diciembre"
+				]
+	var dias = ["Domingo","Lunes", "Martes", "Miercoles","Jueves", "Viernes", "Sábado"];
 
+	today = new Date()
+	mesActual = "";
+	diaActual = "";
+	inicio = "";
+	if ((today.getMonth()+1)<10) {
+		mesActual = '0'+(today.getMonth()+1);
+	}else{
+		mesActual = (today.getMonth()+1);
+	}
+	if ((today.getDate())<10) {
+		diaActual = '0'+today.getDate();
+	}else{
+		diaActual = today.getDate();
+	}
+	hoy = today.getFullYear()+'-'+mesActual+'-'+diaActual;
+	if (hoy == fecha) {
+		inicio  = 'Hoy, ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
+	}else{
+		inicio  = 'El ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
+	}
+	return inicio;
+}
 function confirmarReservaDeporte(pk,usuario,modelo){
 	var nombre;
 	if (modelo == "reservas.reservadeporte") {
@@ -152,7 +237,6 @@ function confirmarReservaDeporte(pk,usuario,modelo){
 				  timer: 1500
 				})
 				listarSolicitudesReservas();
-				enumerar_solicitudes()
 			},
 			error: function(error){
 				sweetError(error.responseJSON.mensaje);
@@ -203,7 +287,6 @@ function cancelarReservaDeporte(pk,usuario,modelo){
 				  timer: 1500
 				})
 				listarSolicitudesReservas();
-				enumerar_solicitudes()
 			},
 			error: function(error){
 				sweetError(error.responseJSON.mensaje);
@@ -211,50 +294,4 @@ function cancelarReservaDeporte(pk,usuario,modelo){
 		});
 	  }
 	})
-}
-
-function enumerar_solicitudes(){
-	//para mostrar el total de solicitues
-	$.ajax({
-		url: "/perfil/enumerar_solicitudes_total/",
-		type: "get",
-		dataType: "json",
-		success: function(response){
-			var temp = response.total;
-			var temp1 = response.pendiente;
-			var temp2 = response.aceptado;
-
-			var total = document.getElementById('t-total-num');
-			var pendiente = document.getElementById('t-pendientes-num');
-			var aceptado = document.getElementById('t-aceptados-num');
-
-			if (temp > 0) {
-				total.innerHTML = temp;
-				
-				aceptado.innerHTML = temp2;
-				$('.t-total').show();
-				$('.container-solicitudes').show();
-
-				if (temp1 > 0 ) {
-					pendiente.innerHTML = temp1;
-					$('.t-pendientes').show();
-				}else{
-					$("#container-solicitudes-id").addClass("container-solicitudes-temp");
-					$("#t-aceptados-id").addClass("t-aceptados-temp");
-					$("#t-total-id").addClass("t-total-temp");
-					$('.t-pendientes').hide();
-				};
-				if (temp2 > 0) {
-					$('.t-aceptados').show();
-				}
-			}else{
-				$('.t-total').hide();
-				$('.t-pendientes').hide();
-				$('.t-aceptados').hide();
-			}
-		},
-		error: function(error){
-			console.log(error);
-		}
-	});
 }

@@ -1,5 +1,5 @@
 var $ = jQuery.noConflict();
-
+//configuraciones realizadas
 $(document).ready(function(){
 	var notifica = $('#notificacion').attr('data-value');
 	var soli = $('#solicitud').attr('data-value');

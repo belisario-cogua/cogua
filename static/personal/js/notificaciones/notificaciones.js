@@ -237,7 +237,7 @@ $(document).ready(function(){
 				console.log(error);
 			}
 		});
-	}, 3000);
+	}, 4000);
 });
 function obtenerTiempo(tiempo){
 	n1 =  new Date(tiempo);

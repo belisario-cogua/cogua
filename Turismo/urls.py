@@ -23,11 +23,9 @@ from django.contrib.auth.decorators import login_required
 #from Apps.deportes.views import ListarDeporte
 #from Apps.perfil.views import Perfil
 from Apps.perfil.views import Login, logoutUsuario, RegistrarUser,LoginConfirmed
-import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
     #url para iniciar sesion despues de confirmar el email
     path('accounts-confirmed/login/', LoginConfirmed.as_view(), name = 'login_confirmed'),
     #urls para login

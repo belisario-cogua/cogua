@@ -40,7 +40,6 @@ urlpatterns = [
 	#url para notificar el numero de solicitudes de todas las reservas
 	path('perfil/solicitudes_reservas_admin/', SolicitudesReservasAdmin.as_view(), name='solicitudes_reservas_admin'),
 	path('perfil/solicitud_confirm_cero/', SolicitudCero.as_view(), name='solicitud_confirm_cero'),
-	path('perfil/enumerar_solicitudes_total/', EnumerarSolicitudesReservasAdmin.as_view(), name='enumerar_solicitudes_total'),
 
 	#NOTIFICACIONES
 	#url para notificar el numero de notificaciones de reservas aceptadas

@@ -29,41 +29,99 @@ $(document).ready(function(){
 					for(let i = 0;i < response.length;i++){
 						let contenedor = '<div>';
 						//la varibale tiempo es enviada a la funcion obtenerTiempo(tiempo)
-						var tiempo = response[i]["fields"]["timestamp"];
+						var tiempo = response[i]["fields"]["created"];
 
-						if (response[i]["fields"]["data"]["tipo"] == "comentario") {
+						if (response[i]["fields"]["tipo"] == "comentario") {
+							console.log(response[i])
 							contenedor += '<div>\n\
 							<div class="dropdown-divider divide"></div>';
 							contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #b5fab4; height: 115px;">\n\
-							<p><span class="usuario-notificado">'+response[i]["fields"]["data"]["nombres"]+' '+response[i]["fields"]["data"]["apellidos"]+'</span> a comentado\n\
-			                "'+response[i]["fields"]["data"]["comentario"]+'"';
+							<p><span class="usuario-notificado">'+response[i]["fields"]["actor"]+'</span> a comentado\n\
+			                "'+response[i]["fields"]["comentario"]+'"';
 			                contenedor += '</p><p><span class="reserva-confirmado">Publicación: </span>';
 				            
-			                contenedor += response[i]["fields"]["data"]["publicacion"] + '</p>';
+			                contenedor += response[i]["fields"]["publicacion"] + '</p>';
 							contenedor += obtenerTiempo(tiempo);
 							contenedor += '</p></a>\n\
 							</div>';
 							contenedor += '</div>';
 							$('#container-notificaiones').append(contenedor);
 
-						}else if(response[i]["fields"]["data"]["tipo"] == "solicitud") {
+						}else if(response[i]["fields"]["tipo"] == "solicitud") {
+							console.log(response[i]["fields"]["destinatario"])
 							contenedor += '<div>\n\
 							<div class="dropdown-divider divide"></div>';
-							if (response[i]["fields"]["level"]=='success') {
+							if (response[i]["fields"]["solicitud"]=='Reserva hotel aceptado') {
 								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
-								<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> te agradecemos por preferirnos\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
 				                esperamos disfrutes de tu viaje con nosotros.';
 				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
-							}else if (response[i]["fields"]["level"]=='warning') {
+				                contenedor += response[i]["fields"]["reserva_hotel"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva hotel cancelado') {
 								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
-								<p><span class="usuario-notificado">'+response[i]["fields"]["recipient"]+'</span> tu reserva ha sido cancelada\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
 				                te esperamos para la proxima.';
 				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_hotel"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
 							}
+							if (response[i]["fields"]["solicitud"]=='Reserva deporte aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_deporte"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva deporte cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_deporte"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+							if (response[i]["fields"]["solicitud"]=='Reserva plato aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_plato"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva plato cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_plato"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+							if (response[i]["fields"]["solicitud"]=='Reserva turismo aceptado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #def4ff; height: 115px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> te agradecemos por preferirnos\n\
+				                esperamos disfrutes de tu viaje con nosotros.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva confirmado: </span>';
+				                contenedor += response[i]["fields"]["reserva_turismo"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}else if (response[i]["fields"]["solicitud"]=='Reserva turismo cancelado') {
+								contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede;height: 100px;">\n\
+								<p><span class="usuario-notificado">'+response[i]["fields"]["destinatario"]+'</span> tu reserva ha sido cancelada\n\
+				                te esperamos para la proxima.';
+				                contenedor += '</p><p><span class="reserva-confirmado">Reserva: </span>';
+				                contenedor += response[i]["fields"]["reserva_turismo"] + '</p>\n\
+				                <p><span class="aceptado-por">Por\n\
+				                <span class="aceptado-de">'+response[i]["fields"]["actor"]+'</span></span>';
+							}
+
 				            
-			                contenedor += response[i]["fields"]["verb"] + '</p>\n\
-			                <p><span class="aceptado-por">Por\n\
-			                <span class="aceptado-de">Belisario quevedo</span></span>';
+			                
 			                contenedor += obtenerTiempo(tiempo);
 			                contenedor += '</p></a>\n\
 							</div>';
@@ -73,41 +131,44 @@ $(document).ready(function(){
 							
 							
 						
-						}else if(response[i]["fields"]["data"]["tipo"] == "caducar"){
-							if (response[i]["fields"]["emailed"] == true && response[i]["fields"]["description"] == "0") {
+						}else if(response[i]["fields"]["tipo"] == "caducar"){
+
+							if (response[i]["fields"]["enviado"] == true && response[i]["fields"]["notificacion_num"] == 0) {
+								console.log(response[i])
 								contenedor += '<div>\n\
 								<div class="dropdown-divider divide"></div>';
-								if (response[i]["fields"]["data"]["turismo"] == "cabaña") {
+								if (response[i]["fields"]["solicitud"] == "reserva hotel") {
 									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["cabaña"]+'"';
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_hotel"]+'"';
 									contenedor += '</span> a caducado\n\
 					                te esperamos para la próxima.';
 					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
 					                contenedor += 'Cabaña</p>';
 								
-								}else if (response[i]["fields"]["data"]["turismo"] == "deporte") {
+								}else if (response[i]["fields"]["solicitud"] == "reserva deporte") {
 									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["deporte"]+'"';
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_deporte"]+'"';
 									contenedor += '</span> a caducado\n\
 					                te esperamos para la próxima.';
 					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
 					                contenedor += 'Deporte</p>';
 								
-								}else if (response[i]["fields"]["data"]["turismo"] == "platostipico") {
+								}else if (response[i]["fields"]["solicitud"] == "reserva plato") {
 									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["plato"]+'"';
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_plato"]+'"';
 									contenedor += '</span> a caducado\n\
 					                te esperamos para la próxima.';
 					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
 					                contenedor += 'Plato Típico</p>';
 								
-								}else if (response[i]["fields"]["data"]["turismo"] == "lugarturistico") {
+								}else if (response[i]["fields"]["solicitud"] == "reserva turismo") {
 									contenedor += '<a href="#" class="dropdown-item" data-widget="fullscreen" class="notificacion-informacion color-notificacion" style="font-size: 13px; color: #5c5b5b; background-color: #fadede; height: 115px;">\n\
-									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["data"]["lugar"]+'"';
+									<p><span class="usuario-notificado">Tu reserva "'+response[i]["fields"]["reserva_turismo"]+'"';
 									contenedor += '</span> a caducado\n\
 					                te esperamos para la próxima.';
 					                contenedor += '</p><p><span class="reserva-confirmado">Tipo reserva: </span>';
 					                contenedor += 'Lugar Turístico</p>';
+								
 								}
 								contenedor += obtenerTiempo(tiempo);
 								contenedor += '</p></a>\n\

@@ -11,7 +11,7 @@ from Apps.usuarios.models import Usuario
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from notifications.signals import notify
+from Apps.notificaciones.models import Notificacion as send
 import itertools 
 # Create your views here.
 
@@ -108,28 +108,24 @@ class AgregarComentario(CreateView):
 					comentario = comentario
 				)
 				nuevo_comentario.save()
-				
-				superuser = Usuario.objects.filter(is_superuser = True)
-				url_object = "nombre"
-				for suser in superuser:
-					solitempo = suser.notificacion + 1
-					suser.notificacion = solitempo
-					suser.save()
-					user = Usuario.objects.get(id=suser.id)
-					instance = Comentario.objects.get(id=nuevo_comentario.id)
-					notify.send(
-						request.user, 
-						recipient=user, 
-						verb="comentario",
-						target=instance,
-						level='success',
-						nombres=instance.usuario.nombres,
-						apellidos=instance.usuario.apellidos,
-						publicacion_id=instance.publicacion.id,
-						publicacion=instance.publicacion.nombre,
-						comentario=instance.comentario,
-						tipo="comentario"
-						)
+
+				superusuario = Usuario.objects.filter(is_superuser = True)
+				for superuser in superusuario:
+					solitempo = superuser.notificacion + 1
+					superuser.notificacion = solitempo
+					superuser.save()
+
+					user = Usuario.objects.get(id=superuser.id)
+					comentario = Comentario.objects.get(id=nuevo_comentario.id)
+
+					enviar = send(
+									tipo = "comentario",
+									actor = request.user,
+									destinatario = user,
+									comentario = comentario,
+									publicacion = publicacion,
+								)
+					enviar.save()
 
 				mensaje = "True"
 				response = JsonResponse({'mensaje':mensaje,'url':self.success_url})

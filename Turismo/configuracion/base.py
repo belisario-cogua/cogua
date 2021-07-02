@@ -48,11 +48,11 @@ INSTALLED_APPS = [
     'Apps.turismos',
     'Apps.usuarios',
     'Apps.publicaciones',
+    'Apps.notificaciones',
     'bootstrap4',
     'smartfields',
     'widget_tweaks',
     'preventconcurrentlogins',
-    'notifications',
 ]
 
 

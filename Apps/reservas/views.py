@@ -10,7 +10,7 @@ from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
 from Apps.turismos.models import Turismo
 from .forms import ReservaDeporteForm, ReservaHotelForm
-from notifications.signals import notify
+from Apps.notificaciones.models import Notificacion as send
 
 # Create your views here.
 primer_error_else = f'La reserva no se ha podido realizar, los campos de fechas aún están vacíos !'
@@ -69,19 +69,15 @@ class RegistrarReservaDeporte(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaDeporte.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='deporte',
-								deporte_id=reserva_actual.id,
-								deporte=reserva_actual.deporte.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva deporte",
+								notificacion_num = 1,
+								reserva_deporte = nueva_reserva
+							)
+							enviar.save()
+
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -126,19 +122,14 @@ class RegistrarReservaDeporte(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaDeporte.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='deporte',
-								deporte_id=reserva_actual.id,
-								deporte=reserva_actual.deporte.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva deporte",
+								notificacion_num = 1,
+								reserva_deporte = nueva_reserva
+							)
+							enviar.save()
 
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
@@ -228,13 +219,20 @@ class ConfirmarReserva(CreateView):
 				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
+					editar.activado = True
 					editar.save()
 
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de deporte aceptado",target=editar,level='success',tipo="solicitud")
-
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva deporte aceptado",
+						reserva_deporte = editar
+					)
+					enviar.save()
 					mensaje = "reserva del deporte aceptado"
 					response = JsonResponse({'mensaje':mensaje})
 					response.status_code = 201
@@ -247,7 +245,15 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de deporte cancelado",target=editar, level='warning',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva deporte cancelado",
+						reserva_deporte = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva del deporte cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -260,12 +266,21 @@ class ConfirmarReserva(CreateView):
 				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
+					editar.activado = True
 					editar.save()
 
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de lugar turístico aceptado",target=editar,level='success',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva turismo aceptado",
+						reserva_turismo = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva del lugar turistico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -279,7 +294,15 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de lugar turístico cancelado",target=editar, level='warning',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva turismo cancelado",
+						reserva_turismo = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva del lugar turistico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -292,12 +315,21 @@ class ConfirmarReserva(CreateView):
 				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
+					editar.activado = True
 					editar.save()
 
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de plato típico aceptado",target=editar,level='success',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva plato aceptado",
+						reserva_plato = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva del plato tipico aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -311,7 +343,15 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de plato típico cancelado",target=editar, level='warning',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva plato cancelado",
+						reserva_plato = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva del plato tipico cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -324,12 +364,21 @@ class ConfirmarReserva(CreateView):
 				notificacion = Usuario.objects.get(id=editar.usuario.id)
 				if opcion == "confirmar":
 					editar.confirmar = True
+					editar.activado = True
 					editar.save()
 
 					notitempo = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de la cabaña aceptado",target=editar,level='success',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva hotel aceptado",
+						reserva_hotel = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva de la cabaña aceptado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -343,7 +392,15 @@ class ConfirmarReserva(CreateView):
 					notitempo1 = notificacion.notificacion + 1
 					notificacion.notificacion = notitempo1
 					notificacion.save()
-					notify.send(request.user, recipient=notificacion, verb="solicitud",description="Reserva de la cabaña cancelado",target=editar, level='warning',tipo="solicitud")
+
+					enviar = send(
+						tipo = "solicitud",
+						actor = request.user,
+						destinatario = notificacion,
+						solicitud = "Reserva hotel cancelado",
+						reserva_hotel = editar
+					)
+					enviar.save()
 
 					mensaje = "reserva de la cabaña cancelado"
 					response = JsonResponse({'mensaje':mensaje})
@@ -398,19 +455,15 @@ class RegistrarReservaHotel(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaHotel.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='cabaña',
-								cabaña_id=reserva_actual.id,
-								cabaña=reserva_actual.hotel.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva hotel",
+								notificacion_num = 1,
+								reserva_hotel = nueva_reserva
+							)
+							enviar.save()
+
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -455,19 +508,15 @@ class RegistrarReservaHotel(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaHotel.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='cabaña',
-								cabaña_id=reserva_actual.id,
-								cabaña=reserva_actual.hotel.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva hotel",
+								notificacion_num = 1,
+								reserva_hotel = nueva_reserva
+							)
+							enviar.save()
+
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -589,19 +638,15 @@ class RegistrarReservaPlato(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaPlato.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='platostipico',
-								plato_id=reserva_actual.id,
-								plato=reserva_actual.plato.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva plato",
+								notificacion_num = 1,
+								reserva_plato = nueva_reserva
+							)
+							enviar.save()
+
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -646,19 +691,15 @@ class RegistrarReservaPlato(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaPlato.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='platostipico',
-								plato_id=reserva_actual.id,
-								plato=reserva_actual.plato.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva plato",
+								notificacion_num = 1,
+								reserva_plato = nueva_reserva
+							)
+							enviar.save()
+
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
 							response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})
@@ -780,19 +821,14 @@ class RegistrarReservaTurismo(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaTurismo.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='lugarturistico',
-								turismo_id=reserva_actual.id,
-								lugar=reserva_actual.turismo.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva turismo",
+								notificacion_num = 1,
+								reserva_turismo = nueva_reserva
+							)
+							enviar.save()
 
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'
@@ -838,19 +874,14 @@ class RegistrarReservaTurismo(CreateView):
 								soli.solicitud = solitempo
 								soli.save()
 
-							reserva_actual = ReservaTurismo.objects.get(id=nueva_reserva.id)
-							notify.send(
-								request.user, 
-								recipient=request.user, 
-								verb=fecha_inicial,
-								target=reserva_actual,
-								description="1",
-								level='info',
-								turismo='lugarturistico',
-								turismo_id=reserva_actual.id,
-								lugar=reserva_actual.turismo.nombre,
-								tipo="caducar"
-								)
+							enviar = send(
+								tipo = "caducar",
+								destinatario = request.user,
+								solicitud = "reserva turismo",
+								notificacion_num = 1,
+								reserva_turismo = nueva_reserva
+							)
+							enviar.save()
 
 							mensaje = f'{self.model.__name__} registrado correctamente!'
 							error = 'No hay error!'

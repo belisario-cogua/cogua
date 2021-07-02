@@ -18,11 +18,16 @@ class ReservaDeporte(models.Model):
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	#el campo confirmar es validado si el administrador lo solicita, esto quiere decir que el cliente a llegado a la visita
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
+	#activado=este campo se activara cuando se haya aceptado o cancelado la reserva
+	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
 	#el campo visita es validado automaticamente por el sistema cuando el tiempo de reserva terminó,
 	#esto quiere decir que el cliente no a llegado a a la visita
 	visita = models.BooleanField('Visita (Turismo Visitado)',default = True)
 	created = models.DateTimeField('Creado', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Modificado', editable=False, null=True, blank=True)
+
+	def natural_key(self):
+		return f'{self.deporte}'
 
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -46,9 +51,13 @@ class ReservaHotel(models.Model):
 	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
+	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
 	visita = models.BooleanField('Visita (Turismo Visitado)',default = True)
 	created = models.DateTimeField('Fecha de publicacion', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Fecha de modificacion', editable=False, null=True, blank=True)
+
+	def natural_key(self):
+		return f'{self.hotel}'
 
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -72,9 +81,13 @@ class ReservaPlato(models.Model):
 	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
+	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
 	visita = models.BooleanField('Visita (Turismo Visitado)',default = True)
 	created = models.DateTimeField('Fecha de publicacion', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Fecha de modificacion', editable=False, null=True, blank=True)
+
+	def natural_key(self):
+		return f'{self.plato}'
 
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -98,9 +111,13 @@ class ReservaTurismo(models.Model):
 	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
+	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
 	visita = models.BooleanField('Visita (Turismo Visitado)',default = True)
 	created = models.DateTimeField('Fecha de publicacion', editable=False, null=True,blank=True)
 	modified = models.DateTimeField('Fecha de modificacion', editable=False, null=True, blank=True)
+
+	def natural_key(self):
+		return f'{self.turismo}'
 
 	def save(self, *args, **kwargs):
 		if not self.id:

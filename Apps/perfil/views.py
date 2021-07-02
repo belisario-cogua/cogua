@@ -35,8 +35,7 @@ from Apps.platos.models import Plato
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from datetime import date, datetime 
 import copy
-from notifications.signals import notify
-from notifications.models import *
+from Apps.notificaciones.models import Notificacion
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
 from Apps.publicaciones.models import Publicacion, Comentario
@@ -249,7 +248,8 @@ class ListarReservasHotelesAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaHotel
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.filter(estado=True)
+        fecha_actual = datetime.today()
+        return self.model.objects.filter(estado=True,fecha_inicial__lt = fecha_actual)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -279,7 +279,8 @@ class ListarReservasDeportesAdmin(LoginAndSuperStaffMixin,ListView):
 
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.filter(estado = True)
+        fecha_actual = datetime.today()
+        return self.model.objects.filter(estado = True, fecha_inicial__lt = fecha_actual)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -308,7 +309,8 @@ class ListarReservasPlatosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaPlato
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.filter(estado=True)
+        fecha_actual = datetime.today()
+        return self.model.objects.filter(estado=True, fecha_inicial__lt = fecha_actual)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -337,7 +339,8 @@ class ListarReservasTurismosAdmin(LoginAndSuperStaffMixin,ListView):
     model = ReservaTurismo
     def get_queryset(self):
         #return self.model.objects.filter(usuario = self.request.user)
-        return self.model.objects.filter(estado=True)
+        fecha_actual = datetime.today()
+        return self.model.objects.filter(estado=True, fecha_inicial__lt = fecha_actual)
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
@@ -415,41 +418,13 @@ class SolicitudCero(CreateView):
             response.status_code = 201
             return response
 
-#enumerar solicitudes de todas las reservas total
-class EnumerarSolicitudesReservasAdmin(LoginAndSuperStaffMixin, ListView):
-    def get(self, request, *args, **kwargs):
-        if request.is_ajax():
-            fecha_actual = datetime.today()
-            queryset1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-            queryset2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-            queryset3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-            queryset4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True).count()
-            total = queryset1 + queryset2 + queryset3 + queryset4
-
-            modelo1 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
-            modelo2 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
-            modelo3 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
-            modelo4 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = False).count()
-            pendiente = modelo1 + modelo2 + modelo3 + modelo4
-
-            queryset5 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
-            queryset6 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
-            queryset7 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
-            queryset8 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual, estado = True, confirmar = True).count()
-            aceptado = queryset5 + queryset6 + queryset7 + queryset8
-
-            mensaje = "Notificacion reducido"
-            error = 'No hay error!'
-            response = JsonResponse({'pendiente':pendiente,'total':total,'aceptado':aceptado})
-            response.status_code = 201
-            return response
 
 #NOTIFICACIONES
 #Listar notificaciones del usuario logeado
 class NotificacionesUser(ListView):
     model = Usuario
     def get_queryset(self):
-        queryset = Notification.objects.filter(recipient=self.request.user)[:4]
+        queryset = Notificacion.objects.filter(destinatario=self.request.user)[:4]
         return queryset
 
     def get(self,request,*args,**kwargs):

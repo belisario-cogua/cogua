@@ -58,7 +58,7 @@ class Comentario(models.Model):
 		verbose_name = 'Comentario'
 		verbose_name_plural = 'Comentarios'
 		#ordering -> ordena por nombre alfabeticamente
-		ordering = ['-created']
+		ordering = ['created']
 
 	def __str__(self):
 		return '{}'.format(self.comentario)

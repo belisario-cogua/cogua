@@ -166,16 +166,24 @@
           <input type="search" id="search" placeholder="Buscar..." />
       </div>
     </div>
-    <div id="container-solicitudes-id" class="container-solicitudes" style="display: none;">
-      <div class="t-pendientes" style="display: none;">
-        <span>Solicitudes pendientes: <span id="t-pendientes-num"></span></span>
-      </div>
-      <div id="t-aceptados-id" class="t-aceptados" style="display: none;">
-        <span>Solicitudes aceptados: <span id="t-aceptados-num"></span></span>
-      </div>
-      <div id="t-total-id" class="t-total">
-        <span>Total: <span id="t-total-num"></span></span>
-      </div>
+    <div class="container-fluid container-solicitudes" id="main-content" style="display: none;margin-top: -25px;">
+        <div class="container">
+            <div class="row row-solicitudes" >
+                <div id="total-id" class="total" >
+                  <span>Total: <span id="total"></span></span>
+                </div>
+                <div id="t-sin-confirmar-id" class="t-sin-confirmar"  style="display: none;">
+                  <span>Solicitudes sin confirmar: <span id="t-sin-confirmar-num"></span></span>
+                </div>
+                <div id="t-aceptados-id" class="t-aceptados" style="display: none;">
+                  <span>Solicitudes aceptados: <span id="t-aceptados-num"></span></span>
+                </div>
+                <div id="t-cancelados-id" class="t-cancelados" style="display: none;">
+                  <span>Solicitudes cancelados: <span id="t-cancelados-num"></span></span>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -191,10 +199,11 @@
           <thead class="titulo-table" style="background-color: #6a59b3">
             <tr>
               <th scope="col">#</th>
+              <th scope="col">ESTADO</th>
               <th scope="col">CLIENTE</th>
               <th scope="col">TURISMO</th>
               <th scope="col">NOMBRE</th>
-              <th scope="col">RESERVADO</th>
+              <th scope="col">RESERVADO PARA</th>
               <th scope="col" class="text-center" style="padding-left: 26px;" WIDTH="50">OPCIÓN</th>
             </tr>
 

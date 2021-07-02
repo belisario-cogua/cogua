@@ -12,19 +12,7 @@ function listarReservasDeportes(){
 			$('#tabla_reservas_deportes tbody').html("");
 			for(let i = 0;i < response.length;i++){
 				let fila = '<tr>';
-				var fecha = response[i]["fields"]['created'];
-				fechaReserva = new Date(fecha);
-				var day = fechaReserva.getDate();
-				var month = fechaReserva.getMonth();
-				var year = fechaReserva.getFullYear();
-				var meses = [
-							  "Enero", "Febrero", "Marzo",
-							  "Abril", "Mayo", "Junio", "Julio",
-							  "Agosto", "Septiembre", "Octubre",
-							  "Noviembre", "Diciembre"
-							]
-				var dias = ["Domingo","Lunes", "Martes", "Miercoles","Jueves", "Viernes", "Sábado"];
-				created  = 'El ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
+				var fecha = response[i]["fields"]['fecha_inicial'];
 
 				var usuario = response[i]["fields"]['usuario'];
 				usuario = usuario.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) { 
@@ -38,9 +26,18 @@ function listarReservasDeportes(){
 				deporte = MaysPrimera(deporte.toLowerCase());
 
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + (i+1) + '</a></td>';
+				if (response[i]["fields"]['activado'] == false) {
+					fila += '<td class="fila-table"><a href="#" class="link" style="background:#a30707; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Caducado</a></td>';
+				}else if (response[i]["fields"]['activado'] == true){
+					if (response[i]["fields"]['confirmar'] == true) {
+						fila += '<td class="fila-table"><a href="#" class="link" style="background:#00A40E; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Aceptado</a></td>';
+					}else{
+						fila += '<td class="fila-table"><a href="#" class="link" style="background:#d47108; color:#fff;border-radius:3px;padding-left:5px;padding-right:5px" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">Cancelado</a></td>';
+					}
+				}
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + usuario +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + deporte +'</a></td>';
-				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + created +'</a></td>';
+				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
 				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaTurismo(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button></td>';
 				fila += '</tr>';
 				$('#tabla_reservas_deportes tbody').append(fila);
@@ -78,7 +75,32 @@ function listarReservasDeportes(){
 $(document).ready(function(){
 	listarReservasDeportes();
 });
+function fechaInicial(fecha){
+	fechaReserva = new Date(fecha.replace(/-/g, '\/'));
+	var day = fechaReserva.getDate();
+	var month = fechaReserva.getMonth();
+	var year = fechaReserva.getFullYear();
+	var meses = [
+				  "Enero", "Febrero", "Marzo",
+				  "Abril", "Mayo", "Junio", "Julio",
+				  "Agosto", "Septiembre", "Octubre",
+				  "Noviembre", "Diciembre"
+				]
+	var dias = ["Domingo","Lunes", "Martes", "Miercoles","Jueves", "Viernes", "Sábado"];
 
+	today = new Date()
+	var ayer=new Date(today.getTime() - 24*60*60*1000);
+	var ayerTmp = ayer.getFullYear()+'-'+ayer.getMonth()+'-'+ayer.getDate();
+	var reserva = year+'-'+month+'-'+day;
+
+	if (ayerTmp == reserva) {
+		inicio  = 'Ayer, ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
+	}else{
+		inicio  = 'El ' + dias[fechaReserva.getDay()]+' '+ day + ' de ' +  meses[month] + ' del ' + year;
+	}
+	
+	return inicio;
+}
 //funcion para eliminar la reserva del lugar turistico por user admin
 function eliminarSweetAlertReservaTurismo(pk){
 	Swal.fire({

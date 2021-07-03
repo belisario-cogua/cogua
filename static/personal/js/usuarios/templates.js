@@ -42,7 +42,7 @@ function listarUsuarios(){
 				apellidos = apellidos.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) { 
 				    return letter.toUpperCase(); 
 				}); 
-
+				tempNombres = nombres + ' ' + apellidos;
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');">' + (i+1) + '</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');">' + nombres +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');">' + apellidos +'</a></td>';
@@ -57,7 +57,7 @@ function listarUsuarios(){
 				}else{
 					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><i class="fas fa-times" style="color: red;"></i></td>';
 				}
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs  tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertUsuario(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs  tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertUsuario(\''+response[i]['pk']+'\',\''+tempNombres+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '<button type="button" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="abrir_modal_editar(\'/perfil_admin/editar_usuario/'+response[i]['pk']+'/\');"><i class="fas fa-edit"></i></button>';
 				fila += '</tr>';
 				$('#tabla_usuarios tbody').append(fila);
@@ -153,10 +153,9 @@ function editarUsuario(){
 }
 
 //funcion para eliminar la reserva del hotel por user admin
-function eliminarSweetAlertUsuario(pk){
+function eliminarSweetAlertUsuario(pk,nombre){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar el registro del usuario, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar al usuario '+nombre+'?',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

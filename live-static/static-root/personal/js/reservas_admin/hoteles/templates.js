@@ -39,7 +39,7 @@ function listarReservasHoteles(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_hotel/'+response[i]['pk']+'/\');">' + usuario +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_hotel/'+response[i]['pk']+'/\');">' + hotel +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_hotel/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaHotel(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button></td>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaHotel(\''+response[i]['pk']+'\',\''+usuario+'\',\''+hotel+'\');"><i class="fas fa-trash"></i></button></td>';
 				fila += '</tr>';
 				$('#tabla_reservas_hoteles tbody').append(fila);
 			}
@@ -103,10 +103,14 @@ function fechaInicial(fecha){
 	
 	return inicio;
 }
-function eliminarSweetAlertReservaHotel(pk){
+function eliminarSweetAlertReservaHotel(pk,cliente,hotel){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar la reserva, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar esta reserva?',
+	  html:
+            'Cliente: ' +
+            '<b>'+cliente+'</b><br>'+
+            'Cabaña: ' +
+            '<b>'+hotel+'</b><br>',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

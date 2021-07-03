@@ -38,7 +38,7 @@ function listarReservasTurismos(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_turismo/'+response[i]['pk']+'/\');">' + usuario +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_turismo/'+response[i]['pk']+'/\');">' + turismo +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_turismo/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaTurismo(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaTurismo(\''+response[i]['pk']+'\',\''+usuario+'\',\''+turismo+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '</tr>';
 				$('#tabla_reservas_turismos tbody').append(fila);
 			}
@@ -102,10 +102,14 @@ function fechaInicial(fecha){
 	return inicio;
 }
 //funcion para eliminar la reserva del lugar turistico por user admin
-function eliminarSweetAlertReservaTurismo(pk){
+function eliminarSweetAlertReservaTurismo(pk,cliente,turismo){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar la reserva, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar esta reserva?',
+	  html:
+            'Cliente: ' +
+            '<b>'+cliente+'</b><br>'+
+            'Lugar Turístico: ' +
+            '<b>'+turismo+'</b><br>',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

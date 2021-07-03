@@ -19,7 +19,7 @@ class ReservaHotelAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.Mode
 class ReservaPlatoAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['usuario']
 	fieldsets = (
-		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','costo','estado','confirmar','activado','visita','plato','usuario')}),
+		('INFORMACIÓN',{'fields':('fecha_inicial','fecha_final','cantidad_dias','cantidad_plato','costo','estado','confirmar','activado','visita','plato','usuario')}),
 	)
 	list_display = ('usuario','plato','created','modified')
 

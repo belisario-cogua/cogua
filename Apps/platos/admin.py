@@ -6,8 +6,8 @@ from import_export.admin import ImportExportModelAdmin, ExportActionModelAdmin
 class PlatoAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['nombre']
 	fieldsets = (
-		('INFORMACIÓN',{'fields':('nombre','precio','descripcion','cantidad','estado','imagen','user_id')}),
+		('INFORMACIÓN',{'fields':('nombre','precio','descripcion','cantidad','publico','estado','imagen','user_id')}),
 	)
-	list_display = ('nombre','cantidad','precio','created','modified')
+	list_display = ('nombre','precio','cantidad','publico','created','modified')
 
 admin.site.register(Plato,PlatoAdmin)

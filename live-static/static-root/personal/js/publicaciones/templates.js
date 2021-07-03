@@ -27,7 +27,7 @@ function listarPublicaciones(){
 				}else{
 					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:25px;" src="/static/personal/imagen/empty.png"/></a></td>';
 				}
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertPublicacion(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertPublicacion(\''+response[i]['pk']+'\',\''+nombre+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '<button type="button" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="abrir_modal_editar(\'/perfil_admin/editar_publicacion/'+response[i]['pk']+'/\');"><i class="fas fa-edit"></i></button>';
 				fila += '</tr>';
 				$('#tabla_publicacion tbody').append(fila);
@@ -127,10 +127,9 @@ function editarPublicacion(){
 }
 
 //funcion para eliminar el lugar turistico
-function eliminarSweetAlertPublicacion(pk){
+function eliminarSweetAlertPublicacion(pk,nombre){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar el registro de la publicacion, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar la publicación '+nombre+'?',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

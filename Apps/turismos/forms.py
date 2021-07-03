@@ -5,7 +5,7 @@ from .models import Turismo
 class TurismoForm(forms.ModelForm):
 	class Meta:
 		model = Turismo
-		fields = ['nombre','precio','descripcion','cantidad','imagen']
+		fields = ['nombre','precio','descripcion','publico','imagen']
 		widgets = {
 			'nombre': forms.TextInput(
 				attrs = {
@@ -22,6 +22,8 @@ class TurismoForm(forms.ModelForm):
 					'class': 'form-control',
 					'autocomplete': "off",
 					'step': 'any',
+					'min':"1",
+					'onkeypress':'return event.charCode >= 46 && event.charCode <= 57 ',
 					'onfocus': "this.placeholder = ''",
 					'onblur': "this.placeholder='$'",
 					'placeholder': '$'
@@ -37,14 +39,11 @@ class TurismoForm(forms.ModelForm):
 					'cols': 30
 				}
 			),
-			'cantidad': forms.NumberInput(
-				attrs = {
-					'class': 'form-control',
-					'autocomplete': "off",
-					'onfocus': "this.placeholder = ''",
-					'onblur': "this.placeholder='Ingresar una descripcion para el lugar turistico'",
-					'placeholder': 'Ingresar una descripcion para el lugar turistico'
-				}
-			)
+			'publico': forms.CheckboxInput(
+				attrs={
+				'class':"form-check-input",
+				'type':"checkbox", 
+				'style':'width:20px;height:20px;margin-left:15px;cursor:pointer'
+				})
 
 		}

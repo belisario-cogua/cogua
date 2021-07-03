@@ -6,8 +6,8 @@ from .models import Deporte
 class DeporteAdmin(ExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
 	search_fields = ['nombre']
 	fieldsets = (
-		('INFORMACIÓN',{'fields':('nombre','precio','descripcion','cantidad','estado','imagen')}),
+		('INFORMACIÓN',{'fields':('nombre','precio','descripcion','publico','estado','imagen')}),
 	)
-	list_display = ('nombre','cantidad','precio','created','modified')
+	list_display = ('nombre','publico','precio','created','modified')
 
 admin.site.register(Deporte,DeporteAdmin)

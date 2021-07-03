@@ -520,3 +520,7 @@ display: -webkit-box;
   }
   /* fin: publicacion de deportes*/
 /* fin: css home*/
+.titulo-div-modal a i{
+  float: right;color:#000;margin-top: -45px;
+  cursor: pointer;
+}

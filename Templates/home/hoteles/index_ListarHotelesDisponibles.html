@@ -120,11 +120,7 @@
                                              
                                         </span>
                                         <div class="days">
-                                            {% if hoteles.cantidad > 0 %}
                                              <button onclick="abrir_modal_reservar('{% url 'templates_reserva:modal_reserva_hotel_detalles' hoteles.id %}');" class="btn btn-info btn-sm cambiar-button-nuevo" type="button"><i class="fab fa-resolving"></i> Reservar</button>
-                                             {% else %}
-                                             <a href="">No disponible</a>
-                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>

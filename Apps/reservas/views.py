@@ -609,9 +609,11 @@ class RegistrarReservaPlato(CreateView):
 		if request.is_ajax():
 			usuario = Usuario.objects.filter(id = request.POST.get('usuario')).first()
 			plato = Plato.objects.filter(id = request.POST.get('plato')).first()
+			disminuirPlato = Plato.objects.filter(id = request.POST.get('plato'))
 			fecha_inicial = request.POST.get('fecha1')
 			fecha_final = request.POST.get('fecha2')
 			costo = request.POST.get('costo')
+			cantidad_plato = request.POST.get('cantidad')
 
 			fecha_actual = datetime.today();
 			user = Usuario.objects.get(id=request.user.id)
@@ -625,19 +627,29 @@ class RegistrarReservaPlato(CreateView):
 				if fecha_inicial_a_date > fecha_actual and fecha_final_a_date > fecha_actual and fecha_final_a_date > fecha_inicial_a_date or fecha_final_a_date == fecha_inicial_a_date:
 					if fecha_final_a_date == fecha_inicial_a_date:
 						if fecha_inicial_a_date > fecha_actual and fecha_final_a_date > fecha_actual:
+							#para guardar la reserva
 							nueva_reserva = self.model(
 								usuario = usuario,
 								plato = plato,
 								fecha_inicial = fecha_inicial,
 								fecha_final = fecha_final,
-								costo = costo
+								cantidad_plato = cantidad_plato,
+								costo = float(costo)
 							)
 							nueva_reserva.save()
+							#para disminuir la cantidad de platos
+							for p in disminuirPlato:
+								pTemp = p.cantidad - int(cantidad_plato)
+								p.cantidad = pTemp
+								p.save()
+
+							#para aumentar el numero de solicitudes en el perifl user admin
 							for soli in solicitud:
 								solitempo = soli.solicitud + 1
 								soli.solicitud = solitempo
 								soli.save()
 
+							#para eniar la ntoificacion caducado
 							enviar = send(
 								tipo = "caducar",
 								destinatario = request.user,
@@ -678,14 +690,24 @@ class RegistrarReservaPlato(CreateView):
 							response.status_code = 400
 							return response
 						else:
+							#para guardar la reserva
 							nueva_reserva = self.model(
 								usuario = usuario,
 								plato = plato,
 								fecha_inicial = fecha_inicial,
 								fecha_final = fecha_final,
-								costo = costo
+								cantidad_plato = cantidad_plato,
+								costo = float(costo)
 							)
 							nueva_reserva.save()
+
+							#para disminuir la cantidad de platos
+							for p in disminuirPlato:
+								pTemp = p.cantidad - int(cantidad_plato)
+								p.cantidad = pTemp
+								p.save()
+
+							#para aumentar el numero de solicitudes en el perifl user admin
 							for soli in solicitud:
 								solitempo = soli.solicitud + 1
 								soli.solicitud = solitempo

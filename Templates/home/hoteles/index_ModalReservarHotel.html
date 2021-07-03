@@ -58,6 +58,9 @@
 </div>
 
 <script type="text/javascript">
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+    habilitarButton.style.cssText = 'cursor: not-allowed;';
 
     var startDate;
     var endDate;
@@ -125,6 +128,9 @@
         }
     },
     function est(start, end) {
+        habilitarButton.disabled= false;
+        habilitarButton.style.cssText = 'cursor: pointer;';
+        
         var capturarfechainicial = start.format('YYYY-MM-DD');
         var capturarfechaifinal = end.format('YYYY-MM-DD');
         startDate = capturarfechainicial;
@@ -144,7 +150,7 @@
         }else{
             document.getElementById('dias').innerHTML=dias + ' día';
         }
-        total = precio*dias;
+        total = parseFloat(precio.replace(',', '.'))*dias;
         document.getElementById('total').innerHTML='$ '+parseFloat(total);
     });
 

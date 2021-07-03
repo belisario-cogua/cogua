@@ -38,7 +38,7 @@ function listarReservasPlatos(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_plato/'+response[i]['pk']+'/\');">' + usuario +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_plato/'+response[i]['pk']+'/\');">' + plato +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_plato/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaTurismo(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertReservaTurismo(\''+response[i]['pk']+'\',\''+usuario+'\',\''+plato+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '</tr>';
 				$('#tabla_reservas_platos tbody').append(fila);
 			}
@@ -102,10 +102,14 @@ function fechaInicial(fecha){
 	return inicio;
 }
 //funcion para eliminar la reserva del lugar turistico por user admin
-function eliminarSweetAlertReservaTurismo(pk){
+function eliminarSweetAlertReservaTurismo(pk,cliente,plato){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar la reserva, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar esta reserva?',
+	  html:
+            'Cliente: ' +
+            '<b>'+cliente+'</b><br>'+
+            'Plato Típico: ' +
+            '<b>'+plato+'</b><br>',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

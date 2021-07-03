@@ -18,8 +18,25 @@ function listarPlatos(){
 				}
 				nombre = response[i]["fields"]['nombre'];
 				nombre = MaysPrimera(nombre.toLowerCase());
+				publico = response[i]["fields"]["publico"]
+				cantidad = response[i]["fields"]['cantidad'];
 
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + (i+1) + '</a></td>';
+				if (publico == true) {
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#47a305; padding-left:10px;padding-right:10px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">Si</a></td>';
+				}else{
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#757a71; padding-left:7px;padding-right:7px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">No</a></td>';
+				}
+				if (cantidad == 0) {
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#a30707; padding-left:10px;padding-right:10px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + cantidad +'</a></td>';
+
+				}else if (cantidad > 3) {
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;background-color:#fff; padding-left:10px;padding-right:10px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + cantidad +'</a></td>';
+
+				}else{
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#c99802; padding-left:10px;padding-right:10px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + cantidad +'</a></td>';
+				}
+				
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">' + nombre +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_plato/'+response[i]['pk']+'/\');">$ ' + response[i]["fields"]['precio']+'</a></td>';
 				if (response[i]["fields"]['imagen']){
@@ -27,7 +44,7 @@ function listarPlatos(){
 				}else{
 					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:25px;" src="/static/personal/imagen/empty.png"/></a></td>';
 				}
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertPlato(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertPlato(\''+response[i]['pk']+'\',\''+nombre+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '<button type="button" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="abrir_modal_editar(\'/perfil_admin/editar_plato/'+response[i]['pk']+'/\');"><i class="fas fa-edit"></i></button>';
 				fila += '</tr>';
 				$('#tabla_platos tbody').append(fila);
@@ -127,10 +144,9 @@ function editarPlato(){
 }
 
 //funcion para eliminar la reserva del hotel por user admin
-function eliminarSweetAlertPlato(pk){
+function eliminarSweetAlertPlato(pk,nombre){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar el registro del plato típico, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar el plato típico '+nombre+'?',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

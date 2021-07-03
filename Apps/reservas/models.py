@@ -6,6 +6,8 @@ from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
 from Apps.turismos.models import Turismo
 from Apps.usuarios.models import Usuario
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 
 # Modelo de reserva para deportes
 class ReservaDeporte(models.Model):
@@ -14,7 +16,7 @@ class ReservaDeporte(models.Model):
 	fecha_inicial = models.DateField('Fecha inicial de reserva', blank = False, null = False)
 	fecha_final = models.DateField('Fecha final de reserva', blank = False, null = False)
 	cantidad_dias = models.SmallIntegerField('Tiempo de espera (En días)', default = 1)
-	costo = models.DecimalField('Costo de la reserva', default = 0.00, max_digits=9, decimal_places=2)
+	costo = models.DecimalField('Costo de la reserva', blank = False, null = False, max_digits=9, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	#el campo confirmar es validado si el administrador lo solicita, esto quiere decir que el cliente a llegado a la visita
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
@@ -48,7 +50,7 @@ class ReservaHotel(models.Model):
 	fecha_inicial = models.DateField('Fecha inicial de reserva', blank = False, null = False)
 	fecha_final = models.DateField('Fecha final de reserva', blank = False, null = False)
 	cantidad_dias = models.SmallIntegerField('Tiempo de espera (En días)', default = 1)
-	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
+	costo = models.DecimalField('Costo de la reserva', blank = False, null = False, max_digits=9, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
 	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
@@ -78,7 +80,8 @@ class ReservaPlato(models.Model):
 	fecha_inicial = models.DateField('Fecha inicial de reserva', blank = False, null = False)
 	fecha_final = models.DateField('Fecha final de reserva', blank = False, null = False)
 	cantidad_dias = models.SmallIntegerField('Tiempo de espera (En días)', default = 1)
-	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
+	costo = models.DecimalField('Costo de la reserva', blank = False, null = False, max_digits=9, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+	cantidad_plato = models.SmallIntegerField('Cantidad (platos típicos)')
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
 	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)
@@ -108,7 +111,7 @@ class ReservaTurismo(models.Model):
 	fecha_inicial = models.DateField('Fecha inicial de reserva', blank = False, null = False)
 	fecha_final = models.DateField('Fecha final de reserva', blank = False, null = False)
 	cantidad_dias = models.SmallIntegerField('Tiempo de espera (En días)', default = 1)
-	costo = models.SmallIntegerField('Costo de la reserva', default = 0)
+	costo = models.DecimalField('Costo de la reserva', blank = False, null = False, max_digits=9, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
 	estado = models.BooleanField('Estado (Eliminación lógica)',default = True)
 	confirmar = models.BooleanField('Confirmar (Confirmación de reserva)',default = False)
 	activado = models.BooleanField('Activado (Cancelado o Aceptado)',default = False)

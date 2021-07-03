@@ -1,38 +1,48 @@
 {% load bootstrap4 %}
 {% load staticfiles %}
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-lg swal2-show" role="document">
 	<div class="modal-content">
-		<div class="modal-header">
-			<h2 class="modal-title" style="color: #fff; font-weight: 350; ">Detalles de la publicacion</h2>
-			<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
 		<div class="container-fluid">
 			<div class="container-fluid">
 				<div class="row justify-content-around" id="" style="margin-top: 10px;">
-					<div class="col text-center">
+					<div class="col text-center mejorar-posicion-imagen">
 						{% if object.imagen %}
-							<img src="{{ object.imagen.url }}" class="img-fluid" width="500" height="500" alt="Responsive image">
+							<img src="{{ object.imagen.url }}"  alt="Responsive image">
 						{% else %}
-							<img id="myImg" src="{% static 'personal/imagen/sin_imagen.png' %}" class="img-fluid mx-auto d-block" width="500" height="500" alt="No existe">
+							<img id="myImg" src="{% static 'personal/imagen/sin_imagen.png' %}" class="img-fluid" alt="No existe">
 						{% endif %}
 					</div>
 					<div class="col text-center">
-						<p class="text-justify parrafo-div-modal" style="margin:-0.5% 0;">Nombre: <span class="parrafo-span-div-modal">{{ object.nombre|title }}</span> </p>
+			            <div class="text-center titulo-div-modal">
+			                <h6>Información </h6>
+			                <a id="cerrar-icon-modal"><i class="fas fa-times"></i></a>
+			            </div>
+						<p class="text-justify parrafo-div-modal" style="margin:-0.5% 0;">Publicación: <span class="parrafo-span-div-modal">{{ object.nombre|title }}</span> </p>
+						<div class="dropdown-divider"></div>
+						{% if object.publico == False %}
+						<p class="text-justify parrafo-div-modal">Público: <span class="parrafo-span-div-modal">No visible</span> </p>
+						{% else %}
+						<p class="text-justify parrafo-div-modal">Público: <span class="parrafo-span-div-modal">Visible</span> </p>
+						{% endif %}
+						<div class="dropdown-divider"></div>
+						<p class="text-justify parrafo-div-modal">Precio: <span class="parrafo-span-div-modal">${{ object.precio }}</span></p>
 						<div class="dropdown-divider"></div>
 						<p class="text-justify parrafo-div-modal">Publicado: <span class="parrafo-span-div-modal">El {{ object.created }}</span></p>
 						<div class="dropdown-divider"></div>
 						<p class="text-justify parrafo-div-modal">Ultima modificación: <span class="parrafo-span-div-modal">El {{ object.modified }}</span></p>
+						<div class="dropdown-divider"></div>
+						<div style="height:210px;overflow:auto;">
+							<p class="text-justify parrafo-div-modal">Descripción: <span class="parrafo-span-div-modal">{{ object.descripcion}}</span></p>
+						</div>
 					</div>
 				</div>
-				<div class="row justify-content-around" id="" style="margin-top: 10px;">
-					<div class="col text-center">
-				      	<p class="text-justify">Descripción: <span class="parrafo-span-div-modal">{{ object.descripcion}}</span></p>
-					</div>
-				</div>
-				<div class="dropdown-divider"></div>
 			</div>	
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+
+	$('#cerrar-icon-modal').click(function (event){
+	    $('#modalDetalles').modal('hide');
+	});
+</script>

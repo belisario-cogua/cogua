@@ -5,7 +5,7 @@ from .models import Plato
 class PlatoForm(forms.ModelForm):
 	class Meta:
 		model = Plato
-		fields = ['nombre','precio','descripcion','cantidad','imagen']
+		fields = ['nombre','precio','descripcion','cantidad','publico','imagen']
 		widgets = {
 			'nombre': forms.TextInput(
 				attrs = {
@@ -22,6 +22,8 @@ class PlatoForm(forms.ModelForm):
 					'class': 'form-control',
 					'autocomplete': "off",
 					'step': 'any',
+					'min':"1",
+					'onkeypress':'return event.charCode >= 46 && event.charCode <= 57 ',
 					'onfocus': "this.placeholder = ''",
 					'onblur': "this.placeholder='$'",
 					'placeholder': '$'
@@ -41,10 +43,18 @@ class PlatoForm(forms.ModelForm):
 				attrs = {
 					'class': 'form-control',
 					'autocomplete': "off",
+					'min':"1",
+					'onkeypress':'return event.charCode >= 48 && event.charCode <= 57',
 					'onfocus': "this.placeholder = ''",
-					'onblur': "this.placeholder='Ingresar una descripcion para el depor'",
-					'placeholder': 'Ingresar una descripcion para el deporte'
+					'onblur': "this.placeholder='Ingresar una descripcion para el lugar turistico'",
+					'placeholder': 'Ingresar una descripcion para el lugar turistico'
 				}
-			)
+			),
+			'publico': forms.CheckboxInput(
+				attrs={
+				'class':"form-check-input",
+				'type':"checkbox",
+				'style':'width:20px;height:20px;margin-left:15px;cursor:pointer'
+				})
 
 		}

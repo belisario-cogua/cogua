@@ -18,8 +18,13 @@ function listarDeportes(){
 				}
 				nombre = response[i]["fields"]['nombre'];
 				nombre = MaysPrimera(nombre.toLowerCase());
-
+				publico = response[i]["fields"]["publico"]
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_deporte/'+response[i]['pk']+'/\');">' + (i+1) + '</a></td>';
+				if (publico == true) {
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#47a305; padding-left:10px;padding-right:10px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_deporte/'+response[i]['pk']+'/\');">Si</a></td>';
+				}else{
+					fila += '<td class="fila-table"><a href="#" style="border-radius:5px;color:#fff;background-color:#757a71; padding-left:7px;padding-right:7px;" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_deporte/'+response[i]['pk']+'/\');">No</a></td>';
+				}
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_deporte/'+response[i]['pk']+'/\');">' + nombre +'</a></td>';
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_deporte/'+response[i]['pk']+'/\');">$ ' + response[i]["fields"]['precio']+'</a></td>';
 				if (response[i]["fields"]['imagen']){
@@ -27,7 +32,7 @@ function listarDeportes(){
 				}else{
 					fila += '<td class="text-center fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/detalles_usuario/'+response[i]['pk']+'/\');"><img style="width:25px;" src="/static/personal/imagen/empty.png"/></a></td>';
 				}
-				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertDeporte(\''+response[i]['pk']+'\');"><i class="fas fa-trash"></i></button>';
+				fila += '<td class="text-center fila-table"><button type="button" class="btn btn-danger btn-xs tableButton cambiar-color-button-eliminar" onclick="eliminarSweetAlertDeporte(\''+response[i]['pk']+'\',\''+nombre+'\');"><i class="fas fa-trash"></i></button>';
 				fila += '<button type="button" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="abrir_modal_editar(\'/perfil_admin/editar_deporte/'+response[i]['pk']+'/\');"><i class="fas fa-edit"></i></button>';
 				fila += '</tr>';
 				$('#tabla_deportes tbody').append(fila);
@@ -123,10 +128,9 @@ function editarDeporte(){
 }
 
 //funcion para eliminar la reserva del hotel por user admin
-function eliminarSweetAlertDeporte(pk){
+function eliminarSweetAlertDeporte(pk,nombre){
 	Swal.fire({
-	  title: 'Estas seguro?',
-	  text: "Despues de eliminar el registro del deporte, no podras revertir los cambios!",
+	  title: 'Estas seguro de eliminar el deporte '+nombre+'?',
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#28a745',

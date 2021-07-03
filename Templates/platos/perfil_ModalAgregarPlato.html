@@ -1,12 +1,8 @@
+
 {% load bootstrap4 %}
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-lg swal2-show" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Agregar Plato Tipico</h2>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        <h3 style="font-weight: bold;color: #6e6d6a;font-size: 1.85rem;">Nuevo Plato Típico</h3>
         <!-- id="form_agregar es llamado en main.js dentro de la funcion registrar" -->
         <form id="form_agregar" action="{% url 'templates_plato:agregar_plato'%}" class="form-contact contact_form" method="POST">
             {% csrf_token %}
@@ -39,6 +35,11 @@
                                         <h1 class="resaltar-input">{{ form.precio.label}}: {{form.precio}}</h1>   
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <h1 class="resaltar-input">{{ form.publico.label}}: {{form.publico}}</h1>   
+                                    </div>
+                                </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <h1 class="resaltar-input">{{ form.imagen.label }}: {{form.imagen}}</h1>
@@ -51,8 +52,8 @@
              <div class="mi-footer-modal">
                 <!-- mediante el onclick llamamos a la funcion registrarUsuario()
                 que esta en el templates.js -->
-                <button id="bloquear_button_agregar" class="btn btn-info" type="button" onclick="registrarPlato();">Agregar</button>
-                <button class="btn btn-danger" type="button" onclick="cerrar_modal_agregar();">Cancelar</button>
+                <button id="bloquear_button_agregar" class="btn btn-success" type="button" onclick="registrarPlato();"><i class="fas fa-save"></i> Guardar</button>
+                <button class="btn btn-danger" type="button" onclick="cerrar_modal_agregar();"><i class="far fa-times-circle"></i> Cancelar</button>
             </div>
         </form>
     </div>

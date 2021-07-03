@@ -1,7 +1,7 @@
 {% load bootstrap4 %}
 <div class="modal-dialog modal-lg swal2-show" role="document">
     <div class="modal-content">
-        <h3>Nuevo Deporte</h3>
+        <h3 style="font-weight: bold;color: #6e6d6a;font-size: 1.85rem;">Nuevo Deporte</h3>
         <!-- id="form_agregar es llamado en main.js dentro de la funcion registrar" -->
         <form id="form_agregar" action="{% url 'templates_deporte:agregar_deporte'%}" class="form-contact contact_form" method="POST">
             {% csrf_token %}
@@ -23,15 +23,15 @@
                                         <h1 class="resaltar-textarea">{{ form.descripcion.label}}: {{form.descripcion}}</h1>
                                     </div>
                                 </div> 
-                                 <div class="col-sm-6">
+                                 <div class="col-sm-6" >
                                     <div class="form-group">
-                                        <h1 class="resaltar-input">{{ form.cantidad.label}}: {{form.cantidad}}</h1> 
+                                        <h1 class="resaltar-input">{{ form.precio.label}}: {{form.precio}}</h1> 
                                         
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <h1 class="resaltar-input">{{ form.precio.label}}: {{form.precio}}</h1>   
+                                        <h1 class="resaltar-input">{{ form.publico.label}}: {{form.publico}}</h1>   
                                     </div>
                                 </div>
                                 <div class="col-12">

@@ -2,7 +2,6 @@
 {% load staticfiles %}
 <div class="modal-dialog modal-lg swal2-show" role="document">
 	<div class="modal-content">
-		<a href="#" class="btn-close-modal" data-dismiss="modal"><i class="fas fa-times"></i></a>
 		<div class="container-fluid">
 			<div class="container-fluid">
 				<div class="row justify-content-around" id="" style="margin-top: 10px;">
@@ -15,9 +14,16 @@
 					</div>
 					<div class="col text-center">
 			            <div class="text-center titulo-div-modal">
-			                <h6>Información <button id="bloquear_button_agregar" class="btn btn-info btn-sm" type="button" onclick="abrir_modal_editar('{% url 'templates_deporte:editar_deporte' object.pk %}');" style="border-radius: 0px;"><i class="fas fa-edit"></i></button></h6>
+			                <h6>Información </h6>
+			                <a id="cerrar-icon-modal"><i class="fas fa-times"></i></a>
 			            </div>
-						<p class="text-justify parrafo-div-modal" style="margin:-0.5% 0;">Nombre: <span class="parrafo-span-div-modal">{{ object.nombre|title }}</span> </p>
+						<p class="text-justify parrafo-div-modal" style="margin:-0.5% 0;">Deporte: <span class="parrafo-span-div-modal">{{ object.nombre|title }}</span> </p>
+						<div class="dropdown-divider"></div>
+						{% if object.publico == False %}
+						<p class="text-justify parrafo-div-modal">Público: <span class="parrafo-span-div-modal">No visible</span> </p>
+						{% else %}
+						<p class="text-justify parrafo-div-modal">Público: <span class="parrafo-span-div-modal">Visible</span> </p>
+						{% endif %}
 						<div class="dropdown-divider"></div>
 						<p class="text-justify parrafo-div-modal">Precio: <span class="parrafo-span-div-modal">${{ object.precio }}</span></p>
 						<div class="dropdown-divider"></div>
@@ -25,7 +31,7 @@
 						<div class="dropdown-divider"></div>
 						<p class="text-justify parrafo-div-modal">Ultima modificación: <span class="parrafo-span-div-modal">El {{ object.modified }}</span></p>
 						<div class="dropdown-divider"></div>
-						<div style="height:220px;overflow:auto;">
+						<div style="height:210px;overflow:auto;">
 							<p class="text-justify parrafo-div-modal">Descripción: <span class="parrafo-span-div-modal">{{ object.descripcion}}</span></p>
 						</div>
 					</div>
@@ -34,3 +40,9 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+
+	$('#cerrar-icon-modal').click(function (event){
+	    $('#modalDetalles').modal('hide');
+	});
+</script>

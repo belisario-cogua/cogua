@@ -15,14 +15,14 @@
         <div class="container-fluid">
             <div class="container-fluid">
                 <div class="row justify-content-around" id="" style="margin-top: 10px;">
-                    <div class="col text-center mejorar-posicion-imagen">
+                    <div id="imagen-reservacion" class="col text-center mejorar-posicion-imagen">
                         {% if object.imagen %}
                             <img src="{{ object.imagen.url }}"  alt="Responsive image">
                         {% else %}
                             <img id="myImg" src="{% static 'personal/imagen/sin_imagen.png' %}" class="img-fluid" alt="No existe">
                         {% endif %}
                     </div>
-                    <div class="col text-center">
+                    <div class="col text-center container-reservacion">
                         <div class="text-center titulo-div-modal">
                             <h6>Reservación</h6>
                         </div>
@@ -45,6 +45,9 @@
                                 </div>
                             </span>
                         </p>
+                        <div class="alert alert-danger alert-dismissable" id="mensaje-cantidad" style="display: none;">
+                          <a href="#" class="alert-link">...</a>
+                        </div>
                         <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Cantidad de platos típicos: </span></p>
                         <div class="form-contact cantidadinput">
                             <input class="form-control" id="numero1" type="number" min="1" pattern="^[0-9]+" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' max="{{object.cantidad}}">
@@ -64,6 +67,24 @@
 
 <script type="text/javascript">
     //funcion para que no acepte signos - o +
+    if (screen.width < 992){
+        var element = document.getElementById("imagen-reservacion");
+            element.classList.remove("col");
+            element.classList.add("mejorar-posicion-imagen-temp");
+    }
+    $(window).resize(function() {
+       var widthBrowser =$(window).width();
+       if (widthBrowser < 992 ) {
+            var element = document.getElementById("imagen-reservacion");
+            element.classList.remove("col");
+            element.classList.add("mejorar-posicion-imagen-temp");
+        }
+        if (widthBrowser>=992){
+            var element = document.getElementById("imagen-reservacion");
+            element.classList.add("col");
+            element.classList.remove("mejorar-posicion-imagen-temp");
+        }
+    });
     function validaNumericos(event) {
         if(event.charCode >= 48 && event.charCode <= 57){
           return true;
@@ -182,13 +203,19 @@
 
           //$("h5").html("El valor ha cambiado a: "+$("#numero1").val());
           cantidad = $("#numero1").val();
-          console.log("dentro: "+cantidad)
-          total = (parseFloat(precio.replace(',', '.'))*dias)*cantidad;
-          t = total.toFixed(2);
-          tempTotal = (parseInt(cantidadPlato)-cantidad)
-          document.getElementById('platos-disponibles').innerHTML='Disponible: '+tempTotal+' platos típicos';
+          if (cantidad <= parseInt(cantidadPlato)) {
 
-          document.getElementById('total').innerHTML='$'+parseFloat(t);
+            total = (parseFloat(precio.replace(',', '.'))*dias)*cantidad;
+            t = total.toFixed(2);
+            tempTotal = (parseInt(cantidadPlato)-cantidad)
+            document.getElementById('platos-disponibles').innerHTML='Disponible: '+tempTotal+' platos típicos';
+            document.getElementById('total').innerHTML='$'+parseFloat(t);
+          }else{
+            var $input = $("#mensaje-cantidad");
+            $input.before('<div class = "alert alert-danger alert-dismissible fade show mensaje-cantidad-plato" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong></strong>Solo disponemos de '+parseInt(cantidadPlato)+' platos por el momento</div>');
+            $("#numero1").val(parseInt(cantidadPlato));
+          }
+
         });
         document.getElementById('total').innerHTML='$ '+parseFloat(t);
     });

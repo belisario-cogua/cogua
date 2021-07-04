@@ -525,7 +525,7 @@ class ChatBot(CreateView):
 
             if intento == 'consultaTurismos - yesVerTurismos' or intento == 'consultaTurismos - verTurismosDirecto':
                 if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
-                    hoteles = Hotel.objects.filter(estado=True,cantidad__gt = 0)
+                    hoteles = Hotel.objects.filter(estado=True,publico=True)
                     if hoteles:
                         response = HttpResponse(serialize('json', hoteles), 'application/json')
                         response.status_code = 201
@@ -538,7 +538,7 @@ class ChatBot(CreateView):
                         return response
 
                 elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
-                    turismos = Turismo.objects.filter(estado=True,cantidad__gt = 0)
+                    turismos = Turismo.objects.filter(estado=True,publico=True)
                     if turismos:
                         response = HttpResponse(serialize('json', turismos), 'application/json')
                         response.status_code = 201
@@ -552,7 +552,7 @@ class ChatBot(CreateView):
 
 
                 elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
-                    deportes = Deporte.objects.filter(estado=True,cantidad__gt = 0)
+                    deportes = Deporte.objects.filter(estado=True,publico=True)
                     if deportes:
                         response = HttpResponse(serialize('json', deportes), 'application/json')
                         response.status_code = 201
@@ -565,7 +565,7 @@ class ChatBot(CreateView):
                         return response
 
                 elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
-                    platos = Plato.objects.filter(estado=True,cantidad__gt = 0)
+                    platos = Plato.objects.filter(estado=True,publico=True)
                     if platos:
                         response = HttpResponse(serialize('json', platos), 'application/json')
                         response.status_code = 201
@@ -682,25 +682,25 @@ class ChatBot(CreateView):
 
             elif intento == 'solicitudReservaTurismo - repeat':
                 if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
-                    hoteles = Hotel.objects.filter(estado=True,cantidad__gt = 0)
+                    hoteles = Hotel.objects.filter(estado=True,publico=True)
                     response = HttpResponse(serialize('json', hoteles), 'application/json')
                     response.status_code = 201
                     return response
 
                 elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
-                    turismos = Turismo.objects.filter(estado=True,cantidad__gt = 0)
+                    turismos = Turismo.objects.filter(estado=True,publico=True)
                     response = HttpResponse(serialize('json', turismos), 'application/json')
                     response.status_code = 201
                     return response
 
                 elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
-                    deportes = Deporte.objects.filter(estado=True,cantidad__gt = 0)
+                    deportes = Deporte.objects.filter(estado=True,publico=True)
                     response = HttpResponse(serialize('json', deportes), 'application/json')
                     response.status_code = 201
                     return response
 
                 elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
-                    platos = Plato.objects.filter(estado=True,cantidad__gt = 0)
+                    platos = Plato.objects.filter(estado=True,publico=True)
                     response = HttpResponse(serialize('json', platos), 'application/json')
                     response.status_code = 201
                     return response

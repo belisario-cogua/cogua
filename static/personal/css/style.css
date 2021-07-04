@@ -524,3 +524,28 @@ display: -webkit-box;
   float: right;color:#000;margin-top: -45px;
   cursor: pointer;
 }
+.mensaje-cantidad-plato{
+  position: absolute; margin-left: -400px; margin-top: -320px
+
+}
+/*modales bootstrap de reservaciones
+.mejorar-posicion-imagen{
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+      margin-top: -10px;
+      margin-left: -15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .mejorar-posicion-imagen img{
+      width: auto;
+      height: 500px;
+    }
+    */
+
+.mejorar-posicion-imagen-temp{
+  height: 300px;
+  padding-right: 100px;
+}

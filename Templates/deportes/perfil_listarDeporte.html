@@ -3,9 +3,12 @@
 {% block titulo %}CoGua | Listar deportes{% endblock titulo %}
 
 {% block cssextras %}
-  <link rel="stylesheet" href="{% static 'dowloand_bootstrap/css/lib/datatable/dataTables.bootstrap.min.css' %}">
 {% endblock cssextras %}
-
+{% block carga_tabla %}
+<div id="contenedor_carga_tabla">
+  <div id="carga_tabla"></div>
+</div>
+{% endblock carga_tabla %}
 
 {% block menu_open %}
 <li class="nav-item pu-menu-hover">
@@ -221,8 +224,7 @@
 {% endblock tabla %}
 
 {% block extrajs %}
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="{% static 'dowloand_bootstrap/js/lib/data-table/dataTables.bootstrap.min.js' %}"></script>
+
 <script src="{% static 'personal/js/deportes/templates.js' %}"></script>
 <script type="text/javascript">
   

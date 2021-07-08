@@ -1,0 +1,201 @@
+{% load staticfiles %}
+<style type="text/css">
+    .fechainput{
+        cursor: pointer; 
+    }
+
+    .mi-footer-modal{
+        margin-top: 50px;
+    }
+  
+</style>
+<div class="modal-dialog modal-lg swal2-show" role="document">
+    <div class="modal-content" >
+
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="row justify-content-around" id="" style="margin-top: 10px;">
+                    <div class="col text-center mejorar-posicion-imagen">
+                        {% if object.imagen %}
+                            <img src="{{ object.imagen.url }}"  alt="Responsive image">
+                        {% else %}
+                            <img id="myImg" src="{% static 'personal/imagen/sin_imagen.png' %}" class="img-fluid" alt="No existe">
+                        {% endif %}
+                    </div>
+                    <div class="col text-center">
+                        <div class="text-center titulo-div-modal">
+                            <h6>Reservación</h6>
+                        </div>
+                        <p class="text-justify parrafo-div-modal" style="margin:-0.5% 0; margin-top: 30px;"><span class="parrafo-span-div-modal">Deporte: {{ object.nombre|title }}</span> </p>
+
+                        <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Precio por uso: $ {{ object.precio }}</span></p>
+                        
+                        <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Duración: <span id="dias">0</span></span></p>
+                        
+                        <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Valor Total: <span id="total">0</span> </span></p>
+                       
+                        <p class="text-justify parrafo-div-modal" style="margin-top: 50px;">
+                            <span class="parrafo-span-div-modal">
+                                Selecciona tus fechas: 
+                                <div class="form-contact">
+                                <input class="form-control fechainput" style="text-align:center" type="text" name="daterange" placeholder="Fecha Doc." readonly>
+                                </div>
+                            </span>
+                        </p>
+
+                        <div class="mi-footer-modal">
+                            <!-- mediante el onclick llamamos a la funcion registrarUsuario()
+                            que esta en el templates.js -->
+                            <button id="bloquear_button_agregar" class="btn btn-info" type="button" onclick="registrarReserva();">Reservar</button>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    //console.log("mensaje")
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+    habilitarButton.style.cssText = 'cursor: not-allowed;';
+    var startDate;
+    var endDate;
+    var fechaActual = new Date();
+    var fechaActualmasUnAño = new Date();
+    var total;
+    fechaActualmasUnAño.setFullYear(fechaActual.getFullYear()+1);
+
+    $('input[name="daterange"]').val('');
+    $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(' Desde el ' + picker.startDate.format('DD/MM/YYYY') + '  hasta el  ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+    $('input[name="daterange"]').daterangepicker({
+        "applyClass": "btn-success",
+        "cancelClass": "btn-danger",
+        "minDate": fechaActual,
+        "maxDate": fechaActualmasUnAño ,
+        "opens": "left",
+        "drops": "up",
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Guardar fechas",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "Hasta",
+            "customRangeLabel": "Personalizar",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Setiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 1
+        },
+        showDropdowns: true,
+        showTopbar: true,
+        isInvalidDate: function(date) {
+            var dateRanges = [
+                {% for fechas_ocupadas in reserva %}
+                    {% if fechas_ocupadas.deporte.id == object.id %}
+                        { 'start': moment('{{ fechas_ocupadas.fecha_inicial | date:"Y-m-d"}}'), 'end': moment('{{ fechas_ocupadas.fecha_final | date:"Y-m-d"}}') },
+                    {% endif%}
+                {% endfor %}
+            ];
+            return dateRanges.reduce(function(bool, range) {
+                return bool || (date >= range.start && date <= range.end);
+            }, false);
+        }
+    },
+    function est(start, end) {
+        habilitarButton.disabled= false;
+        habilitarButton.style.cssText = 'cursor: pointer;';
+        
+        var capturarfechainicial = start.format('YYYY-MM-DD');
+        var capturarfechaifinal = end.format('YYYY-MM-DD');
+        startDate = capturarfechainicial;
+        endDate = capturarfechaifinal;
+
+        //tabla de valores
+        precio = '{{ object.precio }}'
+        
+        var fechaI = new Date(startDate)
+        var fechaF = new Date(endDate)
+
+        var difM = fechaF - fechaI // diferencia en milisegundos
+        var dias = (difM / (1000 * 60 * 60 * 24))+1 // diferencia en dias
+
+        if (dias != 1) {
+            document.getElementById('dias').innerHTML=dias + ' días';
+        }else{
+            document.getElementById('dias').innerHTML=dias + ' día';
+        }
+        total = parseFloat(precio.replace(',', '.'))*dias;
+        document.getElementById('total').innerHTML='$ '+parseFloat(total);
+
+    });
+    function registrarReserva(){
+        data = {
+            'usuario': "{{ request.user.id }}",
+            'deporte':"{{ object.id }}",
+            'fecha1':startDate,
+            'fecha2':endDate,
+            'costo':total,
+            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+        }
+        $.ajax({
+            data:data,
+            url:"{% url 'templates_reserva:reservar_deporte' %}",
+            type: 'POST',
+            success:function(response){
+                Swal.fire({
+                    title: 'Reserva Exitosa!',
+                    html:
+                        'Puedes revisar tus reservas en tu ' +
+                        '<b><a href="{% url 'templates_perfil:listar_reservas_user_deportes' %}">Perfil <br>{{ user.nombres | title }} {{ user.apellidos | title }}</a></b>',
+                    icon: 'success',
+                    confirmButtonText: `OK`
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    $('#ListarChatbot').modal('hide');
+                    $('#chatbotDetalles').modal('hide');
+                    dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros deportes, no olvides visitarnos.");
+                  } else {
+                    $('#ListarChatbot').modal('hide');
+                    $('#chatbotDetalles').modal('hide');
+                    dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros deportes, no olvides visitarnos.");
+                  }
+                })
+                var nom = "homeReservaDeporte";
+                sessionStorage.setItem("Nombre", nom);
+
+            },
+            error:function(error){
+                sweetError(error.responseJSON.mensaje);
+            }
+        });
+    }
+   
+</script>

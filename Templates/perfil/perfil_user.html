@@ -38,6 +38,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'dowloand_bootstrap/css/lib/datatable/dataTables.bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'adminLTE3/plugins/fontawesome-free/css/all.min.css' %}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'adminLTE3/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
@@ -61,7 +62,13 @@ pu = perfil_user.html
 <!-- 
 sidebar-mini = clase para mantener los iconos al contraer el menu lateral
 -->
+
 <body class="hold-transition layout-fixed layout-navbar-fixed layout-footer-fixed" style="">
+<div id="contenedor_carga">
+  <div id="carga"></div>
+</div>
+{% block carga_tabla %}
+{% endblock carga_tabla %}
 <div class="wrapper">
   <!-- Navbar -->
 
@@ -516,7 +523,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
 
             
             <!--FIN Contenedores de api google analytics -->
-           
+            
               <!-- Div para mostrar datos del usario responsive -->
               <div class="pu-div-perfil-contenedor-datos" style="">
                 <div class="pu-div-perfil-image-responsive" style="background-color: #fff;">
@@ -644,7 +651,6 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
     chat-icon="{% static 'personal/imagen/usuario.png' %}"
     user-id
   ></df-messenger>
-  <div style="height: 80px; background-color: #ECF0F6;"></div>
   
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -678,37 +684,32 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
 <div class="modal fade"  data-backdrop="static" id="modalEditar" rol="dialog">
 </div>
 
-<div class="modal fade"  data-backdrop="static" id="modalFullCalendar" rol="dialog">
-  <div class="modal-dialog swal2-show mover-modal-editar-user" role="document">
+<div class="modal fade"  data-backdrop="static" id="ListarChatbot" rol="dialog">
+  <!-- ./wrapper 
+    <div class="modal-dialog swal2-show mover-modal-editar-user" role="document">
     <div class="modal-content modal-chatbot-responsive">
+  -->
+  <div class="modal-dialog swal2-show mover-modal-editar-user" role="document">
+    <div class="modal-content ">
 
-      <div class="modal-body">
-        <div class="informacion-calendario-chatbot">
-          <h1>Calendario</h1>
-          <h2 class="informacion-calendario-chatbot-indicaciones">Indicaciones</h2>
-          <div style="height: 10px"></div>
-          <p><span>1.</span> Las fechas tachadas significan que no están disponibles</p>
-          <p><span>2.</span> Selecciona tus fechas según la disponibilidad</p>
-          <p><span>3.</span> Cuando abras el calendario debes seleccionar las fechas, click en "Guardar fechas" y luego enviar</p>
-          <p><span>4.</span> Una vez envíes las fechas debes confirmar tu selección en el chatbot</p>
-        </div>
-        <div class="form-group row" style="margin-top: 45px;">
-            <label for="nombre" class="col-form-label col-sm-4">Fecha:</label>
-            <div class="col-sm-8">
-                <input class="form-control fechainput" type="text" name="daterange" placeholder="Fecha Doc." readonly>
-            </div>
+      <div  class="modal-body">
+        <h1 class="titulo-listar-chatbot text-center" style="padding-bottom: 30px;" id="h1-titulo"></h1>
+        <div id="listar-turismos-chatbot" class="div-scroll" style="height:270px;overflow-x: hidden; ">
         </div>
       </div>
-      <div class="chatbor-reservar">
+      <div class="chatbor-reservar" id="btn-cerrar-modal-chatbot">
           <!-- mediante el onclick llamamos a la funcion registrarUsuario()
           que esta en el templates.js -->
-          <input class="btn btn-info"  type="button" value="Responder" id="responder">
-          <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+          
       </div>
                   
     </div>
   </div>
 </div>
+<div class="modal fade"  data-backdrop="static" id="chatbotDetalles" rol="dialog">
+  
+</div>
+
 <!-- script para autenticarse con google y mostrar la api de google analytics -->
 
 <!-- Include the CSS that styles the charts. -->
@@ -740,6 +741,8 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
  AdminLTE dashboard demo (This is only for demo purposes) 
 <script src="{% static 'adminLTE3/dist/js/pages/dashboard2.js' %}"></script> -->
 <!-- para improtar sweet alert -->
+<script src="{% static 'dowloand_bootstrap/js/lib/data-table/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dowloand_bootstrap/js/lib/data-table/dataTables.bootstrap.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{% static 'personal/main.js' %}"></script>
 <script src="{% static 'personal/js/usuarios/templates.js' %}"></script>
@@ -757,7 +760,11 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
   //$( document ).ready(function() {
     //$('#modalFullCalendar').modal('toggle')
 //});
-
+window.onload = function(){
+  var contenedor = document.getElementById('contenedor_carga');
+  contenedor.style.visibility = 'hidden';
+  contenedor.style.opacity = '0';
+}
 $(document).ready(function(){
   $('#active-users-container').hide();
 });

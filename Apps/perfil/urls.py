@@ -53,10 +53,14 @@ urlpatterns = [
 	path('perfil/reserva_detalles_deporte/<int:pk>/',DeportePerfilReservaDetallesUser.as_view(), name = 'reserva_detalles_user_deporte'),
 
 	#urls para reservar desde el chatbot
-	path('perfil/chatbot/', ChatBot.as_view(), name = 'chatbot'),
-	path('perfil/reservar_turismo_chatbot/', ReservaTurismoChatbot.as_view(), name = 'reserva_turismo_chatbot'),
-	path('perfil/reservar_deporte_chatbot/', ReservaDeporteChatbot.as_view(), name = 'reserva_deporte_chatbot'),
-	path('perfil/reservar_plato_chatbot/', ReservaPlatoChatbot.as_view(), name = 'reserva_plato_chatbot'),
+	path('chatbot/listar_hoteles/', ListarHotelesModal.as_view(), name = 'listar_hoteles_chatbot'),
+	path('chatbot/detalles_hotel/<int:pk>/',HotelDetallesChatbot.as_view(), name='chatbot_hotel_detalles'),
+	path('chatbot/listar_deportes/', ListarDeportesModal.as_view(), name = 'listar_deportes_chatbot'),
+	path('chatbot/detalles_deporte/<int:pk>/',DeporteDetallesChatbot.as_view(), name='chatbot_deporte_detalles'),
+	path('chatbot/listar_turismos/', ListarTurismosModal.as_view(), name = 'listar_turismos_chatbot'),
+	path('chatbot/detalles_turismo/<int:pk>/',TurismoDetallesChatbot.as_view(), name='chatbot_turismo_detalles'),
+	path('chatbot/listar_platos/', ListarPlatosModal.as_view(), name = 'listar_platos_chatbot'),
+	path('chatbot/detalles_plato/<int:pk>/',PlatoDetallesChatbot.as_view(), name='chatbot_plato_detalles'),
 
 	#urls para extra de perfil
 	#calendario

@@ -42,17 +42,70 @@ $(document).ready(function() {
           horas = hora1 + ":" + minuto1 + ":" + segundo1;
 
           if(horas_sesion >  horas){
-             $dfMessenger.renderCustomText('Buenos días '+ user);
+            $dfMessenger.renderCustomText('Buenos días '+ user);
+            var textos2 = new Array()
+            textos2[0] = "";
+            textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+            respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+            $dfMessenger.renderCustomText("Soy el asistente de cogua");
+            $dfMessenger.renderCustomText(textos2[respuesta2]);
+            $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+            const payload = [
+            {
+              "type": "chips",
+              "options": [
+                {
+                  "text": "¿Que tipos de turismos tienes?"
+                },
+                {
+                  "text": "¿Que turismo me recomiendas reservar?"
+                },
+                {
+                  "text": "¿En donde se encuentran ubicados?"
+                }
+              ]
+            }
+            ];
+            dfMessenger.renderCustomCard(payload);
           }else{
             $dfMessenger.addEventListener('df-response-received', function (event) {
                 data = event.detail.response;
                 intento = data.queryResult.intent.displayName;
                 if (intento == "Default Welcome Intent") {
                   
-                  $dfMessenger.renderCustomText('¡Hola! ' + user);
+                  var textos1 = new Array()
+                  textos1[0] = "¿Necesitas ayuda?";
+                  textos1[1] = "¡Hola! " + user;
+                  respuesta1 = Math.floor(Math.random() * (textos1.length - 0) + 0);
+                  var textos2 = new Array()
+                  textos2[0] = "";
+                  textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+                  respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+                  $dfMessenger.renderCustomText(textos1[respuesta1]);
+                  $dfMessenger.renderCustomText("Soy el asistente de cogua");
+                  $dfMessenger.renderCustomText(textos2[respuesta2]);
+                  $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+                  const payload = [
+                  {
+                    "type": "chips",
+                    "options": [
+                      {
+                        "text": "¿Que tipos de turismos tienes?"
+                      },
+                      {
+                        "text": "¿Que turismo me recomiendas reservar?"
+                      },
+                      {
+                        "text": "¿En donde se encuentran ubicados?"
+                      }
+                    ]
+                  }
+                  ];
+                  dfMessenger.renderCustomCard(payload);
                 }
             });
-            $dfMessenger.renderCustomText('cogua online');
           }
         }
       }else if(sesion1 >= 12 && sesion1 < 18){
@@ -69,17 +122,71 @@ $(document).ready(function() {
           horas = hora1 + ":" + minuto1 + ":" + segundo1;
 
           if(horas_sesion >  horas){
-             $dfMessenger.renderCustomText('Buenos tardes ' + user);
+            $dfMessenger.renderCustomText('Buenos tardess ' + user);
+            var textos2 = new Array()
+            textos2[0] = "";
+            textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+            respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+            $dfMessenger.renderCustomText("Soy el asistente de cogua");
+            $dfMessenger.renderCustomText(textos2[respuesta2]);
+            $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+            const payload = [
+            {
+              "type": "chips",
+              "options": [
+                {
+                  "text": "¿Que tipos de turismos tienes?"
+                },
+                {
+                  "text": "¿Que turismo me recomiendas reservar?"
+                },
+                {
+                  "text": "¿En donde se encuentran ubicados?"
+                }
+              ]
+            }
+            ];
+            dfMessenger.renderCustomCard(payload);
           }else{
             $dfMessenger.addEventListener('df-response-received', function (event) {
                 data = event.detail.response;
                 intento = data.queryResult.intent.displayName;
+
                 if (intento == "Default Welcome Intent") {
-                  
-                  $dfMessenger.renderCustomText('¡Hola! ' + user);
+                  var textos1 = new Array()
+                  textos1[0] = "¿Necesitas ayuda?";
+                  textos1[1] = "¡Hola! " + user;
+                  respuesta1 = Math.floor(Math.random() * (textos1.length - 0) + 0);
+                  var textos2 = new Array()
+                  textos2[0] = "";
+                  textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+                  respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+                  $dfMessenger.renderCustomText(textos1[respuesta1]);
+                  $dfMessenger.renderCustomText("Soy el asistente de cogua");
+                  $dfMessenger.renderCustomText(textos2[respuesta2]);
+                  $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+                  const payload = [
+                  {
+                    "type": "chips",
+                    "options": [
+                      {
+                        "text": "¿Que tipos de turismos tienes?"
+                      },
+                      {
+                        "text": "¿Que turismo me recomiendas reservar?"
+                      },
+                      {
+                        "text": "¿En donde se encuentran ubicados?"
+                      }
+                    ]
+                  }
+                  ];
+                  dfMessenger.renderCustomCard(payload);
                 }
             });
-            $dfMessenger.renderCustomText('cogua online');
+            
           }
         }
       }else if(sesion1 >= 18 && sesion1 < 24){
@@ -97,6 +204,31 @@ $(document).ready(function() {
 
           if(horas_sesion >  horas){
             $dfMessenger.renderCustomText('Buenas noches ' + user);
+            var textos2 = new Array()
+            textos2[0] = "";
+            textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+            respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+            $dfMessenger.renderCustomText("Soy el asistente de cogua");
+            $dfMessenger.renderCustomText(textos2[respuesta2]);
+            $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+            const payload = [
+            {
+              "type": "chips",
+              "options": [
+                {
+                  "text": "¿Que tipos de turismos tienes?"
+                },
+                {
+                  "text": "¿Que turismo me recomiendas reservar?"
+                },
+                {
+                  "text": "¿En donde se encuentran ubicados?"
+                }
+              ]
+            }
+            ];
+            dfMessenger.renderCustomCard(payload);
           }else{
 
             $dfMessenger.addEventListener('df-response-received', function (event) {
@@ -104,10 +236,38 @@ $(document).ready(function() {
                 intento = data.queryResult.intent.displayName;
                 if (intento == "Default Welcome Intent") {
                   
-                  $dfMessenger.renderCustomText('¡Hola! ' + user);
+                  var textos1 = new Array()
+                  textos1[0] = "¿Necesitas ayuda?";
+                  textos1[1] = "¡Hola! " + user;
+                  respuesta1 = Math.floor(Math.random() * (textos1.length - 0) + 0);
+                  var textos2 = new Array()
+                  textos2[0] = "";
+                  textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";
+                  respuesta2 = Math.floor(Math.random() * (textos2.length - 0) + 0);
+
+                  $dfMessenger.renderCustomText(textos1[respuesta1]);
+                  $dfMessenger.renderCustomText("Soy el asistente de cogua");
+                  $dfMessenger.renderCustomText(textos2[respuesta2]);
+                  $dfMessenger.renderCustomText("Puedes preguntarme cualquier cosa o seleccionar algunas de las siguientes opciones.");
+                  const payload = [
+                  {
+                    "type": "chips",
+                    "options": [
+                      {
+                        "text": "¿Que tipos de turismos tienes?"
+                      },
+                      {
+                        "text": "¿Que turismo me recomiendas reservar?"
+                      },
+                      {
+                        "text": "¿En donde se encuentran ubicados?"
+                      }
+                    ]
+                  }
+                  ];
+                  dfMessenger.renderCustomCard(payload);
                 }
             });
-            $dfMessenger.renderCustomText('cogua online');
           }
         }
       }

@@ -21,11 +21,16 @@ success: function(response){
 //funciona para listar usuarios con peticion ajax
 var $ = jQuery.noConflict();
 function listarUsuarios(){
+	var contenedor = document.getElementById('contenedor_carga_tabla');
+	contenedor.style.visibility = 'visible';
+	contenedor.style.opacity = '1';
 	$.ajax({
 		url: "/perfil_admin/listar_usuarios/",
 		type: "get",
 		dataType: "json",
 		success: function(response){
+			contenedor.style.visibility = 'hidden';
+        	contenedor.style.opacity = '0';
 			if($.fn.DataTable.isDataTable('#tabla_usuarios')){
 				$('#tabla_usuarios ').DataTable().destroy();
 			}

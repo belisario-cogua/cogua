@@ -9,6 +9,14 @@ css para que el df messenger se ponga encima del footer
     z-index: 0;
 }
 */
+.layout-navbar-fixed .wrapper .main-header {
+    z-index: 100;
+}
+
+
+.layout-footer-fixed .wrapper .main-footer {
+    z-index: 0;
+}
 .os-scrollbar-handle{
 	margin-top: 147px;
 }
@@ -705,3 +713,168 @@ css para que el df messenger se ponga encima del footer
 		display: block;
 	}
 }
+
+/* INICIO: modal chatbot; */
+.titulo-listar-chatbot{
+	font-weight: bold;
+    color: #6e6d6a;
+    font-size: 1.85rem;
+}
+.img-listar-turismo-chatbot img{
+	width: 125px;height: 100px;
+}
+.body-listar-chatbot{
+	margin-left:10px;
+	width: 70%;
+}
+.body-listar-chatbot p{
+	margin-bottom: 3px;
+	color: #7A838B;
+
+}
+.body-listar-chatbot p span{
+	font-weight: bold;
+}
+.btn-reservar-listar{
+	float: right;
+	margin-top: 7px;
+}
+.btn-reservar-listar a{
+	background-color: #08A1BC;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 6px;
+	padding-bottom: 8px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.div-scroll::-webkit-scrollbar {
+    display: none;  /* Ocultar scroll */
+}
+@media screen and (max-width: 499px){
+	.body-listar-chatbot{
+		width: 69%;
+	}
+}
+@media screen and (max-width: 485px){
+	.body-listar-chatbot{
+		width: 68%;
+	}
+}
+@media screen and (max-width: 471px){
+	.body-listar-chatbot{
+		width: 67%;
+	}
+}
+@media screen and (max-width: 459px){
+	.body-listar-chatbot{
+		width: 66%;
+	}
+}
+@media screen and (max-width: 447px){
+	.body-listar-chatbot{
+		width: 65%;
+	}
+}
+@media screen and (max-width: 435px){
+	.body-listar-chatbot{
+		width: 64%;
+	}
+}
+@media screen and (max-width: 424px){
+	.body-listar-chatbot{
+		width: 63%;
+	}
+}
+@media screen and (max-width: 414px){
+	.body-listar-chatbot{
+		width: 62%;
+	}
+}
+@media screen and (max-width: 405px){
+	.body-listar-chatbot{
+		width: 60%;
+	}
+}
+@media screen and (max-width: 387px){
+	.body-listar-chatbot{
+		width: 50%;
+	}
+	.btn-reservar-listar{
+		float: left;
+	}
+}
+
+/* FIN: modal chatbot; */
+/* INICIO: preload */
+#contenedor_carga{
+	visibility: hidden;
+	background: rgba(0,0,0,.3);
+	margin-top: -60px;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	-webkit-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	z-index: 100000;
+}
+#carga{
+	border: 15px solid #ccc;
+	border-top-color: #9600E8;
+	border-top-style: groove;
+	height: 100px;
+	width: 100px;
+	border-radius: 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+
+	-webkit-animation: girar 1.5s linear infinite;
+	-o-animation: girar 1.5s linear infinite;
+	animation: girar 1.5s linear infinite;
+}
+#contenedor_carga_tabla{
+	visibility: hidden;
+	background: rgba(0,0,0,.3);
+	height: 100%;
+	width: 100%;
+	margin-top: -60px;
+	position: fixed;
+	-webkit-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	z-index: 10000;
+}
+#carga_tabla{
+	border: 15px solid #ccc;
+	border-top-color: #FF9800;
+	border-top-style: groove;
+	height: 100px;
+	width: 100px;
+	border-radius: 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+
+	-webkit-animation: girar 1.5s linear infinite;
+	-o-animation: girar 1.5s linear infinite;
+	animation: girar 1.5s linear infinite;
+}
+
+@keyframes girar {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* FIN: preload */

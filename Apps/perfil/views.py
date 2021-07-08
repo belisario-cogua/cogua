@@ -516,315 +516,83 @@ class DeportePerfilReservaDetallesUser(LoginRequiredMixin, DetailView):
     template_name = 'perfil/reservas_user/deportes/perfil_ModalReservaDeporteDetalles.html'
 '''Fin listado de reservas de Usuarios como clientes'''
 
-class ChatBot(CreateView):
-    def post(self, request, *args, **kwargs):
-        if request.is_ajax():
-            intento = request.POST.get('chatbotIntento')
-            tipoTurismos = request.POST.get('chatbottipoTurismos')
-            nombre = request.POST.get('solicitudTipoTurismo')
-
-            if intento == 'consultaTurismos - yesVerTurismos' or intento == 'consultaTurismos - verTurismosDirecto':
-                if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
-                    hoteles = Hotel.objects.filter(estado=True,publico=True)
-                    if hoteles:
-                        response = HttpResponse(serialize('json', hoteles), 'application/json')
-                        response.status_code = 201
-                        return response
-                    if not hoteles:
-                        mensaje = "False"
-                        error = 'no existe ninguna cabaña en True o la cantidad es cero'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
-                    turismos = Turismo.objects.filter(estado=True,publico=True)
-                    if turismos:
-                        response = HttpResponse(serialize('json', turismos), 'application/json')
-                        response.status_code = 201
-                        return response
-                    if not turismos:
-                        mensaje = "False"
-                        error = 'no existe ningun turismo en True o la cantidad es cero'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-
-                elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
-                    deportes = Deporte.objects.filter(estado=True,publico=True)
-                    if deportes:
-                        response = HttpResponse(serialize('json', deportes), 'application/json')
-                        response.status_code = 201
-                        return response
-                    if not deportes:
-                        mensaje = "False"
-                        error = 'no existe ningun deporte en True o la cantidad es cero'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
-                    platos = Plato.objects.filter(estado=True,publico=True)
-                    if platos:
-                        response = HttpResponse(serialize('json', platos), 'application/json')
-                        response.status_code = 201
-                        return response
-                    if not platos:
-                        mensaje = "False"
-                        error = 'no existe ningun plato tipico en True o la cantidad es cero'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-            elif intento == 'solicitudReservaTurismo' or intento == 'solicitudReservaTurismo - repeticion':
-                print("tipo de turismo")
-                print(tipoTurismos)
-
-                if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
-                    try:
-                        hotel = Hotel.objects.filter(nombre=nombre)
-                        hotel_cantidad = Hotel.objects.get(nombre=nombre)
-                        if hotel_cantidad.cantidad > 0:
-                            reservasHotel = ReservaHotel.objects.filter(hotel__nombre=nombre)
-                            error = 'No hay error!'
-                            response = HttpResponse(serialize('json', reservasHotel), 'application/json')
-                            response.status_code = 201
-                            return response
-                        else:
-                            mensaje = "False"
-                            error = 'error, la cantidad de esta cabaña es cero'
-                            response = JsonResponse({'mensaje':mensaje,'error':error})
-                            response.status_code = 201
-                            return response
-                    except Hotel.DoesNotExist:
-                        mensaje = "False"
-                        error = 'error no existe la cabaña'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
-                    try:
-                        lugareTuristico = Turismo.objects.filter(nombre=nombre)
-                        lugareTuristico_cantidad = Turismo.objects.get(nombre=nombre)
-                        if lugareTuristico_cantidad.cantidad > 0:
-                            reservasTurismo = ReservaTurismo.objects.filter(turismo__nombre=nombre)
-                            error = 'No hay error!'
-                            response = HttpResponse(serialize('json', reservasTurismo), 'application/json')
-                            response.status_code = 201
-                            return response
-                        else:
-                            mensaje = "False"
-                            error = 'error, la cantidad de este lugar turistico es cero'
-                            response = JsonResponse({'mensaje':mensaje,'error':error})
-                            response.status_code = 201
-                            return response
-                    except Turismo.DoesNotExist:
-                        mensaje = "False"
-                        error = 'error no existe el lugar turitico'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
-                    try:
-                        deporte = Deporte.objects.filter(nombre=nombre)
-                        deporte_cantidad = Deporte.objects.get(nombre=nombre)
-                        if deporte_cantidad.cantidad > 0:
-                            reservasDeporte = ReservaDeporte.objects.filter(deporte__nombre=nombre)
-                            error = 'No hay error!'
-                            response = HttpResponse(serialize('json', reservasDeporte), 'application/json')
-                            response.status_code = 201
-                            return response
-                        else:
-                            mensaje = "False"
-                            error = 'error, la cantidad de este deporte es cero'
-                            response = JsonResponse({'mensaje':mensaje,'error':error})
-                            response.status_code = 201
-                            return response
-                    except Deporte.DoesNotExist:
-                        mensaje = "False"
-                        error = 'error no existe el deporte'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
-                    
-                    try:
-                        platoTipico = Plato.objects.filter(nombre=nombre)
-                        platoTipico_cantidad = Plato.objects.get(nombre=nombre)
-                        if platoTipico_cantidad.cantidad > 0:
-                            reservasPlatoTipico = ReservaPlato.objects.filter(plato__nombre=nombre)
-                            error = 'No hay error!'
-                            response = HttpResponse(serialize('json', reservasPlatoTipico), 'application/json')
-                            response.status_code = 201
-                            return response
-                        else:
-                            mensaje = "False"
-                            error = 'error, la cantidad de este plato es cero'
-                            response = JsonResponse({'mensaje':mensaje,'error':error})
-                            response.status_code = 201
-                            return response
-                    except Plato.DoesNotExist:
-                        mensaje = "False"
-                        error = 'error no existe el plato tipico'
-                        response = JsonResponse({'mensaje':mensaje,'error':error})
-                        response.status_code = 201
-                        return response
-
-                mensaje = 'error de intento solicitudReservaTurismo'
-                error = 'No hay error!'
-                response = JsonResponse({'mensaje':mensaje,'error':error})
-                response.status_code = 201
-                return response
-
-            elif intento == 'solicitudReservaTurismo - repeat':
-                if tipoTurismos == 'cabañas' or tipoTurismos == 'Cabañas':
-                    hoteles = Hotel.objects.filter(estado=True,publico=True)
-                    response = HttpResponse(serialize('json', hoteles), 'application/json')
-                    response.status_code = 201
-                    return response
-
-                elif tipoTurismos == 'lugares turísticos' or tipoTurismos == 'Lugares Turísticos' or tipoTurismos == 'lugares turisticos' or tipoTurismos == 'Lugares Turisticos':
-                    turismos = Turismo.objects.filter(estado=True,publico=True)
-                    response = HttpResponse(serialize('json', turismos), 'application/json')
-                    response.status_code = 201
-                    return response
-
-                elif tipoTurismos == 'deportes' or tipoTurismos == 'Deportes':
-                    deportes = Deporte.objects.filter(estado=True,publico=True)
-                    response = HttpResponse(serialize('json', deportes), 'application/json')
-                    response.status_code = 201
-                    return response
-
-                elif tipoTurismos == 'platos típicos' or tipoTurismos == 'Platos Típicos' or tipoTurismos == 'Platos Tipicos' or tipoTurismos == 'platos tipicos' or tipoTurismos == 'platos' or tipoTurismos == 'Platos':
-                    platos = Plato.objects.filter(estado=True,publico=True)
-                    response = HttpResponse(serialize('json', platos), 'application/json')
-                    response.status_code = 201
-                    return response
-            else:
-                mensaje = 'error no llega el intento'
-                error = 'error no llega el intento'
-                response = JsonResponse({'mensaje':mensaje,'error':error})
-                response.status_code = 400
-                return response
 
 '''Reservas chatbot'''
-class ReservaTurismoChatbot(CreateView):
-    model = ReservaTurismo
+class ListarHotelesModal(ListView):
+    model = Hotel
 
-    def post(self, request, *args, **kwargs):
+    def get(self,request,*args,**kwargs):
         if request.is_ajax():
-            intento = request.POST.get('chatbotIntento')
-            if intento == 'fechasReservaTurismo' or intento == 'repeticion - fechasReservaTurismo':
-                dialogFlowDate = request.POST.get('dialogFlowDate')
-                dialogFlowDate1 = request.POST.get('dialogFlowDate1')
+            turismo = Hotel.objects.filter(estado = True, publico = True).values()
+            response = JsonResponse({'turismo':list(turismo)})
+            response.status_code = 201
+            return response
 
-                tempoSolicitudTipoTurismo = request.POST.get('tempoSolicitudTipoTurismo')
-                idTurismo= Turismo.objects.get(nombre=tempoSolicitudTipoTurismo)
+class HotelDetallesChatbot(DetailView):
+    model = Hotel
+    template_name = 'perfil/chatbot/chatbot_ReservarHotel.html'
 
-                validar_fechas = ReservaTurismo.objects.filter(fecha_inicial__gte=dialogFlowDate,fecha_final__lte=dialogFlowDate1,turismo=idTurismo.id)
+    def get_context_data(self, **kwargs):
+        context = super(HotelDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaHotel.objects.filter(estado=True)
+        return context
 
-                if validar_fechas:
-                    mensaje = "False"
-                    error = 'Error ya existen las fechas!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
-                else:
-                    usuario = Usuario.objects.filter(id = request.user.id).first()
-                    turismo = Turismo.objects.filter(id = idTurismo.id).first()
+class ListarDeportesModal(ListView):
+    model = Deporte
 
-                    nueva_reserva = self.model(
-                        usuario = usuario,
-                        turismo = turismo,
-                        fecha_inicial = dialogFlowDate,
-                        fecha_final = dialogFlowDate1
-                    )
-                    nueva_reserva.save()
-                    mensaje = "tipo_turismo"
-                    error = 'No hay error!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
-
-class ReservaDeporteChatbot(CreateView):
-    model = ReservaDeporte
-
-    def post(self, request, *args, **kwargs):
+    def get(self,request,*args,**kwargs):
         if request.is_ajax():
-            intento = request.POST.get('chatbotIntento')
-            if intento == 'fechasReservaTurismo' or intento == 'repeticion - fechasReservaTurismo':
-                dialogFlowDate = request.POST.get('dialogFlowDate')
-                dialogFlowDate1 = request.POST.get('dialogFlowDate1')
+            turismo = Deporte.objects.filter(estado = True, publico = True).values()
+            response = JsonResponse({'turismo':list(turismo)})
+            response.status_code = 201
+            return response
 
-                tempoSolicitudTipoTurismo = request.POST.get('tempoSolicitudTipoTurismo')
-                idDeporte= Deporte.objects.get(nombre=tempoSolicitudTipoTurismo)
+class DeporteDetallesChatbot(DetailView):
+    model = Deporte
+    template_name = 'perfil/chatbot/chatbot_ReservarDeporte.html'
 
-                validar_fechas = ReservaDeporte.objects.filter(fecha_inicial__gte=dialogFlowDate,fecha_final__lte=dialogFlowDate1,deporte=idDeporte.id)
+    def get_context_data(self, **kwargs):
+        context = super(DeporteDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaDeporte.objects.filter(estado=True)
+        return context
 
-                if validar_fechas:
-                    mensaje = "False"
-                    error = 'Error ya existen las fechas!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
-                else:
-                    usuario = Usuario.objects.filter(id = request.user.id).first()
-                    deporte = Deporte.objects.filter(id = idDeporte.id).first()
+class ListarTurismosModal(ListView):
+    model = Turismo
 
-                    nueva_reserva = self.model(
-                        usuario = usuario,
-                        deporte = deporte,
-                        fecha_inicial = dialogFlowDate,
-                        fecha_final = dialogFlowDate1
-                    )
-                    nueva_reserva.save()
-                    mensaje = "tipo_deportes"
-                    error = 'No hay error!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
-
-class ReservaPlatoChatbot(CreateView):
-    model = ReservaPlato
-
-    def post(self, request, *args, **kwargs):
+    def get(self,request,*args,**kwargs):
         if request.is_ajax():
-            intento = request.POST.get('chatbotIntento')
-            if intento == 'fechasReservaTurismo' or intento == 'repeticion - fechasReservaTurismo':
-                dialogFlowDate = request.POST.get('dialogFlowDate')
-                dialogFlowDate1 = request.POST.get('dialogFlowDate1')
+            turismo = Turismo.objects.filter(estado = True, publico = True).values()
+            response = JsonResponse({'turismo':list(turismo)})
+            response.status_code = 201
+            return response
 
-                tempoSolicitudTipoTurismo = request.POST.get('tempoSolicitudTipoTurismo')
-                idPlato = Plato.objects.get(nombre=tempoSolicitudTipoTurismo)
+class TurismoDetallesChatbot(DetailView):
+    model = Turismo
+    template_name = 'perfil/chatbot/chatbot_ReservarTurismo.html'
 
-                validar_fechas = ReservaPlato.objects.filter(fecha_inicial__gte=dialogFlowDate,fecha_final__lte=dialogFlowDate1,plato=idPlato.id)
+    def get_context_data(self, **kwargs):
+        context = super(TurismoDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaTurismo.objects.filter(estado=True)
+        return context
 
-                if validar_fechas:
-                    mensaje = "False"
-                    error = 'Error ya existen las fechas!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
-                else:
-                    usuario = Usuario.objects.filter(id = request.user.id).first()
-                    plato = Plato.objects.filter(id = idPlato.id).first()
+class ListarPlatosModal(ListView):
+    model = Plato
 
-                    nueva_reserva = self.model(
-                        usuario = usuario,
-                        plato = plato,
-                        fecha_inicial = dialogFlowDate,
-                        fecha_final = dialogFlowDate1
-                    )
-                    nueva_reserva.save()
-                    mensaje = "tipo_plato"
-                    error = 'No hay error!'
-                    response = JsonResponse({'mensaje':mensaje,'error':error})
-                    response.status_code = 201
-                    return response
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            turismo = Plato.objects.filter(estado = True, publico = True).values()
+            response = JsonResponse({'turismo':list(turismo)})
+            response.status_code = 201
+            return response
+
+class PlatoDetallesChatbot(DetailView):
+    model = Plato
+    template_name = 'perfil/chatbot/chatbot_ReservarPlato.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PlatoDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaPlato.objects.filter(estado=True)
+        return context
 
 '''FIN Reservas chatbot'''
 

@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 });
 var user = $('#nombre-user').attr('data-value');
-
+const dfMessenger = document.querySelector('df-messenger');
 function abrirhoteles(){
   var contenedor = document.getElementById('contenedor_carga');
   contenedor.style.visibility = 'visible';

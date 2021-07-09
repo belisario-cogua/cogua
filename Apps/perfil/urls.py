@@ -62,6 +62,14 @@ urlpatterns = [
 	path('chatbot/listar_platos/', ListarPlatosModal.as_view(), name = 'listar_platos_chatbot'),
 	path('chatbot/detalles_plato/<int:pk>/',PlatoDetallesChatbot.as_view(), name='chatbot_plato_detalles'),
 
+	path('chatbot/sugerencia_hotel/',SugerenciasHotel.as_view(), name='sugerencia_chatbot_hotel'),
+	path('chatbot/detallles_sugerencia_hotel/<int:pk>/',SugerenciasHotelDetallesChatbot.as_view(), name='sugerencia_chatbot_hotel_detalles'),
+	path('chatbot/sugerencia_deporte/',SugerenciasDeporte.as_view(), name='sugerencia_chatbot_deporte'),
+	path('chatbot/detallles_sugerencia_deporte/<int:pk>/',SugerenciasDeporteDetallesChatbot.as_view(), name='sugerencia_chatbot_deporte_detalles'),
+	path('chatbot/sugerencia_turismo/',SugerenciasTurismo.as_view(), name='sugerencia_chatbot_turismo'),
+	path('chatbot/detallles_sugerencia_turismo/<int:pk>/',SugerenciasTurismoDetallesChatbot.as_view(), name='sugerencia_chatbot_turismo_detalles'),
+	path('chatbot/sugerencia_plato/',SugerenciasPlato.as_view(), name='sugerencia_chatbot_plato'),
+	path('chatbot/detallles_sugerencia_plato/<int:pk>/',SugerenciasPlatoDetallesChatbot.as_view(), name='sugerencia_chatbot_plato_detalles'),
 	#urls para extra de perfil
 	#calendario
 	path('perfil/calendario_admin/reservas/', PerfilCalendarioAdmin.as_view(), name = 'calendario_admin'),

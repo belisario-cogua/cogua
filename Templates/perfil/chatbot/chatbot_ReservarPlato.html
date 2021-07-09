@@ -11,11 +11,17 @@
 </style>
 <div class="modal-dialog modal-lg swal2-show" role="document">
     <div class="modal-content" >
-
+        <div id="imagen-reservacion2" class="mejorar-posicion-imagen2" style="display: none;">
+            {% if object.imagen %}
+                <img src="{{ object.imagen.url }}"  alt="Responsive image">
+            {% else %}
+                <img id="myImg" src="{% static 'personal/imagen/sin_imagen.png' %}" class="img-fluid" alt="No existe">
+            {% endif %}
+        </div>
         <div class="container-fluid">
             <div class="container-fluid">
                 <div class="row justify-content-around" id="" style="margin-top: 10px;">
-                    <div id="imagen-reservacion" class="col text-center mejorar-posicion-imagen">
+                    <div style="display: none;" id="imagen-reservacion" class="col text-center mejorar-posicion-imagen">
                         {% if object.imagen %}
                             <img src="{{ object.imagen.url }}"  alt="Responsive image">
                         {% else %}
@@ -32,8 +38,8 @@
                         
                         <p class="text-justify parrafo-div-modal"><span id="platos-disponibles" class="parrafo-span-div-modal">Disponible: {{ object.cantidad }} platos típicos</span></p>
 
+                        {% if user.is_authenticated %}
                         <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Duración: <span id="dias">0</span></span></p>
-                        
                         
                         <h5 >Costo: <span id="total">0</span></h5>
                         
@@ -52,10 +58,23 @@
                         <div class="form-contact cantidadinput">
                             <input class="form-control" id="numero1" type="number" min="1" pattern="^[0-9]+" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' max="{{object.cantidad}}">
                         </div>
+                        {% else %}
+                        <div style="margin-top: 80px;padding-bottom: 10px; color: #7A7D7F">
+                            <h5>Necesitas iniciar sesión para realizar reservaciones.</h5>
+                        </div>
+                        {% endif%}
                         <div class="mi-footer-modal" style="margin-top: 25px;">
                             <!-- mediante el onclick llamamos a la funcion registrarUsuario()
                             que esta en el templates.js -->
-                            <button id="bloquear_button_agregar" class="btn btn-info" type="button" onclick="registrarReserva();">Reservar</button>
+                            {% if user.is_authenticated %}
+                                <button id="bloquear_button_agregar" class="btn btn-info" type="button" onclick="registrarReserva();">Reservar</button>
+                                <div id="login" style="display: none;" data-value="true"></div>
+                                
+                            {% else %}
+                                <a style="border-radius: 0px" class="btn btn-info" type="button" href="{% url 'login' %}">Iniciar Sesíon</a>
+
+                            {% endif%}
+                            
                             <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -63,26 +82,30 @@
             </div>  
         </div>
     </div>
+    
 </div>
 
 <script type="text/javascript">
     //funcion para que no acepte signos - o +
-    if (screen.width < 992){
-        var element = document.getElementById("imagen-reservacion");
-            element.classList.remove("col");
-            element.classList.add("mejorar-posicion-imagen-temp");
+    if (window.matchMedia("(max-width: 992px)").matches){
+      document.getElementById("imagen-reservacion").style.display = "none";
+        document.getElementById("imagen-reservacion2").style.display = "block";
+    }else{
+        document.getElementById("imagen-reservacion").style.display = "block";
+        document.getElementById("imagen-reservacion2").style.display = "none";
     }
+
+
     $(window).resize(function() {
        var widthBrowser =$(window).width();
        if (widthBrowser < 992 ) {
-            var element = document.getElementById("imagen-reservacion");
-            element.classList.remove("col");
-            element.classList.add("mejorar-posicion-imagen-temp");
+            document.getElementById("imagen-reservacion").style.display = "none";
+            document.getElementById("imagen-reservacion2").style.display = "block";
+
         }
         if (widthBrowser>=992){
-            var element = document.getElementById("imagen-reservacion");
-            element.classList.add("col");
-            element.classList.remove("mejorar-posicion-imagen-temp");
+            document.getElementById("imagen-reservacion").style.display = "block";
+            document.getElementById("imagen-reservacion2").style.display = "none";
         }
     });
     function validaNumericos(event) {
@@ -92,175 +115,179 @@
          return false;        
     }
     //fin funcion para que no acepte signos - o +
-    var habilitarInputCantidad = document.getElementById('numero1');
-    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    var user = $('#login').attr('data-value');
+    if (user == "true") {
+        var habilitarInputCantidad = document.getElementById('numero1');
+        var habilitarButton = document.getElementById('bloquear_button_agregar');
 
-    habilitarInputCantidad.disabled = true;
-    habilitarButton.disabled= true;
+        habilitarInputCantidad.disabled = true;
+        habilitarButton.disabled= true;
 
-    habilitarInputCantidad.style.cssText = 'cursor: not-allowed;';
-    habilitarButton.style.cssText = 'cursor: not-allowed;';
+        habilitarInputCantidad.style.cssText = 'cursor: not-allowed;';
+        habilitarButton.style.cssText = 'cursor: not-allowed;';
 
-    var startDate;
-    var endDate;
-    var fechaActual = new Date();
-    var fechaActualmasUnAño = new Date();
-    fechaActualmasUnAño.setFullYear(fechaActual.getFullYear()+1);
+        var startDate;
+        var endDate;
+        var fechaActual = new Date();
+        var fechaActualmasUnAño = new Date();
+        fechaActualmasUnAño.setFullYear(fechaActual.getFullYear()+1);
 
-    $('input[name="daterange"]').val('');
-    $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(' Desde el ' + picker.startDate.format('DD/MM/YYYY') + '  hasta el  ' + picker.endDate.format('DD/MM/YYYY'));
-    });
-    $('input[name="daterange"]').daterangepicker({
-        "applyClass": "btn-success",
-        "cancelClass": "btn-danger",
-        "minDate": fechaActual,
-        "maxDate": fechaActualmasUnAño ,
-        "opens": "left",
-        "drops": "up",
-        "locale": {
-            "format": "DD/MM/YYYY",
-            "separator": " - ",
-            "applyLabel": "Guardar fechas",
-            "cancelLabel": "Cancelar",
-            "fromLabel": "Desde",
-            "toLabel": "Hasta",
-            "customRangeLabel": "Personalizar",
-            "daysOfWeek": [
-                "Do",
-                "Lu",
-                "Ma",
-                "Mi",
-                "Ju",
-                "Vi",
-                "Sa"
-            ],
-            "monthNames": [
-                "Enero",
-                "Febrero",
-                "Marzo",
-                "Abril",
-                "Mayo",
-                "Junio",
-                "Julio",
-                "Agosto",
-                "Setiembre",
-                "Octubre",
-                "Noviembre",
-                "Diciembre"
-            ],
-            "firstDay": 1
+        $('input[name="daterange"]').val('');
+        $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(' Desde el ' + picker.startDate.format('DD/MM/YYYY') + '  hasta el  ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+        $('input[name="daterange"]').daterangepicker({
+            "applyClass": "btn-success",
+            "cancelClass": "btn-danger",
+            "minDate": fechaActual,
+            "maxDate": fechaActualmasUnAño ,
+            "opens": "left",
+            "drops": "up",
+            "locale": {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Guardar fechas",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "Desde",
+                "toLabel": "Hasta",
+                "customRangeLabel": "Personalizar",
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Setiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+                "firstDay": 1
+            },
+            showDropdowns: true,
+            showTopbar: true,
+            isInvalidDate: function(date) {
+                var dateRanges = [
+                    {% for fechas_ocupadas in reserva %}
+                        {% if fechas_ocupadas.plato.id == object.id %}
+                            { 'start': moment('{{ fechas_ocupadas.fecha_inicial | date:"Y-m-d"}}'), 'end': moment('{{ fechas_ocupadas.fecha_final | date:"Y-m-d"}}') },
+                        {% endif%}
+                    {% endfor %}
+                ];
+                return dateRanges.reduce(function(bool, range) {
+                    return bool || (date >= range.start && date <= range.end);
+                }, false);
+            }
         },
-        showDropdowns: true,
-        showTopbar: true,
-        isInvalidDate: function(date) {
-            var dateRanges = [
-                {% for fechas_ocupadas in reserva %}
-                    {% if fechas_ocupadas.plato.id == object.id %}
-                        { 'start': moment('{{ fechas_ocupadas.fecha_inicial | date:"Y-m-d"}}'), 'end': moment('{{ fechas_ocupadas.fecha_final | date:"Y-m-d"}}') },
-                    {% endif%}
-                {% endfor %}
-            ];
-            return dateRanges.reduce(function(bool, range) {
-                return bool || (date >= range.start && date <= range.end);
-            }, false);
-        }
-    },
-    function est(start, end) {
-        habilitarInputCantidad.disabled = false;
-        habilitarButton.disabled= false;
+        function est(start, end) {
+            habilitarInputCantidad.disabled = false;
+            habilitarButton.disabled= false;
 
-        habilitarInputCantidad.style.cssText = 'cursor: pointer;';
-        habilitarButton.style.cssText = 'cursor: pointer;';
+            habilitarInputCantidad.style.cssText = 'cursor: pointer;';
+            habilitarButton.style.cssText = 'cursor: pointer;';
 
-        var capturarfechainicial = start.format('YYYY-MM-DD');
-        var capturarfechaifinal = end.format('YYYY-MM-DD');
-        startDate = capturarfechainicial;
-        endDate = capturarfechaifinal;
+            var capturarfechainicial = start.format('YYYY-MM-DD');
+            var capturarfechaifinal = end.format('YYYY-MM-DD');
+            startDate = capturarfechainicial;
+            endDate = capturarfechaifinal;
 
-        //tabla de valores
-        precio = '{{ object.precio }}'
-        cantidadPlato = '{{ object.cantidad }}' 
-        var fechaI = new Date(startDate)
-        var fechaF = new Date(endDate)
+            //tabla de valores
+            precio = '{{ object.precio }}'
+            cantidadPlato = '{{ object.cantidad }}' 
+            var fechaI = new Date(startDate)
+            var fechaF = new Date(endDate)
 
-        var difM = fechaF - fechaI // diferencia en milisegundos
-        var dias = (difM / (1000 * 60 * 60 * 24))+1 // diferencia en dias
+            var difM = fechaF - fechaI // diferencia en milisegundos
+            var dias = (difM / (1000 * 60 * 60 * 24))+1 // diferencia en dias
 
-        if (dias != 1) {
-            document.getElementById('dias').innerHTML=dias + ' días';
-        }else{
-            document.getElementById('dias').innerHTML=dias + ' día';
-        }
+            if (dias != 1) {
+                document.getElementById('dias').innerHTML=dias + ' días';
+            }else{
+                document.getElementById('dias').innerHTML=dias + ' día';
+            }
 
-        cantidad = $('#numero1').val();
-        total = (parseFloat(precio.replace(',', '.'))*dias)*cantidad;
-        t = total.toFixed(2);
-        tempTotal = (parseInt(cantidadPlato)-cantidad)
-        document.getElementById('platos-disponibles').innerHTML='Disponible: '+tempTotal+' platos típicos';
-
-        $("#numero1").bind("keyup keydown change", function(){
-
-          //$("h5").html("El valor ha cambiado a: "+$("#numero1").val());
-          cantidad = $("#numero1").val();
-          if (cantidad <= parseInt(cantidadPlato)) {
-
+            cantidad = $('#numero1').val();
             total = (parseFloat(precio.replace(',', '.'))*dias)*cantidad;
             t = total.toFixed(2);
             tempTotal = (parseInt(cantidadPlato)-cantidad)
             document.getElementById('platos-disponibles').innerHTML='Disponible: '+tempTotal+' platos típicos';
-            document.getElementById('total').innerHTML='$'+parseFloat(t);
-          }else{
-            var $input = $("#mensaje-cantidad");
-            $input.before('<div class = "alert alert-danger alert-dismissible fade show mensaje-cantidad-plato" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong></strong>Solo disponemos de '+parseInt(cantidadPlato)+' platos por el momento</div>');
-            $("#numero1").val(parseInt(cantidadPlato));
-          }
 
+            $("#numero1").bind("keyup keydown change", function(){
+
+              //$("h5").html("El valor ha cambiado a: "+$("#numero1").val());
+              cantidad = $("#numero1").val();
+              if (cantidad <= parseInt(cantidadPlato)) {
+
+                total = (parseFloat(precio.replace(',', '.'))*dias)*cantidad;
+                t = total.toFixed(2);
+                tempTotal = (parseInt(cantidadPlato)-cantidad)
+                document.getElementById('platos-disponibles').innerHTML='Disponible: '+tempTotal+' platos típicos';
+                document.getElementById('total').innerHTML='$'+parseFloat(t);
+              }else{
+                var $input = $("#mensaje-cantidad");
+                $input.before('<div class = "alert alert-danger alert-dismissible fade show mensaje-cantidad-plato" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong></strong>Solo disponemos de '+parseInt(cantidadPlato)+' platos por el momento</div>');
+                $("#numero1").val(parseInt(cantidadPlato));
+              }
+
+            });
+            document.getElementById('total').innerHTML='$ '+parseFloat(t);
         });
-        document.getElementById('total').innerHTML='$ '+parseFloat(t);
-    });
-    
-    function registrarReserva(){
-        data = {
-            'usuario': "{{ request.user.id }}",
-            'plato':"{{ object.id }}",
-            'fecha1':startDate,
-            'fecha2':endDate,
-            'costo':total,
-            'cantidad':cantidad,
-            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
-        }
-        $.ajax({
-            data:data,
-            url:"{% url 'templates_reserva:reservar_plato' %}",
-            type: 'POST',
-            success:function(response){
-                Swal.fire({
-                    title: 'Reserva Exitosa!',
-                    html:
-                        'Puedes revisar tus reservas en tu ' +
-                        '<b><a href="{% url 'templates_perfil:listar_reservas_user_deportes' %}">Perfil <br>{{ user.nombres | title }} {{ user.apellidos | title }}</a></b>',
-                    icon: 'success',
-                    confirmButtonText: `OK`
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    $('#ListarChatbot').modal('hide');
-                    $('#chatbotDetalles').modal('hide');
-                    dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros platos típicos, no olvides visitarnos.");
-                  } else {
-                    $('#ListarChatbot').modal('hide');
-                    $('#chatbotDetalles').modal('hide');
-                    dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros platos típicos, no olvides visitarnos.");
-                  }
-                })
-                var nom = "homeReservaPlato";
-                sessionStorage.setItem("Nombre", nom);
-
-            },
-            error:function(error){
-                sweetError(error.responseJSON.mensaje);
+        
+        function registrarReserva(){
+            data = {
+                'usuario': "{{ request.user.id }}",
+                'plato':"{{ object.id }}",
+                'fecha1':startDate,
+                'fecha2':endDate,
+                'costo':total,
+                'cantidad':cantidad,
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
             }
-        });
+            $.ajax({
+                data:data,
+                url:"{% url 'templates_reserva:reservar_plato' %}",
+                type: 'POST',
+                success:function(response){
+                    Swal.fire({
+                        title: 'Reserva Exitosa!',
+                        html:
+                            'Puedes revisar tus reservas en tu ' +
+                            '<b><a href="{% url 'templates_perfil:listar_reservas_user_deportes' %}">Perfil <br>{{ user.nombres | title }} {{ user.apellidos | title }}</a></b>',
+                        icon: 'success',
+                        confirmButtonText: `OK`
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        $('#ListarChatbot').modal('hide');
+                        $('#chatbotDetalles').modal('hide');
+                        dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros platos típicos, no olvides visitarnos.");
+                      } else {
+                        $('#ListarChatbot').modal('hide');
+                        $('#chatbotDetalles').modal('hide');
+                        dfMessenger.renderCustomText("Me alegra saber que te gusto uno de nuestros platos típicos, no olvides visitarnos.");
+                      }
+                    })
+                    var nom = "homeReservaPlato";
+                    sessionStorage.setItem("Nombre", nom);
+
+                },
+                error:function(error){
+                    sweetError(error.responseJSON.mensaje);
+                }
+            });
+        }
     }
+    
 
 </script>

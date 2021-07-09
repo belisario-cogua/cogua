@@ -1,8 +1,8 @@
-$(document).ready(function(){                 
-        /*Obtener datos almacenados*/
+/*$(document).ready(function(){                 
+
         var nombre = sessionStorage.getItem("Nombre");
         var apellido = sessionStorage.getItem("Apellido");
-        /*Mostrar datos almacenados*/
+   
         console.log("nombre de sessionStorage")   
         console.log(nombre);
         console.log("apellido de sessionStorage")   
@@ -35,3 +35,4 @@ $(document).ready(function(){
 
 });
 
+*/

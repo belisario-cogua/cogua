@@ -30,9 +30,9 @@
                     </div>
                     <div class="col text-center">
                         <div class="text-center titulo-div-modal">
-                            <h6>Reservación</h6>
+                            <h6>Recomendación</h6>
                         </div>
-                        <p class="text-justify parrafo-div-modal" style="margin:-0.5% 0; margin-top: 30px;"><span class="parrafo-span-div-modal">Deporte: {{ object.nombre|title }}</span> </p>
+                        <p class="text-justify parrafo-div-modal" style="margin:-0.5% 0; margin-top: 30px;"><span class="parrafo-span-div-modal">Lugar Turístico: {{ object.nombre|title }}</span> </p>
 
                         <p class="text-justify parrafo-div-modal"><span class="parrafo-span-div-modal">Precio por uso: $ {{ object.precio }}</span></p>
                         
@@ -62,9 +62,8 @@
                             <div id="login" style="display: none;" data-value="true"></div>
                             {% else %}
                                 <a style="border-radius: 0px" class="btn btn-info" type="button" href="{% url 'login' %}">Iniciar Sesíon</a>
-
                             {% endif%}
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar_recomendacion">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -98,8 +97,49 @@
             document.getElementById("imagen-reservacion2").style.display = "none";
         }
     });
+    
     var user = $('#login').attr('data-value');
     if (user == "true") {
+        $('#cancelar_recomendacion').click(function(event) {
+            var textos = new Array()
+            textos[0] = "deporte";
+            textos[1] = "plato tipico";
+            respuesta = Math.floor(Math.random() * (textos.length - 0) + 0);
+            if (textos[respuesta]=="deporte") {
+                dfMessenger.renderCustomText("Creo que no te gustó el lugar turístico, tal vez pueda interesarte los deportes.");
+                const payload = [
+                {
+                    "type": "chips",
+                    "options": [
+                      {
+                        "text": "Ver deportes"
+                      },
+                      {
+                        "text": "No gracias, talvez después"
+                      }
+                    ]
+                }
+                ];
+                dfMessenger.renderCustomCard(payload);
+            }else if (textos[respuesta]=="plato tipico") {
+                dfMessenger.renderCustomText("Creo que no te gustó el lugar turístico, tal vez pueda interesarte los platos tipicos.");
+                const payload = [
+                {
+                    "type": "chips",
+                    "options": [
+                      {
+                        "text": "Ver platos típicos"
+                      },
+                      {
+                        "text": "No gracias, talvez después"
+                      }
+                    ]
+                }
+                ];
+                dfMessenger.renderCustomCard(payload);
+            }
+            
+        });
         var habilitarButton = document.getElementById('bloquear_button_agregar');
         habilitarButton.disabled= true;
         habilitarButton.style.cssText = 'cursor: not-allowed;';
@@ -158,8 +198,8 @@
             showTopbar: true,
             isInvalidDate: function(date) {
                 var dateRanges = [
-                    {% for fechas_ocupadas in reserva_deportes %}
-                        {% if fechas_ocupadas.deporte.id == object.id %}
+                    {% for fechas_ocupadas in reserva %}
+                        {% if fechas_ocupadas.turismo.id == object.id %}
                             { 'start': moment('{{ fechas_ocupadas.fecha_inicial | date:"Y-m-d"}}'), 'end': moment('{{ fechas_ocupadas.fecha_final | date:"Y-m-d"}}') },
                         {% endif%}
                     {% endfor %}
@@ -199,7 +239,7 @@
         function registrarReserva(){
             data = {
                 'usuario': "{{ request.user.id }}",
-                'deporte':"{{ object.id }}",
+                'turismo':"{{ object.id }}",
                 'fecha1':startDate,
                 'fecha2':endDate,
                 'costo':total,
@@ -207,7 +247,7 @@
             }
             $.ajax({
                 data:data,
-                url:"{% url 'templates_reserva:reservar_deporte' %}",
+                url:"{% url 'templates_reserva:reservar_turismo' %}",
                 type: 'POST',
                 success:function(response){
                     Swal.fire({
@@ -219,9 +259,43 @@
                         confirmButtonText: `OK`
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        window.location.href = response.url;
+                        $('#ListarChatbot').modal('hide');
+                        $('#chatbotDetalles').modal('hide');
+                        dfMessenger.renderCustomText("Me alegra que mi recomendación te sirvió, no olvides visitarnos.");
+                        dfMessenger.renderCustomText("Tal vez también te interesen las cabañas.");
+                        const payload = [
+                        {
+                            "type": "chips",
+                            "options": [
+                              {
+                                "text": "Ver cabañas"
+                              },
+                              {
+                                "text": "No gracias, talvez después"
+                              }
+                            ]
+                        }
+                        ];
+                        dfMessenger.renderCustomCard(payload);
                       } else {
-                        window.location.href = response.url;
+                        $('#ListarChatbot').modal('hide');
+                        $('#chatbotDetalles').modal('hide');
+                        dfMessenger.renderCustomText("Me alegra que mi recomendación te sirvió, no olvides visitarnos.");
+                        dfMessenger.renderCustomText("Tal vez también te interesen los deportes.");
+                        const payload = [
+                        {
+                            "type": "chips",
+                            "options": [
+                              {
+                                "text": "Ver deportes"
+                              },
+                              {
+                                "text": "No gracias, talvez después"
+                              }
+                            ]
+                        }
+                        ];
+                        dfMessenger.renderCustomCard(payload);
                       }
                     })
                     var nom = "homeReservaDeporte";

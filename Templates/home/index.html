@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="{% static 'personal/Perfil/chatbot/chatbot.css' %}">
     <link rel="stylesheet" href="{% static 'personal/css/home/home.css' %}">
     <link rel="stylesheet" href="{% static 'dowloand_bootstrap/css/lib/datatable/dataTables.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'personal/Perfil/css/perfil_user.css' %}">
     {% block cssextras %}
     {% endblock cssextras %}
 </head>
@@ -54,13 +55,18 @@
         <![endif]-->
 
     <!-- header-start -->
+    <div id="contenedor_carga">
+  <div id="carga"></div>
+</div>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger
-  intent="WELCOME"
-  chat-title="Asistente Cogua"
-  agent-id="e917072b-d526-427c-afbf-c8621b82e7b4"
-  language-code="es"
-></df-messenger>
+    intent="WELCOME"
+    chat-title="Asistente de Cogua"
+    agent-id="e917072b-d526-427c-afbf-c8621b82e7b4"
+    language-code="es"
+    chat-icon="{% static 'personal/imagen/usuario.png' %}"
+    user-id
+  ></df-messenger>
     <header>
         <div class="header-area ">
             <div id="sticky-header" class="main-header-area">
@@ -375,38 +381,7 @@
                             <h3 class="footer_title">
                                 Facebook
                             </h3>
-                            <div class="instagram_feed">
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/1.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/2.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/3.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/4.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/5.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/6.png" alt="">
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -430,6 +405,35 @@
     <!--/ footer end  -->
 
   <!-- Modal -->
+    {% if user.is_authenticated %}
+            <div id="nombre-user-home" data-value="{{ user.nombres.split.0 | title }}"></div>                                
+    {% endif%}
+  
+  <div class="modal fade"  data-backdrop="static" id="ListarChatbot" rol="dialog">
+  <!-- ./wrapper 
+    <div class="modal-dialog swal2-show mover-modal-editar-user" role="document">
+    <div class="modal-content modal-chatbot-responsive">
+  -->
+  <div class="modal-dialog swal2-show mover-modal-editar-user" role="document">
+    <div class="modal-content ">
+
+      <div  class="modal-body">
+        <h1 class="titulo-listar-chatbot text-center" style="padding-bottom: 30px;" id="h1-titulo"></h1>
+        <div id="listar-turismos-chatbot" class="div-scroll" style="height:270px;overflow-x: hidden; ">
+        </div>
+      </div>
+      <div class="chatbor-reservar" id="btn-cerrar-modal-chatbot">
+          <!-- mediante el onclick llamamos a la funcion registrarUsuario()
+          que esta en el templates.js -->
+          
+      </div>
+                  
+    </div>
+  </div>
+</div>
+<div class="modal fade"  data-backdrop="static" id="chatbotDetalles" rol="dialog">
+  
+</div>
   <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -469,8 +473,8 @@
     <!--contact js-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{% static 'personal/main.js' %}"></script>
-    <script src="{% static 'personal/Perfil/chatbot/startChatbot.js' %}"></script>
-    <script src="{% static 'personal/Perfil/chatbot/runChatbot.js' %}"></script>
+    <script src="{% static 'personal/Perfil/chatbot/home/startChatbot.js' %}"></script>
+    <script src="{% static 'personal/Perfil/chatbot/home/runChatbot.js' %}"></script>
     <script src="{% static 'personal/Perfil/chatbot/recomendacionesHome.js' %}"></script>
     <script src="{% static 'home/js/contact.js' %}"></script>
     <script src="{% static 'home/js/jquery.ajaxchimp.min.js' %}"></script>

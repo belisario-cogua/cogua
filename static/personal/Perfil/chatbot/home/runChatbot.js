@@ -93,7 +93,7 @@ $(document).ready(function() {
 //}
 
 });
-var user = $('#nombre-user').attr('data-value');
+var user = $('#nombre-user-home').attr('data-value');
 
 function abrirhoteles(){
   var contenedor = document.getElementById('contenedor_carga');

@@ -59,6 +59,24 @@ $(document).ready(function() {
         abrirplatos();
       }
     }
+    else if (intento == "sugerenciasCOGUA") {
+      tipoTurismo = data.queryResult.parameters.tipoTurismo;
+      if (tipoTurismo == "cabaña") {
+        dfMessenger.renderCustomText("te recomiendo reservar la cabaña que te voy a mostrar en el modal");
+        sugerenciaHotel();
+      }else if (tipoTurismo == "lugar turistico") {
+        dfMessenger.renderCustomText("te recomiendo visitar el lugar turístico que te voy a mostrar en el modal");
+        sugerenciaTurismo();
+      }else if (tipoTurismo == "deporte") {
+        dfMessenger.renderCustomText("te recomiendo reservar el deporte que te voy a mostrar en el modal");
+        sugerenciaDeporte();
+      }else if (tipoTurismo == "plato tipico") {
+        dfMessenger.renderCustomText("te recomiendo reservar el plato típico que te voy a mostrar en el modal");
+        sugerenciaPlato();
+      }
+      
+    }
+
   });
 
 //{
@@ -74,8 +92,9 @@ $(document).ready(function() {
 //  ]
 //}
 
-
 });
+var user = $('#nombre-user').attr('data-value');
+
 function abrirhoteles(){
   var contenedor = document.getElementById('contenedor_carga');
   contenedor.style.visibility = 'visible';
@@ -107,9 +126,14 @@ function abrirhoteles(){
                         <div class="body-listar-chatbot" style="">\n\
                             <p><span>Cabaña:</span> '+nombre+'</p>\n\
                             <p><span>Costo:</span> $'+costo+'</p>\n\
-                            <div class="btn-reservar-listar">\n\
-                              <a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_hotel/'+turismo[i]['id']+'/\');">Reservar</a>\n\
-                            </div>\n\
+                            <div class="btn-reservar-listar">';
+            if (user != undefined) { 
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_hotel/'+turismo[i]['id']+'/\');">Reservar</a>';
+            }else{
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_hotel/'+turismo[i]['id']+'/\');">Ver</a>';
+            }
+                           
+            contenedor += '</div>\n\
                         </div>\n\
                       </div>\n\
                       <div class="dropdown-divider" style="margin-left: -6px;"></div>';
@@ -185,9 +209,14 @@ function abrirdeportes(){
                         <div class="body-listar-chatbot" style="">\n\
                             <p><span>Deporte:</span> '+nombre+'</p>\n\
                             <p><span>Costo:</span> $'+costo+'</p>\n\
-                            <div class="btn-reservar-listar">\n\
-                              <a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_deporte/'+turismo[i]['id']+'/\');">Reservar</a>\n\
-                            </div>\n\
+                            <div class="btn-reservar-listar">';
+            if (user != undefined) { 
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_deporte/'+turismo[i]['id']+'/\');">Reservar</a>';
+            }else{
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_deporte/'+turismo[i]['id']+'/\');">Ver</a>';
+            }
+                           
+            contenedor += '</div>\n\
                         </div>\n\
                       </div>\n\
                       <div class="dropdown-divider" style="margin-left: -6px;"></div>';
@@ -262,9 +291,14 @@ function abrirturismos(){
                         <div class="body-listar-chatbot" style="">\n\
                             <p><span>Lugar Turístico:</span> '+nombre+'</p>\n\
                             <p><span>Costo:</span> $'+costo+'</p>\n\
-                            <div class="btn-reservar-listar">\n\
-                              <a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_turismo/'+turismo[i]['id']+'/\');">Reservar</a>\n\
-                            </div>\n\
+                            <div class="btn-reservar-listar">';
+            if (user != undefined) { 
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_turismo/'+turismo[i]['id']+'/\');">Reservar</a>';
+            }else{
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_turismo/'+turismo[i]['id']+'/\');">Ver</a>';
+            }
+                           
+            contenedor += '</div>\n\
                         </div>\n\
                       </div>\n\
                       <div class="dropdown-divider" style="margin-left: -6px;"></div>';
@@ -340,9 +374,14 @@ function abrirplatos(){
                         <div class="body-listar-chatbot" style="">\n\
                             <p><span>Plato Típico:</span> '+nombre+'</p>\n\
                             <p><span>Costo:</span> $'+costo+'</p>\n\
-                            <div class="btn-reservar-listar">\n\
-                              <a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_plato/'+turismo[i]['id']+'/\');">Reservar</a>\n\
-                            </div>\n\
+                            <div class="btn-reservar-listar">';
+            if (user != undefined) { 
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_plato/'+turismo[i]['id']+'/\');">Reservar</a>';
+            }else{
+              contenedor += '<a style="color: #fff;" onclick="reservarTurismoChatbot(\'/chatbot/detalles_plato/'+turismo[i]['id']+'/\');">Ver</a>';
+            }
+                           
+            contenedor += '</div>\n\
                         </div>\n\
                       </div>\n\
                       <div class="dropdown-divider" style="margin-left: -6px;"></div>';
@@ -396,97 +435,180 @@ function reservarTurismoChatbot(url){
     contenedor.style.opacity = '0';
   });
 }
+
 function chatbotCerrarMensajeHotel(){
-  dfMessenger.renderCustomText("Creo que no te gustaron las cabañas. Talvez puede interesarte algunas de las siguientes opciones");
-  const payload = [
-  {
-    "type": "chips",
-    "options": [
-      {
-        "text": "Ver platos típicos"
-      },
-      {
-        "text": "Ver lugares turísticos"
-      },
-      {
-        "text": "Ver deportes"
-      },
-      {
-        "text": "Quizás después"
-      }
-    ]
+  const dfMessenger = document.querySelector('df-messenger');
+  if (user != undefined) {
+    dfMessenger.renderCustomText("Creo que no te gustaron las cabañas. Talvez puede interesarte algunas de las siguientes opciones");
+    const payload = [
+    {
+      "type": "chips",
+      "options": [
+        {
+          "text": "Ver platos típicos"
+        },
+        {
+          "text": "Ver lugares turísticos"
+        },
+        {
+          "text": "Ver deportes"
+        },
+        {
+          "text": "Quizás después"
+        }
+      ]
+    }
+    ];
+    dfMessenger.renderCustomCard(payload);
+  }else{
+    dfMessenger.renderCustomText("Creo que deberías iniciar sesión o registrate, es importante para que puedas reservar nuestros turismos");
   }
-  ];
-  dfMessenger.renderCustomCard(payload);
 }
 function chatbotCerrarMensajeDeporte(){
-  dfMessenger.renderCustomText("Creo que no te gustaron los deportes. Talvez puede interesarte algunas de las siguientes opciones");
-  const payload = [
-  {
-    "type": "chips",
-    "options": [
-      {
-        "text": "Ver platos típicos"
-      },
-      {
-        "text": "Ver lugares turísticos"
-      },
-      {
-        "text": "Ver cabañas"
-      },
-      {
-        "text": "Quizás después"
-      }
-    ]
+  const dfMessenger = document.querySelector('df-messenger');
+  if (user != undefined) {
+    dfMessenger.renderCustomText("Creo que no te gustaron los deportes. Talvez puede interesarte algunas de las siguientes opciones");
+    const payload = [
+    {
+      "type": "chips",
+      "options": [
+        {
+          "text": "Ver platos típicos"
+        },
+        {
+          "text": "Ver lugares turísticos"
+        },
+        {
+          "text": "Ver cabañas"
+        },
+        {
+          "text": "Quizás después"
+        }
+      ]
+    }
+    ];
+    dfMessenger.renderCustomCard(payload);
+  }else{
+    dfMessenger.renderCustomText("Creo que deberías iniciar sesión o registrate, es importante para que puedas reservar nuestros turismos");
   }
-  ];
-  dfMessenger.renderCustomCard(payload);
 }
 
 function chatbotCerrarMensajeTurismo(){
-  dfMessenger.renderCustomText("Creo que no te gustaron los lugares turísticos. Talvez puede interesarte algunas de las siguientes opciones");
-  const payload = [
-  {
-    "type": "chips",
-    "options": [
-      {
-        "text": "Ver platos típicos"
-      },
-      {
-        "text": "Ver cabañas"
-      },
-      {
-        "text": "Ver deportes"
-      },
-      {
-        "text": "Quizás después"
-      }
-    ]
+  const dfMessenger = document.querySelector('df-messenger');
+  if (user != undefined) {
+    dfMessenger.renderCustomText("Creo que no te gustaron los lugares turísticos. Talvez puede interesarte algunas de las siguientes opciones");
+    const payload = [
+    {
+      "type": "chips",
+      "options": [
+        {
+          "text": "Ver platos típicos"
+        },
+        {
+          "text": "Ver cabañas"
+        },
+        {
+          "text": "Ver deportes"
+        },
+        {
+          "text": "Quizás después"
+        }
+      ]
+    }
+    ];
+    dfMessenger.renderCustomCard(payload);
+  }else{
+    dfMessenger.renderCustomText("Creo que deberías iniciar sesión o registrate, es importante para que puedas reservar nuestros turismos");
   }
-  ];
-  dfMessenger.renderCustomCard(payload);
 }
 function chatbotCerrarMensajePlato(){
-  dfMessenger.renderCustomText("Creo que no te gustaron los platos típicos. Talvez puede interesarte algunas de las siguientes opciones");
-  const payload = [
-  {
-    "type": "chips",
-    "options": [
-      {
-        "text": "Ver cabañas"
-      },
-      {
-        "text": "Ver lugares turísticos"
-      },
-      {
-        "text": "Ver deportes"
-      },
-      {
-        "text": "Quizás después"
-      }
-    ]
+  const dfMessenger = document.querySelector('df-messenger');
+  if (user != undefined) {
+    dfMessenger.renderCustomText("Creo que no te gustaron los platos típicos. Talvez puede interesarte algunas de las siguientes opciones");
+    const payload = [
+    {
+      "type": "chips",
+      "options": [
+        {
+          "text": "Ver cabañas"
+        },
+        {
+          "text": "Ver lugares turísticos"
+        },
+        {
+          "text": "Ver deportes"
+        },
+        {
+          "text": "Quizás después"
+        }
+      ]
+    }
+    ];
+    dfMessenger.renderCustomCard(payload);
+  }else{
+    dfMessenger.renderCustomText("Creo que deberías iniciar sesión o registrate, es importante para que puedas reservar nuestros turismos");
   }
-  ];
-  dfMessenger.renderCustomCard(payload);
+  
+  
 }
 
+//Sugerencias de cada turismo
+function sugerenciaHotel(){
+  $.ajax({
+      url:"/chatbot/sugerencia_hotel/",
+      type: 'GET',
+      dataType: "json",
+      success:function(response){
+        url = "/chatbot/detallles_sugerencia_hotel/"+response.sugerencia.id+"/"
+        reservarTurismoChatbot(url)
+      },
+      error:function(error){
+        console.log(error)
+      }
+    });
+}
+
+function sugerenciaDeporte(){
+  $.ajax({
+      url:"/chatbot/sugerencia_deporte/",
+      type: 'GET',
+      dataType: "json",
+      success:function(response){
+        url = "/chatbot/detallles_sugerencia_deporte/"+response.sugerencia.id+"/"
+        reservarTurismoChatbot(url)
+      },
+      error:function(error){
+        console.log(error)
+      }
+    });
+}
+
+function sugerenciaTurismo(){
+  $.ajax({
+      url:"/chatbot/sugerencia_turismo/",
+      type: 'GET',
+      dataType: "json",
+      success:function(response){
+        url = "/chatbot/detallles_sugerencia_turismo/"+response.sugerencia.id+"/"
+        reservarTurismoChatbot(url)
+      },
+      error:function(error){
+        console.log(error)
+      }
+    });
+}
+
+function sugerenciaPlato(){
+  $.ajax({
+      url:"/chatbot/sugerencia_plato/",
+      type: 'GET',
+      dataType: "json",
+      success:function(response){
+        url = "/chatbot/detallles_sugerencia_plato/"+response.sugerencia.id+"/"
+        reservarTurismoChatbot(url)
+      },
+      error:function(error){
+        console.log(error)
+      }
+    });
+}

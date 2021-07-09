@@ -39,6 +39,8 @@ from Apps.notificaciones.models import Notificacion
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
 from Apps.publicaciones.models import Publicacion, Comentario
+from django.db.models import F
+from django.db.models import Count, Max
 # Create your views here.
 #LoginRequiredMixin es otra manera de de proteger nuestra vista
 #es decir necesita iniciar sesion para dirgirise al perfil de ussuario
@@ -594,6 +596,111 @@ class PlatoDetallesChatbot(DetailView):
         context['reserva'] = ReservaPlato.objects.filter(estado=True)
         return context
 
+#sugerencias de cada tabla de turismo
+class SugerenciasHotel(ListView):
+    model = Hotel
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            turismo = Hotel.objects.values('id','nombre').annotate(num=Count('reservahotel'))
+            valor = Hotel.objects.values('nombre').annotate(num=Count('reservahotel')).aggregate(Max('num'))
+
+            for tur in turismo:
+                maxi = tur['num']
+                if maxi == valor['num__max']:
+                    temp = tur
+                    print(temp)
+
+            response = JsonResponse({'sugerencia':temp})
+            response.status_code = 201
+            return response
+
+class SugerenciasHotelDetallesChatbot(DetailView):
+    model = Hotel
+    template_name = 'perfil/chatbot/sugerencias/sugerencia_chatbotHotel.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SugerenciasHotelDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaHotel.objects.filter(estado=True)
+        return context
+
+class SugerenciasDeporte(ListView):
+    model = Deporte
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            turismo = Deporte.objects.values('id','nombre').annotate(num=Count('reservadeporte'))
+            valor = Deporte.objects.values('nombre').annotate(num=Count('reservadeporte')).aggregate(Max('num'))
+
+            for tur in turismo:
+                maxi = tur['num']
+                if maxi == valor['num__max']:
+                    temp = tur
+
+            response = JsonResponse({'sugerencia':temp})
+            response.status_code = 201
+            return response
+
+class SugerenciasDeporteDetallesChatbot(DetailView):
+    model = Deporte
+    template_name = 'perfil/chatbot/sugerencias/sugerencia_chatbotDeporte.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SugerenciasDeporteDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaDeporte.objects.filter(estado=True)
+        return context
+
+class SugerenciasTurismo(ListView):
+    model = Turismo
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            turismo = Turismo.objects.values('id','nombre').annotate(num=Count('reservaturismo'))
+            valor = Turismo.objects.values('nombre').annotate(num=Count('reservaturismo')).aggregate(Max('num'))
+
+            for tur in turismo:
+                maxi = tur['num']
+                if maxi == valor['num__max']:
+                    temp = tur
+
+            response = JsonResponse({'sugerencia':temp})
+            response.status_code = 201
+            return response
+
+class SugerenciasTurismoDetallesChatbot(DetailView):
+    model = Turismo
+    template_name = 'perfil/chatbot/sugerencias/sugerencia_chatbotTurismo.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SugerenciasTurismoDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaTurismo.objects.filter(estado=True)
+        return context
+
+class SugerenciasPlato(ListView):
+    model = Plato
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            turismo = Plato.objects.values('id','nombre').annotate(num=Count('reservaplato'))
+            valor = Plato.objects.values('nombre').annotate(num=Count('reservaplato')).aggregate(Max('num'))
+
+            for tur in turismo:
+                maxi = tur['num']
+                if maxi == valor['num__max']:
+                    temp = tur
+
+            response = JsonResponse({'sugerencia':temp})
+            response.status_code = 201
+            return response
+
+class SugerenciasPlatoDetallesChatbot(DetailView):
+    model = Plato
+    template_name = 'perfil/chatbot/sugerencias/sugerencia_chatbotPlato.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SugerenciasPlatoDetallesChatbot, self).get_context_data(**kwargs)
+        context['reserva'] = ReservaPlato.objects.filter(estado=True)
+        return context
 '''FIN Reservas chatbot'''
 
 '''INICIO Calendario'''

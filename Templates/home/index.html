@@ -76,7 +76,9 @@
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
                                     <a href="index.html">
-                                        <img src="{% static 'personal/admin/imagen/logo-belisario.png' %}" style="width: 150px; margin-top: -18px; margin-left: 0px;" alt="">
+                                        {% for lo in logo %}
+                                        <img src="{{ lo.imagen.url }}" style="width: 150px; margin-top: -18px; margin-left: 0px;" alt="">
+                                        {% endfor %}
                                     </a>
                                 </div>
                             </div>
@@ -153,60 +155,49 @@
     <!-- slider_area_start -->
     <div class="slider_area">
         <div class="slider_active owl-carousel">
-            <!-- slider_bg_1 se encuentran las imagenes del slider -->
-            <!-- themify-icons.css se encuentran los iconos -->
-            <div class="single_slider  d-flex align-items-center slider_bg_1 overlay">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-12 col-md-12">
-                            <div class="slider_text text-center">
+            <!-- slider_bg_1 se encuentran las imagenes del slider, estan en style.css de home-->
+            <!-- themify-icons.css se encuentran los iconos
+                <div class="single_slider  d-flex align-items-center slider_bg_1 overlay">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-xl-12 col-md-12">
+                                <div class="slider_text text-center">
 
-                                <h3>Latacunga</h3>
-                                <p>Lugares sorprendentes</p>
-                                {% if user.is_authenticated %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">{{ user.nombres | title }} {{ user.apellidos | title }}</a>
-                                {% else %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">Iniciar Sesión</a>
-                                {% endif%}
+                                    <h3>Latacunga</h3>
+                                    <p>Lugares sorprendentes</p>
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">{{ user.nombres | title }} {{ user.apellidos | title }}</a>
+                                    {% else %}
+                                        <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">Iniciar Sesión</a>
+                                    {% endif%}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="single_slider  d-flex align-items-center slider_bg_2 overlay">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-12 col-md-12">
-                            <div class="slider_text text-center">
-                                <h3>Colaguango</h3>
-                                <p>Lugares sorprendentes</p>
-                                {% if user.is_authenticated %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">{{ user.nombres | title }} {{ user.apellidos | title }}</a>
-                                {% else %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">Iniciar Sesión</a>
-                                {% endif%}
+            -->
+
+            {% for imagen in imagehome %}
+                <div id="imagen-home{{forloop.counter}}" class="single_slider  d-flex align-items-center overlay">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-xl-12 col-md-12">
+                                <div class="slider_text text-center">
+
+                                    <h3>Latacunga</h3>
+                                    <p>Lugares sorprendentes</p>
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">{{ user.nombres | title }} {{ user.apellidos | title }}</a>
+                                    {% else %}
+                                        <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">Iniciar Sesión</a>
+                                    {% endif%}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="single_slider  d-flex align-items-center slider_bg_3 overlay">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-12 col-md-12">
-                            <div class="slider_text text-center">
-                                <h3>Deportes</h3>
-                                <p>Lugares sorprendentes</p>
-                                {% if user.is_authenticated %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">{{ user.nombres | title }} {{ user.apellidos | title }}</a>
-                                {% else %}
-                                    <a href="{% url 'templates_perfil:perfil' %}" class="boxed-btn3">Iniciar Sesión</a>
-                                {% endif%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+
         </div>
 
     </div>
@@ -491,6 +482,12 @@
 
     <!--script para que aparezcan recomendaciones del chatbot luego de reservar-->
     <script type="text/javascript">
+        {% for imagen in imagehome %}
+            var imagen = document.getElementById("imagen-home{{forloop.counter}}");
+            imagen.style.backgroundImage = "url('{{ imagen.imagen.url }}')";
+        {% endfor %}
+        
+
         var modal = document.getElementById('popUp');
 
         var img = document.getElementById('myImg');
@@ -525,18 +522,18 @@
     </script>
     <script type="text/javascript">
   
-  $('#tabla_publicacion').dataTable({
-    responsive: true,
-    "bFilter": true // show search input
-  });
-  $("#tabla_publicacion_filter").addClass("hidden"); // hidden search input
+      $('#tabla_publicacion').dataTable({
+        responsive: true,
+        "bFilter": true // show search input
+      });
+      $("#tabla_publicacion_filter").addClass("hidden"); // hidden search input
 
-  $("#search").on("input", function (e) {
-     e.preventDefault();
-     $('#tabla_publicacion').DataTable().search($(this).val()).draw();
-  });
+      $("#search").on("input", function (e) {
+         e.preventDefault();
+         $('#tabla_publicacion').DataTable().search($(this).val()).draw();
+      });
 
-</script>
+    </script>
     {% block extrajs %}
     {% endblock extrajs %}
 </body>

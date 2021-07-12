@@ -78,4 +78,7 @@ urlpatterns = [
 	path('perfil/barras_analisis_admin/reservas/', PerfilBarrasAnalisisAdmin.as_view(), name = 'barras_analisis_admin'),
 	path('perfil/circular_analisis_admin/reservas/', PerfilCircularAnalisisAdmin.as_view(), name = 'circular_analisis_admin'),
 
+	#EditarImagenes
+	path('perfil/listar_imagenes/home/', ListarImagenesHome.as_view(), name = 'listar_imagenes_home'),
+	path('perfil/editar_imagen_home/<int:pk>/',EditarImagenesHome.as_view(), name = 'editar_imagen_home'),
 ]

@@ -878,3 +878,227 @@ css para que el df messenger se ponga encima del footer
 }
 
 /* FIN: preload */
+
+.button-editar-home{
+	background-color: #08A1BC; 
+	float: right;
+	margin-top: -5px;
+	padding-left: 7px;
+	border-radius: 2px; 
+	padding-right: 5px; 
+	color: #fff;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	cursor: pointer;
+}
+.button-editar-home:hover{
+	color: #fff;
+	background-color: #078ca3;
+}
+.button-editar-home1{
+	background-color: #08A1BC; 
+	color: #fff;
+	cursor: pointer;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 17px;
+	font-weight: bold;
+
+}
+.container-body-editar-imagenes{
+	margin-left: 20px;
+	margin-top: 10px;
+	margin-right: 10px;
+	padding-bottom: 10px;
+}
+.container-body-editar-imagenes h1{
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 10px;
+}
+.container-body-editar-imagenes h2{
+	text-align: center;
+	font-size: 20px;
+}
+.container-body-editar-imagenes img{
+	width: 550px;
+	margin-top: 20px;
+}
+.editar-imagen{
+	position: absolute;
+	margin-top: -50px;
+	margin-left: 550px;
+}
+.editar-imagen a{
+	background-color: #08A1BC;
+	padding-right: 5px;
+	padding-left: 10px;
+	padding-top: 3px;
+	padding-bottom: 4px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.custom-file{
+	width: 550px;
+}
+.btn-editar-imagen{
+	float: right; 
+	background-color: #08A1BC;
+	margin-top: 7px;
+	padding-right: 5px;
+	padding-left: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	color: #fff
+}
+.btn-editar-imagen:hover{
+	color: #fff;
+	background-color: #078ca3;
+}
+
+
+
+@media screen and (max-width: 670px){
+	.container-body-editar-imagenes{
+		margin-left: 10px;
+	}
+	.container-body-editar-imagenes img{
+		width: 450px;
+	}
+	.custom-file{
+		width: 450px;
+	}
+}
+@media screen and (max-width: 570px){
+	.container-body-editar-imagenes img{
+		width: 350px;
+	}
+	.custom-file{
+		width: 350px;
+	}
+}
+@media screen and (max-width: 448px){
+	.container-body-editar-imagenes img{
+		width: 300px;
+	}
+	.custom-file{
+		width: 300px;
+	}
+}
+.btn-imagen-responsive{
+	display: none;
+}
+@media screen and (max-width: 420px){
+	.btn-imagen-responsive{
+		display: block;
+	}
+}
+@media screen and (max-width: 390px){
+	.container-body-editar-imagenes img{
+		width: 250px;
+	}
+	.custom-file{
+		width: 250px;
+	}
+}
+@media screen and (max-width: 350px){
+	.container-body-editar-imagenes img{
+		width: 200px;
+	}
+	.custom-file{
+		width: 200px;
+	}
+}
+
+#quitar-imagen-temp img{
+	margin-left: 20px; 
+	margin-right: 20px;
+	height: 350px;
+	width: 93%;
+}
+#mostrar-imagen-temp img{
+	margin-left: 20px; 
+	margin-right: 20px;
+	height: 350px;
+	width: 93%;
+}
+@media screen and (max-width: 450px){
+	#quitar-imagen-temp{
+		margin-left: 20px;
+	}
+	#quitar-imagen-temp img{
+		width: 350px;
+		height: 250px;
+	}
+	#mostrar-imagen-temp{
+		margin-left: 20px;
+	}
+	#mostrar-imagen-temp img{
+		width: 350px;
+		height: 250px;
+	}
+}
+@media screen and (max-width: 430px){
+	#quitar-imagen-temp{
+		margin-left: 10px;
+	}
+	#quitar-imagen-temp img{
+		width: 325px;
+		height: 250px;
+	}
+	#mostrar-imagen-temp{
+		margin-left: 10px;
+	}
+	#mostrar-imagen-temp img{
+		width: 325px;
+		height: 250px;
+	}
+}
+@media screen and (max-width: 390px){
+	#quitar-imagen-temp img{
+		width: 300px;
+		height: 200px;
+	}
+	#mostrar-imagen-temp img{
+		width: 300px;
+		height: 200px;
+	}
+}
+@media screen and (max-width: 370px){
+	#quitar-imagen-temp img{
+		width: 260px;
+		height: 200px;
+	}
+	#mostrar-imagen-temp img{
+		width: 260px;
+		height: 200px;
+	}
+}
+@media screen and (max-width: 330px){
+	#quitar-imagen-temp img{
+		width: 240px;
+		height: 150px;
+	}
+	#mostrar-imagen-temp img{
+		width: 240px;
+		height: 150px;
+	}
+}
+.body-editar-imagen{
+	margin-top: 10px; margin-left: 20px;
+}
+.body-editar-imagen h4{
+	font-weight: bold;
+}
+.body-editar-imagen p{
+	color: #827f7f;
+	line-height:5px
+}
+.body-editar-imagen p span{
+	font-weight: bold;
+}

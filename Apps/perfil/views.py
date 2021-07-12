@@ -26,12 +26,14 @@ from django.template.loader import render_to_string
 
 from Apps.usuarios.models import Usuario
 from Apps.usuarios.forms import LoginForm, RegistrarUsuarioForm, EditarUsuarioForm
+from Apps.home.forms import ImagehomeForm
 
 from Apps.reservas.models import ReservaHotel, ReservaDeporte, ReservaPlato, ReservaTurismo
 from Apps.deportes.models import Deporte
 from Apps.turismos.models import Turismo
 from Apps.hoteles.models import Hotel
 from Apps.platos.models import Plato
+from Apps.home.models import Imagehome
 from Apps.usuarios.mixins import LoginAndSuperStaffMixin
 from datetime import date, datetime 
 import copy
@@ -194,6 +196,11 @@ class Login(FormView):
     def form_valid(self,form):
         login(self.request,form.get_user())
         return super(Login,self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(Login, self).get_context_data(**kwargs)
+        context['logo'] = Imagehome.objects.filter(nombre="logo")
+        return context
 
 #clase para mostrar interfaz de login con mensaje de succeseful de confirmacion de email
 class LoginConfirmed(FormView):
@@ -910,3 +917,47 @@ class PerfilCircularAnalisisAdmin(LoginAndSuperStaffMixin, TemplateView):
             response.status_code = 201
             return response
 '''FIN inteligencia de negocios'''
+#editar imagenes de home
+class ListarImagenesHome(ListView):
+    model = Imagehome
+
+    def get_queryset(self):
+        queryset = Imagehome.objects.all()
+        return queryset
+
+    def get(self,request,*args,**kwargs):
+        if request.is_ajax():
+            return HttpResponse(serialize('json', self.get_queryset()), 'application/json')
+
+        else:
+            return redirect('templates_perfil:perfil')
+
+class EditarImagenesHome(LoginAndSuperStaffMixin,UpdateView):
+    model = Imagehome
+    form_class = ImagehomeForm
+    template_name = 'perfil/editar_home/perfil_ModalEditarImageHome.html'
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            form = self.form_class(data=request.POST,files=request.FILES,instance = self.get_object())
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.user_id = request.user
+                obj.save()
+                mensaje = f'{self.model.__name__} actualizado correctamente!'
+                error = 'No hay error!'
+                response = JsonResponse({'mensaje':mensaje,'error':error})
+                response.status_code = 201
+                #retorna response para ser interpretado con javascript
+                return response
+
+            else:
+                mensaje = f'El {self.model.__name__} no se ha podido actualizar, porfavor intentelo nuevamente!'
+                #guardamos todos los errores mediante form.errors
+                error = form.errors
+                response = JsonResponse({'mensaje':mensaje,'error':error})
+                response.status_code = 400
+                return response
+
+        else:
+            return redirect('templates_perfil:listar_imagenes_home')

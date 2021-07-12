@@ -7,7 +7,8 @@
 {% endblock cssextras %}
 
 {% block encabezado %} 
-<div class="bradcam_area bradcam_bg_2">
+{% for imagen in imageplato %}
+<div id="imagen-plato" class="bradcam_area bradcam_bg_2">
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
@@ -19,6 +20,7 @@
         </div>
     </div>
 </div>
+{% endfor %}
 <!--/ bradcam_area  -->
 
 <!-- where_togo_area_start  -->
@@ -237,6 +239,10 @@
 <script src="{% static 'personal/main.js' %}"></script>
 <!--Inicio: script para verificar si el ussuario recargo la pagina actual-->
 <script type="text/javascript">
+    {% for imagen in imageplato %}
+        var imagen = document.getElementById("imagen-plato");
+        imagen.style.backgroundImage = "url('{{ imagen.imagen.url }}')";
+    {% endfor %}
      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       console.info( "La pagina se recargo otravez despues de realizar la reserva" );
       sessionStorage.removeItem('Nombre');

@@ -6,19 +6,22 @@
 {% block cssextras %}
 {% endblock cssextras %}
 
-{% block encabezado %} 
-<div class="bradcam_area bradcam_bg_2">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="bradcam_text text-center">
-                    <h3>Deportes</h3>
-                    <p>Pixel perfect design with awesome contents</p>
+{% block encabezado %}
+{% for imagen in imagedeporte %}
+    <!-- las imagenes estan en la clase bradcam_bg_2 en style.css de home -->
+    <div id="imagen-deporte" class="bradcam_area bradcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Deportes</h3>
+                        <p>Pixel perfect design with awesome contents</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+{% endfor %}
 <!--/ bradcam_area  -->
 
 <!-- where_togo_area_start  -->
@@ -224,6 +227,11 @@
 <script src="{% static 'personal/main.js' %}"></script>
 <!--Inicio: script para verificar si el ussuario recargo la pagina actual-->
 <script type="text/javascript">
+    {% for imagen in imagedeporte %}
+        var imagen = document.getElementById("imagen-deporte");
+        imagen.style.backgroundImage = "url('{{ imagen.imagen.url }}')";
+    {% endfor %}
+
      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       console.info( "La pagina se recargo otravez despues de realizar la reserva" );
       sessionStorage.removeItem('Nombre');

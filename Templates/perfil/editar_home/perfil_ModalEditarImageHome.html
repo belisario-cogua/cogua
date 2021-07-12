@@ -1,0 +1,50 @@
+
+{% load bootstrap4 %}
+<div class="modal-dialog modal-lg swal2-show" role="document">
+    <div class="modal-content">
+        <h3 style="font-weight: bold;color: #6e6d6a;font-size: 1.85rem;">Editar imagen</h3>
+        <div id="quitar-imagen-temp">
+            <img src="{{ object.imagen.url }}"  alt="Responsive image" style="">
+        </div>
+  
+        <div id="mostrar-imagen-temp">
+            
+        </div>
+        <div class="body-editar-imagen">
+            <h4>Ultima modificación</h4>
+            <p><span>Por:</span> {{ object.user_id }}</p>
+            <p><span>Fecha:</span> {{ object.modified }}</p>
+        </div>
+        
+        
+        
+        <!-- id="form_agregar es llamado en main.js dentro de la funcion registrar" -->
+        <form id="form_editar" action="{% url 'templates_perfil:editar_imagen_home' object.pk %}" class="form-contact contact_form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">
+                <!-- div para mostrar errores 
+                se llama el id="erroresAgregar desde la funcion mostrarErroresAgregar() que esta en main.js" -->
+                <div id="erroresAgregar">   
+                </div>
+                <!-- fin mostrar errores -->
+                <div class="row">
+                    <div class="col-12">
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <h1 class="resaltar-input">{{ form.imagen.label }}: {{form.imagen}}</h1>
+
+                                    </div>
+                                </div>
+                </div>
+            </div>
+        
+             <div class="mi-footer-modal">
+                <!-- mediante el onclick llamamos a la funcion registrarUsuario()
+                que esta en el templates.js -->
+                <button id="bloquear_button_agregar" class="btn btn-info" type="button" onclick="editarImagenHome();"> Editar</button>
+                <button class="btn btn-danger" type="button" onclick="cerrar_modal_editar();"> Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

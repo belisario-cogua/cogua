@@ -36,6 +36,10 @@
   ></df-messenger>
 <div class="login-box">
   <div class="login-logo">
+    {% for lo in logo %}
+      <img src="{{ lo.imagen.url }}" style="width: 150px; margin-top: -18px; margin-left: 0px;" alt="">
+    {% endfor %}
+    <br>
     <a href="{% url 'templates_home:index' %}"><b>Cogua</b> Latacunga</a>
   </div>
   <!-- /.login-logo -->

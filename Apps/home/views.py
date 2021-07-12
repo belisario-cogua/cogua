@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from Apps.notificaciones.models import Notificacion as send
 import itertools 
+from .models import Imagehome
 # Create your views here.
 
 class Home(TemplateView):
@@ -25,6 +26,8 @@ class Home(TemplateView):
 		context['n_platos'] = Plato.objects.filter(estado=True).count()
 		context['n_turismos'] = Turismo.objects.filter(estado=True).count()
 		context['publicaciones'] = Publicacion.objects.all()
+		context['imagehome'] = Imagehome.objects.filter(nombre="home")
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
 		return context
 
 class ListarPublicaciones(ListView):
@@ -156,6 +159,12 @@ class ListarDeportesDisponibles(ListView):
 		queryset = self.model.objects.filter(publico = True, estado=True)
 		return queryset
 
+	def get_context_data(self, **kwargs):
+		context = super(ListarDeportesDisponibles, self).get_context_data(**kwargs)
+		context['imagedeporte'] = Imagehome.objects.filter(nombre="deporte")
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		return context
+
 class ListarHotelesDisponibles(ListView):
 	model = Hotel
 	paginate_by = 6
@@ -164,6 +173,12 @@ class ListarHotelesDisponibles(ListView):
 	def get_queryset(self):
 		queryset = self.model.objects.filter(publico=True, estado=True)
 		return queryset
+
+	def get_context_data(self, **kwargs):
+		context = super(ListarHotelesDisponibles, self).get_context_data(**kwargs)
+		context['imagehotel'] = Imagehome.objects.filter(nombre="cabaña")
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		return context
 
 class ListarPlatosDisponibles(ListView):
 	model = Plato
@@ -174,6 +189,12 @@ class ListarPlatosDisponibles(ListView):
 		queryset = self.model.objects.filter(cantidad__gte = 0, estado=True)
 		return queryset
 
+	def get_context_data(self, **kwargs):
+		context = super(ListarPlatosDisponibles, self).get_context_data(**kwargs)
+		context['imageplato'] = Imagehome.objects.filter(nombre="plato")
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		return context
+
 class ListarTurismosDisponibles(ListView):
 	model = Turismo
 	paginate_by = 6
@@ -183,6 +204,11 @@ class ListarTurismosDisponibles(ListView):
 		queryset = self.model.objects.filter(publico = True, estado=True)
 		return queryset
 
+	def get_context_data(self, **kwargs):
+		context = super(ListarTurismosDisponibles, self).get_context_data(**kwargs)
+		context['imagelugar'] = Imagehome.objects.filter(nombre="lugar")
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		return context
 
 """from json import loads
 from logging import getLogger

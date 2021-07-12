@@ -497,9 +497,13 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
     <div class="content-header">
       <div class="container-fluid">
         {% block tablatitulo %}
-        <div class=" pu-titulo-todo-div" style="margin-top: 20px;">
+        <div class="pu-titulo-todo-div" style="margin-top: 20px;">
           {% if request.user.is_staff %}
-            <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif">PERFIL DE USUARIO: ADMINISTRADOR</h1><!-- /.col -->
+            <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif; margin-right: 20px !important; height: 25px;padding-top: 5px;">PERFIL DE USUARIO: ADMINISTRADOR 
+              <a id="btn_editar_perfil" onclick="editarHome();" class="button-editar-home">Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i></a>
+              <a id="btn_regresar" onclick="regresarPerfil();" class="button-editar-home" style="display: none;">Perfil</a>
+            </h1><!-- /.col -->
+
           {% else %}
             <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif">PERFIL DE USUARIO</h1>
           {% endif %}
@@ -526,56 +530,94 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
             
               <!-- Div para mostrar datos del usario responsive -->
               <div class="pu-div-perfil-contenedor-datos" style="">
-                <div class="pu-div-perfil-image-responsive" style="background-color: #fff;">
-                  <div class="perfil-user-image">
-                    {% if user.imagen %}
-                    <img id="myImg" src="{{ user.imagen.url }}" alt="{{ user.nombres }} {{ user.apellidos }}">
-                    {% else %}
-                    <img id="myImg" src="{% static 'personal/imagen/usuario.png' %}" class="elevation-2" alt="{{ user.nombres }} {{ user.apellidos }}" style="margin-left: 0px">
-                    {% endif %}
-                  </div>
-                </div>
-
-              
-                <div class="pu-div-perfil-datos-responsive" style="background-color: #fff;">
-                  
-                  <div class="perfi-user-datos">
-                    <div class="table-responsive" style="padding-top: 50px; margin-top: -55px;">
-                    <table class="table-hover pu-table-datos" style="">
-                      <thead>
-                        <tr class="pu-table-thead">
-                          <th colspan="2">Datos Personales <button onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_actual' %}');" class="btn btn-info btn-sm cambiar-button-nuevo" type="button" style="background-color: #fff; border-color: #fff;"><i class="fas fa-pen cambiar-icon-nuevo" style="color: #FF9F00"></i></button></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Nombres</td>
-                          <td>{{ user.nombres | title }}</td>
-                        </tr>
-                        <tr>
-                          <td>Apellidos</td>
-                          <td>{{ user.apellidos | title }}</td>
-                        </tr>
-                        <tr>
-                          <td>Email</td>
-                          <td>{{ user.email}}</td>
-                        </tr>
-                        <tr>
-                          <td>Contraseña</td>
-                          <td>******************</td>
-                        </tr>
-                        <tr>
-                          <td>Inicio de sesión</td>
-                          <td>{{ user.last_login }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <div id="perfil_user">
+                  <div class="pu-div-perfil-image-responsive" style="background-color: #fff;">
+                    <div class="perfil-user-image">
+                      {% if user.imagen %}
+                      <img id="myImg" src="{{ user.imagen.url }}" alt="{{ user.nombres }} {{ user.apellidos }}">
+                      {% else %}
+                      <img id="myImg" src="{% static 'personal/imagen/usuario.png' %}" class="elevation-2" alt="{{ user.nombres }} {{ user.apellidos }}" style="margin-left: 0px">
+                      {% endif %}
                     </div>
+                  </div>
+
+                
+                  <div class="pu-div-perfil-datos-responsive" style="background-color: #fff;">
                     
+                    <div class="perfi-user-datos">
+                      <div class="table-responsive" style="padding-top: 50px; margin-top: -55px;">
+                      <table class="table-hover pu-table-datos" style="">
+                        <thead>
+                          <tr class="pu-table-thead">
+                            <th colspan="2">Datos Personales <button onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_actual' %}');" class="btn btn-info btn-sm cambiar-button-nuevo" type="button" style="background-color: #fff; border-color: #fff;"><i class="fas fa-pen cambiar-icon-nuevo" style="color: #FF9F00"></i></button></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Nombres</td>
+                            <td>{{ user.nombres | title }}</td>
+                          </tr>
+                          <tr>
+                            <td>Apellidos</td>
+                            <td>{{ user.apellidos | title }}</td>
+                          </tr>
+                          <tr>
+                            <td>Email</td>
+                            <td>{{ user.email}}</td>
+                          </tr>
+                          <tr>
+                            <td>Contraseña</td>
+                            <td>******************</td>
+                          </tr>
+                          <tr>
+                            <td>Inicio de sesión</td>
+                            <td>{{ user.last_login }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </div>
+                      
 
 
+                    </div>
                   </div>
                 </div>
+                <div class="btn-imagen-responsive">
+                  <div id="btn_editar_perfil1" onclick="editarHome();" class="button-editar-home1" >
+                    Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i>
+                  </div>
+                  <div id="btn_regresar1" onclick="regresarPerfil();" class="button-editar-home1" style="display: none;">
+                    Perfil <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i>
+                  </div>
+                </div>
+                
+                <div id="editar_home" style="background-color: #fff; display: none;">
+                  <div class="container-body-editar-imagenes">
+                    <h1>Actualizar imágenes y logos</h1>
+
+                    <h2>Imágenes (Home principal)</h2>
+
+                      <div style="text-align: center;" id="contenedore-fotos-home">
+                      </div>
+                    <h2>Imagen (Home cabañas)</h2>
+                      <div style="text-align: center;" id="contenedore-fotos-hoteles">
+                      </div>
+                    <h2>Imagen (Home deportes)</h2>
+                      <div style="text-align: center;" id="contenedore-fotos-deportes">
+                      </div>
+                    <h2>Imagen (Home lugares turísticos)</h2>
+                      <div style="text-align: center;" id="contenedore-fotos-lugares">
+                      </div>
+                    <h2>Imagen (Home platos típicos)</h2>
+                      <div style="text-align: center;" id="contenedore-fotos-platos">
+                      </div>
+                    <h2>Logo de la aplicación web</h2>
+                      <div style="text-align: center;" id="contenedore-fotos-logo">
+                      </div>
+                  </div>
+                  
+                </div>
+
               </div>
               <!-- Div para mostrar datos del usario responsive -->
                <!-- 3 graficos de colores del perfil de usuario -->
@@ -756,6 +798,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
 <link rel="stylesheet" href="{% static 'home/daterangerpicker/daterangepicker.css' %}">
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{% static 'home/daterangerpicker/daterangepicker.js' %}"></script>
+<script src="{% static 'personal/js/editarHome/editarHome.js' %}"></script>
 <script type="text/javascript">
   //$( document ).ready(function() {
     //$('#modalFullCalendar').modal('toggle')

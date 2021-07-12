@@ -109,11 +109,14 @@ var user = $('#nombre-user-home').attr('data-value');
 const dfMessenger = document.querySelector('df-messenger');
 
 function ImagenesCogua(){
+  console.log("fuera de jax")
   $.ajax({
       url:"/perfil/listar_imagenes/home/",
       type: 'GET',
       dataType: "json",
       success:function(response){
+        console.log("dentro de ajax")
+        console.log(response)
         for(let i=0; i<response.length; i++){
           tipo = response[i]["fields"]["nombre"];
           imagen = response[i]["fields"]["imagen"];

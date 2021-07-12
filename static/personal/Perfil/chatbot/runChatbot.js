@@ -117,7 +117,6 @@ function ImagenesCogua(){
         for(let i=0; i<response.length; i++){
           tipo = response[i]["fields"]["nombre"];
           imagen = response[i]["fields"]["imagen"];
-          console.log(imagen)
           if (tipo == "cabaña") {
             const payload = [
               {

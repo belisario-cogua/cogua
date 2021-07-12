@@ -26,7 +26,19 @@ $(document).ready(function() {
     console.log("estamos en el: " + intento)
 
     //intento verTurismos
-    if (intento == "consultarCabaña") {
+    if (intento == "consultaTurismos") {
+      var texto = new Array()
+      texto[0] = "Nuestra organización tiene los siguientes turismos";
+      texto[1] = "Tenemos los siguientes turismos";
+      texto[2] = "OK,  estos son los turismos que ofrecemos";
+      respuest = Math.floor(Math.random() * (texto.length - 0) + 0);
+      dfMessenger.renderCustomText(texto[respuest]);
+      ImagenesCogua();
+      
+
+      
+    }
+    else if (intento == "consultarCabaña") {
       tipoTurismos = data.queryResult.parameters.hotel;
       if(tipoTurismos == "cabañas"){
         abrirhoteles();
@@ -95,6 +107,105 @@ $(document).ready(function() {
 });
 var user = $('#nombre-user-home').attr('data-value');
 const dfMessenger = document.querySelector('df-messenger');
+
+function ImagenesCogua(){
+  $.ajax({
+      url:"/perfil/listar_imagenes/home/",
+      type: 'GET',
+      dataType: "json",
+      success:function(response){
+        for(let i=0; i<response.length; i++){
+          tipo = response[i]["fields"]["nombre"];
+          imagen = response[i]["fields"]["imagen"];
+          console.log(imagen)
+          if (tipo == "cabaña") {
+            const payload = [
+              {
+                "rawUrl": "/media/" + imagen,
+                "type": "image"
+              },
+              {
+                "title": "Cabañas",
+                "subtitle": "Ofrecemos hospedaje si deseas conocer mas lugares",
+                "actionLink": "/listado-cabañas-disponibles/",
+                "type": "info"
+              }
+            ];
+            dfMessenger.renderCustomCard(payload);
+          }else if (tipo == "lugar") {
+            const payload1 = [
+              {
+                "rawUrl": "/media/" + imagen,
+                "type": "image"
+              },
+              {
+                "title": "Lugares Turísticos",
+                "subtitle": "Tenemos diferentes lugares atractivos",
+                "actionLink": "/listado-lugares-turisticos-disponibles/",
+                "type": "info"
+              }
+            ];
+            dfMessenger.renderCustomCard(payload1);
+
+          }else if (tipo == "deporte") {
+            const payload2 = [
+              {
+                "rawUrl": "/media/" + imagen,
+                "type": "image"
+              },
+              {
+                "title": "Deportes",
+                "subtitle": "También disponemos de los deportres extremos",
+                "actionLink": "/listado-deportes-disponibles/",
+                "type": "info"
+              }
+            ];
+            dfMessenger.renderCustomCard(payload2);
+
+          }else if (tipo == "plato") {
+            const payload3 = [
+              {
+                "rawUrl": "/media/" + imagen,
+                "type": "image"
+              },
+              {
+                "title": "Platos Típicos",
+                "subtitle": "Incluso contamos con platillos apetitosos del sector",
+                "actionLink": "/listado-platos-tipicos-disponibles/",
+                "type": "info"
+              }
+            ];
+            dfMessenger.renderCustomCard(payload3);
+          }
+
+        }
+        var texto1 = new Array()
+        texto1[0] = "¿Deseas ver los detalles de algún turismo en particular?";
+        texto1[1] = "¿Te gustaría ver algún turismo?";
+        respuest1 = Math.floor(Math.random() * (texto1.length - 0) + 0);
+        dfMessenger.renderCustomText(texto1[respuest1]);
+
+        const payload4 = [
+          {
+            "options": [
+              {
+                "text": "Si, porfavor."
+              },
+              {
+                "text": "No, quizás déspues"
+              }
+            ],
+            "type": "chips"
+          }
+        ];
+        dfMessenger.renderCustomCard(payload4);
+        
+      },
+      error:function(error){
+        console.log(error)
+      }
+    });
+}
 function abrirhoteles(){
   var contenedor = document.getElementById('contenedor_carga');
   contenedor.style.visibility = 'visible';

@@ -589,7 +589,7 @@ class ListarPlatosModal(ListView):
 
     def get(self,request,*args,**kwargs):
         if request.is_ajax():
-            turismo = Plato.objects.filter(estado = True, publico = True).values()
+            turismo = Plato.objects.filter(estado = True, publico = True, cantidad__gt = 0).values()
             response = JsonResponse({'turismo':list(turismo)})
             response.status_code = 201
             return response

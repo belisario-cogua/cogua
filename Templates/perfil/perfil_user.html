@@ -500,8 +500,8 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
         <div class="pu-titulo-todo-div" style="margin-top: 20px;">
           {% if request.user.is_staff %}
             <h1 class="m-0 pu-titulo-div" style="font-size: 0.91971rem; font-family: Arial,sans-serif; margin-right: 20px !important; height: 25px;padding-top: 5px;">PERFIL DE USUARIO: ADMINISTRADOR 
-              <a id="btn_editar_perfil" onclick="editarHome();" class="button-editar-home">Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i></a>
-              <a id="btn_regresar" onclick="regresarPerfil();" class="button-editar-home" style="display: none;">Perfil</a>
+              <a id="btn_editar_perfil" onclick="editarHome();" class="button-editar-home btn1">Actualizar Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i></a>
+              <a id="btn_regresar" onclick="regresarPerfil();" class="button-editar-home" style="display: none;">Perfil <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i></a>
             </h1><!-- /.col -->
 
           {% else %}
@@ -586,7 +586,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                 {% if request.user.is_staff %}
                   <div class="btn-imagen-responsive">
                     <div id="btn_editar_perfil1" onclick="editarHome();" class="button-editar-home1" >
-                      Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i>
+                      Actualizar Home <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i>
                     </div>
                     <div id="btn_regresar1" onclick="regresarPerfil();" class="button-editar-home1" style="display: none;">
                       Perfil <i class="fas fa-pen" style="color: #FF9F00; font-size: 12px;"></i>
@@ -597,23 +597,23 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                     <div class="container-body-editar-imagenes">
                       <h1>Actualizar imágenes y logos</h1>
 
-                      <h2>Imágenes (Home principal)</h2>
+                      <h2 class="titulo-imagen-home">Imágenes (Home principal)</h2>
 
                         <div style="text-align: center;" id="contenedore-fotos-home">
                         </div>
-                      <h2>Imagen (Home cabañas)</h2>
+                      <h2 class="titulo-imagen-home">Imagen (Home cabañas)</h2>
                         <div style="text-align: center;" id="contenedore-fotos-hoteles">
                         </div>
-                      <h2>Imagen (Home deportes)</h2>
+                      <h2 class="titulo-imagen-home">Imagen (Home deportes)</h2>
                         <div style="text-align: center;" id="contenedore-fotos-deportes">
                         </div>
-                      <h2>Imagen (Home lugares turísticos)</h2>
+                      <h2 class="titulo-imagen-home">Imagen (Home lugares turísticos)</h2>
                         <div style="text-align: center;" id="contenedore-fotos-lugares">
                         </div>
-                      <h2>Imagen (Home platos típicos)</h2>
+                      <h2 class="titulo-imagen-home">Imagen (Home platos típicos)</h2>
                         <div style="text-align: center;" id="contenedore-fotos-platos">
                         </div>
-                      <h2>Logo de la aplicación web</h2>
+                      <h2 class="titulo-imagen-home">Logo de la aplicación web</h2>
                         <div style="text-align: center;" id="contenedore-fotos-logo">
                         </div>
                     </div>

@@ -171,7 +171,7 @@ $(document).ready(function() {
             horas = hora1 + ":" + minuto1 + ":" + segundo1;
 
             if(horas_sesion >  horas){
-              $dfMessenger.renderCustomText('Buenos tardess ' + user);
+              $dfMessenger.renderCustomText('Buenos tardes ' + user);
               var textos2 = new Array()
               textos2[0] = "";
               textos2[1] = "Me alegra saber que buscas mejorar tus experiencias con nuestros turismos";

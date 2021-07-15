@@ -256,11 +256,13 @@ css para que el df messenger se ponga encima del footer
 		margin-left: 100px;
 	}
 }
-
-@media screen and (max-width: 730px){
+@media screen and (max-width: 773px){
 	.pu-titulo-todo-div{
-		margin-left: 240px;
+		margin-left: 20px;
 	}
+
+}
+@media screen and (max-width: 730px){
 	.pu-div-perfil-image-responsive .perfil-user-image{
 		margin-left: 220px;
 		transition: 0.8s;
@@ -271,9 +273,6 @@ css para que el df messenger se ponga encima del footer
 
 }
 @media screen and (max-width: 700px){
-	.pu-titulo-todo-div{
-		margin-left: 223px;
-	}
 	.pu-div-perfil-image-responsive .perfil-user-image{
 		margin-left: 200px;
 		transition: 0.8s;
@@ -326,6 +325,14 @@ css para que el df messenger se ponga encima del footer
 		padding-left: 80px;
 	}
 }
+@media screen and (max-width: 510px){
+	.pu-titulo-todo-div{
+		height: 60px;
+	}
+	.pu-titulo-todo-div h1 a{
+		margin-top: 20px;
+	}
+}
 @media screen and (max-width: 470px){
 	.pu-div-perfil-image-responsive .perfil-user-image{
 		margin-left: 80px;
@@ -336,7 +343,7 @@ css para que el df messenger se ponga encima del footer
 	}
 }
 @media screen and (max-width: 420px){
-	.pu-titulo-todo-div h1{
+	.pu-titulo-todo-div{
 		display: none;
 	}
 	.pu-div-perfil-image-responsive .perfil-user-image{
@@ -961,8 +968,6 @@ css para que el df messenger se ponga encima del footer
 	background-color: #078ca3;
 }
 
-
-
 @media screen and (max-width: 670px){
 	.container-body-editar-imagenes{
 		margin-left: 10px;
@@ -1101,4 +1106,10 @@ css para que el df messenger se ponga encima del footer
 }
 .body-editar-imagen p span{
 	font-weight: bold;
+}
+.titulo-imagen-home{
+	font-size: 0.91971rem;
+    font-family: Arial,sans-serif;
+    color: #878787;
+    font-weight: bold;
 }

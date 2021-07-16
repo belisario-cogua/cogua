@@ -68,7 +68,7 @@ class ListarUsuario(PermisosUsuariosMixin,LoginAndSuperStaffMixin,ListView):
 	model = Usuario
 
 	def get_queryset(self):
-		return self.model.objects.filter(is_active=True)
+		return self.model.objects.all()
 
 	def get(self,request,*args,**kwargs):
 		if request.is_ajax():

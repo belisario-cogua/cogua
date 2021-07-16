@@ -75,7 +75,7 @@
                         <div class="row align-items-center">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                    <a href="index.html">
+                                    <a href="{% url 'templates_home:index' %}">
                                         {% for lo in logo %}
                                         <img src="{{ lo.imagen.url }}" style="width: 150px; margin-top: -18px; margin-left: 0px;" alt="">
                                         {% endfor %}
@@ -207,8 +207,10 @@
 
 
     <!--================Blog Area =================-->
+    <div id="publicaciones_seccion"></div>
     {% block publicaciones %}
-    <section class="blog_area section-padding">
+
+    <section class="blog_area section-padding" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0" style="margin-top: -80px;">
@@ -482,6 +484,9 @@
 
     <!--script para que aparezcan recomendaciones del chatbot luego de reservar-->
     <script type="text/javascript">
+        //$(document).ready(function(){
+        //    $("html, body").animate({scrollTop: $('#publicaciones_seccion').offset().top }, 1000);
+        //});
         {% for imagen in imagehome %}
             var imagen = document.getElementById("imagen-home{{forloop.counter}}");
             imagen.style.backgroundImage = "url('{{ imagen.imagen.url }}')";

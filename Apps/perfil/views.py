@@ -235,6 +235,67 @@ class Perfil(LoginRequiredMixin, TemplateView):
         context['reserva_platos'] = ReservaPlato.objects.filter(estado=True)
         context['reserva_turismos'] = ReservaTurismo.objects.filter(estado=True)
         context['n_reservaciones'] = ReservaDeporte.objects.filter(usuario = self.request.user,estado=True).count() + ReservaTurismo.objects.filter(usuario = self.request.user,estado=True).count() + ReservaPlato.objects.filter(usuario = self.request.user,estado=True).count() + ReservaHotel.objects.filter(usuario = self.request.user,estado=True).count()
+        context['n_usuarios'] = Usuario.objects.all().count()
+        
+        fecha_actual = datetime.today()
+        reserva1 = ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual,estado=True, activado = False).count()
+        reserva2 = ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual,estado=True, activado = False).count()
+        reserva3 = ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual,estado=True, activado = False).count()
+        reserva4 = ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual,estado=True, activado = False).count()
+        total = reserva1 + reserva2 + reserva3 + reserva4
+        context['n_solicitudes_pendientes'] = total
+
+        mes_actual = datetime.now()
+        reserva5 = ReservaHotel.objects.filter(estado=True)
+        count = 0
+        for r in reserva5:
+            fecha_inicial = r.fecha_inicial
+            if fecha_inicial.month == mes_actual.month:
+                count = count + 1
+
+        reserva6 = ReservaPlato.objects.filter(estado=True)
+        count1 = 0
+        for r in reserva6:
+            fecha_inicial = r.fecha_inicial
+            if fecha_inicial.month == mes_actual.month:
+                count1 = count1 + 1
+
+        reserva7 = ReservaTurismo.objects.filter(estado=True)
+        count2 = 0
+        for r in reserva7:
+            fecha_inicial = r.fecha_inicial
+            if fecha_inicial.month == mes_actual.month:
+                count2 = count2 + 1
+
+        reserva8 = ReservaDeporte.objects.filter(estado=True)
+        count3 = 0
+        for r in reserva8:
+            fecha_inicial = r.fecha_inicial
+            if fecha_inicial.month == mes_actual.month:
+                count3 = count3 + 1
+
+
+        context['n_reservas_mes_actual'] = count + count1 + count2 + count
+
+        #de usuario cliente
+        visitado = ReservaDeporte.objects.filter(fecha_inicial__lte = fecha_actual,usuario = self.request.user, visita = True).count()
+        visitado1 = ReservaPlato.objects.filter(fecha_inicial__lte = fecha_actual,usuario = self.request.user, visita = True).count()
+        visitado2 = ReservaHotel.objects.filter(fecha_inicial__lte = fecha_actual,usuario = self.request.user, visita = True).count()
+        visitado3 = ReservaTurismo.objects.filter(fecha_inicial__lte = fecha_actual,usuario = self.request.user, visita = True).count()
+
+        pendiente =  ReservaDeporte.objects.filter(fecha_inicial__gte = fecha_actual,usuario = self.request.user).count()
+        pendiente1 =  ReservaPlato.objects.filter(fecha_inicial__gte = fecha_actual,usuario = self.request.user).count()
+        pendiente2 =  ReservaHotel.objects.filter(fecha_inicial__gte = fecha_actual,usuario = self.request.user).count()
+        pendiente3 =  ReservaTurismo.objects.filter(fecha_inicial__gte = fecha_actual,usuario = self.request.user).count()
+
+        sin_visitar = ReservaDeporte.objects.filter(fecha_inicial__lt = fecha_actual,usuario = self.request.user, visita = False).count()
+        sin_visitar1 = ReservaPlato.objects.filter(fecha_inicial__lt = fecha_actual,usuario = self.request.user, visita = False).count()
+        sin_visitar2 = ReservaHotel.objects.filter(fecha_inicial__lt = fecha_actual,usuario = self.request.user, visita = False).count()
+        sin_visitar3 = ReservaTurismo.objects.filter(fecha_inicial__lt = fecha_actual,usuario = self.request.user, visita = False).count()
+
+        context['pendiente'] = pendiente + pendiente1 + pendiente2 + pendiente3
+        context['sin_visitar'] = sin_visitar + sin_visitar1 + sin_visitar2 + sin_visitar3
+        context['visitado'] = visitado + visitado1 + visitado2 + visitado3
         return context
 
 '''class PerfilDatos(TemplateView):

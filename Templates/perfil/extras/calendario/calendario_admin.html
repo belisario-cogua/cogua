@@ -28,7 +28,7 @@
 <li class="nav-item">
 
   <a href="#" class="nav-link animar-mi-menu">
-    <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px; margin-left: 4px;"></i>
+    <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px;"></i>
     {% if request.user.is_staff %}
       <p>
         Administrar
@@ -67,7 +67,7 @@
        <li class="nav-item pu-mover-submenu-icon">
         <a href="{% url 'templates_turismo:listar_turismos' %}" class="nav-link">
           <i class="nav-icon  fas fa-globe-asia"></i>
-          <p class="pu-mover-submenu-text">Turismos</p>
+          <p class="pu-mover-submenu-text">Lugares Turísticos</p>
         </a>
       </li>
       <li class="nav-item pu-mover-submenu-icon">
@@ -137,7 +137,7 @@
             <li class="nav-item pu-mover-submenu-icon">
               <a href="{% url 'templates_perfil:listar_reservas_turismos' %}" class="nav-link">
                 <i class="nav-icon  fas fa-globe-asia"></i>
-                <p class="pu-mover-submenu-text">Turismos</p>
+                <p class="pu-mover-submenu-text">Lugares Turísticos</p>
               </a>
             </li>
             {% endif %}

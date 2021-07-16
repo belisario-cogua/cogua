@@ -253,8 +253,8 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
             {% if request.user.is_staff %}
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px; margin-left: 4px;"></i>
-                  <p class="pu-color-p" style="margin-left: -2px;color:#000;">
+                  <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px;"></i>
+                  <p class="pu-color-p" style="color:#000;">
                     Administrar
                     <i class="right fas fa-angle-left"></i>
                   </p>
@@ -285,7 +285,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                     <li class="nav-item pu-mover-submenu-icon">
                       <a href="{% url 'templates_turismo:listar_turismos' %}" class="nav-link">
                         <i class="nav-icon  fas fa-globe-asia"></i>
-                        <p class="pu-mover-submenu-text">Turismos</p>
+                        <p class="pu-mover-submenu-text">Lugares Turísticos</p>
                       </a>
                     </li>
                     <li class="nav-item pu-mover-submenu-icon">
@@ -349,7 +349,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                       <li class="nav-item pu-mover-submenu-icon">
                         <a href="{% url 'templates_perfil:listar_reservas_turismos' %}" class="nav-link">
                           <i class="nav-icon  fas fa-globe-asia"></i>
-                          <p class="pu-mover-submenu-text">Turismos</p>
+                          <p class="pu-mover-submenu-text">Lugares Turísticos</p>
                         </a>
                       </li>
                       {% endif %}
@@ -413,7 +413,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_home:listado_turismos_disponibles' %}" class="nav-link">
                   <i class="nav-icon  fas fa-globe-asia"></i>
-                  <p class="pu-mover-submenu-text">Turismos</p>
+                  <p class="pu-mover-submenu-text">Lugares Turísticos</p>
                 </a>
               </li>
               <li class="nav-item pu-mover-submenu-icon">
@@ -427,6 +427,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
             </ul>
           </li>
           {% block menu_open_extras %}
+          
            <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-plus-square pu-color-i" style="font-size: 15px;"></i>
@@ -435,6 +436,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            {% if request.user.is_staff %}
             <ul class="nav nav-treeview">
               <li class="nav-item pu-mover-submenu-icon">
                 <a href="{% url 'templates_perfil:calendario_admin' %}" class="nav-link">
@@ -450,9 +452,27 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               </li>
               
             </ul>
+            {% else %}
+            <ul class="nav nav-treeview">
+              <li class="nav-item pu-mover-submenu-icon">
+                <a href="#" onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_actual' %}');" class="nav-link">
+                  <i class="fas fa-pen nav-icon"></i>
+                  <p class="pu-mover-submenu-text">Editar mi perfil</p>
+                </a>
+              </li>
+              <li class="nav-item pu-mover-submenu-icon">
+                <a href="#" onclick="abrir_modal_editar('{% url 'templates_perfil:editar_perfil_password_actual' %}');" class="nav-link">
+                  <i class="fas fa-key nav-icon"></i>
+                  <p style=" " class="pu-mover-submenu-text">Cambiar contraseña</p>
+                </a>
+              </li>
+              
+            </ul>
+            {% endif %}
           </li>
+          
           {% endblock menu_open_extras%}
-          <li class="nav-header pu-word-otros" style="color: #616884; font-size: 0.78571rem;">OTROS</li>
+          <li class="nav-header pu-word-otros" style="color: #3a3e4f; font-size: 0.78571rem;">OTROS</li>
 
           <li class="nav-item home-responsive" style="margin-top: 10px;">
             <a href="{% url 'templates_home:index' %}" class="nav-link">
@@ -464,7 +484,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
           </li>
 
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="{% url 'templates_home:index' %}" class="nav-link">
               <i class="nav-icon far fa-image pu-color-i" style="font-size: 15px;"></i>
               <p class="pu-color-p" style="color: #F9ECF9">
                 Publicaciones
@@ -628,21 +648,21 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                   <div class="pu-inf-global1" style="">
                     <i class="fas fa-users" style="font-size: 40px;"></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1">8</p>
+                      <p class="pu-info-parrafo1">{{ n_usuarios}}</p>
                       <p class="pu-info-parrafo2">USUARIOS</p>
                     </div>
                   </div>
                   <div class="pu-inf-global2" style="">
                     <i class="far fa-bell" style=""></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">12</p>
+                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">{{n_solicitudes_pendientes}}</p>
                       <p class="pu-info-parrafo2">SOLICITUDES PENDIENTES</p>
                     </div>
                   </div>
                   <div class="pu-inf-global3" style="">
                     <i class="fas fa-calendar-alt" style="font-size: 33px;"></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1">5</p>
+                      <p class="pu-info-parrafo1">{{n_reservas_mes_actual}}</p>
                       <p class="pu-info-parrafo2">RESERVACIONES PARA ESTE MES</p>
                     </div>
                   </div>
@@ -652,21 +672,21 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
                   <div class="pu-inf-global1" style="">
                     <i class="far fa-check-circle" style=""></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1">2</p>
+                      <p class="pu-info-parrafo1">{{visitado}}</p>
                       <p class="pu-info-parrafo2">VISITADOS</p>
                     </div>
                   </div>
                   <div class="pu-inf-global2" style="">
                     <i class="far fa-bell" style=""></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">5</p>
+                      <p class="pu-info-parrafo1 pu-info-parrafo1-temp">{{pendiente}}</p>
                       <p class="pu-info-parrafo2">RERSERVAS PENDIENTES</p>
                     </div>
                   </div>
                   <div class="pu-inf-global3" style="">
                     <i class="far fa-calendar-times" style=""></i>
                     <div class="pu-inf-global-info">
-                      <p class="pu-info-parrafo1">1</p>
+                      <p class="pu-info-parrafo1">{{sin_visitar}}</p>
                       <p class="pu-info-parrafo2">SIN VISITAR</p>
                     </div>
                   </div>

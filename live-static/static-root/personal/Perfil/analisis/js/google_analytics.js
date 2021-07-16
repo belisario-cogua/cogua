@@ -76,7 +76,7 @@ $(document).ready(function() {
   });
   
   //Highcharts de ciudades con mayor porcentaje de vista
-  var ciudad = Highcharts.chart('container-ciudad', {
+  /*var ciudad = Highcharts.chart('container-ciudad', {
       chart: {
           plotBackgroundColor: null,
           plotBorderWidth: null,
@@ -104,7 +104,7 @@ $(document).ready(function() {
               }
           }
       },
-  });
+  });*/
 
   if(window.Intl) intl = true;
   

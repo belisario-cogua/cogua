@@ -73,6 +73,11 @@ class PublicacionDetalles(DetailView):
 	model = Publicacion
 	template_name = 'home/publicaciones/index_detalles_publicacion.html'
 
+	def get_context_data(self, **kwargs):
+		context = super(PublicacionDetalles, self).get_context_data(**kwargs)
+		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		return context
+
 class ListarComentarios(CreateView):
 	model = Usuario
 	def post(self, request, *args, **kwargs):
@@ -163,6 +168,7 @@ class ListarDeportesDisponibles(ListView):
 		context = super(ListarDeportesDisponibles, self).get_context_data(**kwargs)
 		context['imagedeporte'] = Imagehome.objects.filter(nombre="deporte")
 		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		context['recomendado'] = Plato.objects.filter(estado=True, cantidad__gte = 0, publico=True)[:3]
 		return context
 
 class ListarHotelesDisponibles(ListView):
@@ -178,6 +184,7 @@ class ListarHotelesDisponibles(ListView):
 		context = super(ListarHotelesDisponibles, self).get_context_data(**kwargs)
 		context['imagehotel'] = Imagehome.objects.filter(nombre="cabaña")
 		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		context['recomendado'] = Turismo.objects.filter(estado=True, publico=True)[:3]
 		return context
 
 class ListarPlatosDisponibles(ListView):
@@ -193,6 +200,7 @@ class ListarPlatosDisponibles(ListView):
 		context = super(ListarPlatosDisponibles, self).get_context_data(**kwargs)
 		context['imageplato'] = Imagehome.objects.filter(nombre="plato")
 		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		context['recomendado'] = Deporte.objects.filter(estado=True,publico=True)[:3]
 		return context
 
 class ListarTurismosDisponibles(ListView):
@@ -208,6 +216,7 @@ class ListarTurismosDisponibles(ListView):
 		context = super(ListarTurismosDisponibles, self).get_context_data(**kwargs)
 		context['imagelugar'] = Imagehome.objects.filter(nombre="lugar")
 		context['logo'] = Imagehome.objects.filter(nombre="logo")
+		context['recomendado'] = Hotel.objects.filter(estado=True, publico=True)[:3]
 		return context
 
 """from json import loads

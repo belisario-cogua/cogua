@@ -140,7 +140,10 @@ css para que el df messenger se ponga encima del footer
 	margin-left: 15px;
 }
 .pu-mover-submenu-icon{
-	padding-left: 30px;
+	padding-left: 10px;
+}
+.nav-item .nav-link p{
+	margin-left: -20px;
 }
 .pu-mover-submenu-icon a i{
 	color:#000;

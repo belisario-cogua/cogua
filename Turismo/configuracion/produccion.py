@@ -2,7 +2,7 @@ from Turismo.configuracion.base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240','coguabelisarioquevedo.com','wwww.coguabelisarioquevedo.com']
+ALLOWED_HOSTS = ['74.207.224.109','192.168.193.240','coguabelisarioquevedo.com','www.coguabelisarioquevedo.com']
 
 DATABASES = {
     'default': {

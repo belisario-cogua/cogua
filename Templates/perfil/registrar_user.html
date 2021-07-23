@@ -20,7 +20,16 @@
     .contenedor{
         overflow: hidden;
         text-overflow: ellipsis;
-      }
+    }
+    label.error {
+      color: red;
+      font-weight: normal !important;
+    }
+
+    input.error {
+      border: 1px dashed red;
+      color: red;
+    }
   </style>
 </head>
 <body class="hold-transition register-page">
@@ -36,6 +45,7 @@
       <form id="form_registrar_user" action="{% url 'registrar_user' %}" method="POST">
         {% csrf_token %}
         <div class="input-group mb-3">
+          <p ></p>
           {{form.email | attr:'autocomplete:off'}}
           <div class="input-group-append">
             <div class="input-group-text">
@@ -43,6 +53,9 @@
             </div>
           </div>
         </div>
+        <div id="email2" style="margin-top:-5px; margin-bottom: 20px;font-weight: normal;">
+        </div>
+
         <div class="input-group mb-3">
           {{form.nombres}}
           <div class="input-group-append">
@@ -50,6 +63,8 @@
               <span class="fas fa-user"></span>
             </div>
           </div>
+        </div>
+        <div id="nombres2" style="margin-top:-5px; margin-bottom: 20px;font-weight: normal;">
         </div>
         <div class="input-group mb-3">
           {{form.apellidos}}
@@ -59,6 +74,8 @@
             </div>
           </div>
         </div>
+        <div id="apellidos2" style="margin-top:-5px; margin-bottom: 20px;font-weight: normal;">
+        </div>
         <div class="input-group mb-3">
           {{form.password1}}
           <div class="input-group-append">
@@ -67,6 +84,8 @@
             </div>
           </div>
         </div>
+        <div id="password3" style="margin-top:-5px; margin-bottom: 20px;font-weight: normal;">
+        </div>
         <div class="input-group mb-3">
           {{form.password2}}
           <div class="input-group-append">
@@ -74,6 +93,8 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
+        </div>
+        <div id="password4" style="margin-top:-5px; margin-bottom: 20px;font-weight: normal;">
         </div>
         <div class="input-group mb-3">
           {{ form.imagen.label }} de perfil
@@ -114,5 +135,135 @@
 <script src="{% static 'personal/js/usuarios/templates.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{% static 'personal/main.js' %}"></script>
+<script src="{% static 'personal/jquery.validate.min.js' %}"></script>
+<script type="text/javascript">
+  
+  $(document).ready(function() {
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+  
+  $.validator.addMethod("formEmail", function (value, element) {
+     var pattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+     return this.optional(element) || pattern.test(value);
+  }, "Debe ingresar un email válido");
+
+  $.validator.addMethod("nombresSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar nombres válidos");
+
+  $.validator.addMethod("apellidosSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar apellidos válidos");
+
+  $.validator.addMethod("checklower", function(value) {
+    return /[a-z]/.test(value);
+  });
+  $.validator.addMethod("checkupper", function(value) {
+    return /[A-Z]/.test(value);
+  });
+  $.validator.addMethod("checkdigit", function(value) {
+    return /[0-9]/.test(value);
+  });
+  $.validator.addMethod("pwcheck", function(value) {
+    return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) && /[a-z]/.test(value) && /\d/.test(value) && /[A-Z]/.test(value);
+  });
+
+  $("#form_registrar_user").validate({
+    errorPlacement: function(error, element) {
+      if (element.attr("name") == "email" ) {
+        $("#email2").html(error);
+      }else if (element.attr("name") == "nombres" ) {
+        $("#nombres2").html(error);
+      }else if (element.attr("name") == "apellidos" ) {
+        $("#apellidos2").html(error);
+      }else if (element.attr("name") == "password1" ) {
+        $("#password3").html(error);
+      }else if (element.attr("name") == "password2" ) {
+        $("#password4").html(error);
+      }
+    },
+    rules: {
+      email: { required:true, formEmail: true},
+      nombres: { required: true, nombresSinNum: true},
+      apellidos: { required: true, apellidosSinNum: true},
+      password1: { minlength: 8,
+      maxlength: 30,
+      required: true,
+      //pwcheck: true,
+      checklower: true,
+      checkupper: true,
+      checkdigit: true}, 
+      password2: { equalTo: "#password1"}
+    },
+    messages : {
+      email : {
+        required : "Este campo es requerido",
+        email    : "Debes ingresar un email válido"
+      },
+      nombres : {
+        required : "Este campo es requerido",
+      },
+      apellidos : {
+        required : "Este campo es requerido",
+      },
+      password1: {
+        required: "Este campo es requerido",
+        minlength: "La contraseña debe contener almenos 8 caracteres",
+        pwcheck: "La contraseña no es lo suficientemente segura",
+        checklower: "Necesitas al menos 1 alfabeto en minúscula",
+        checkupper: "Necesitas al menos 1 alfabeto en mayúscula",
+        checkdigit: "Necesitas al menos 1 dígito"
+      },
+      password2: {
+        equalTo: "Las contraseñas no coinciden",
+        required: "Este campo es requerido",
+      }
+    },
+    submitHandler: function(form) {
+        form.submit();
+    },
+    onkeyup: function( element, event ) {
+        if ( event.which === 9 && this.elementValue(element) === "" ) {
+            return;
+        } else if ( element.name in this.submitted || element === this.lastElement ) {
+            this.element(element);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);  
+       // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');   // disables button
+        }
+    },
+    onclick: function( element ) {
+        // click on selects, radiobuttons and checkboxes
+        if ( element.name in this.submitted ) {
+            this.element(element);
+
+        // or option elements, check parent select in that case
+        } else if ( element.parentNode.name in this.submitted ) {
+            this.element(element.parentNode);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);          // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');     // disables button
+        }
+    }
+  
+
+  });
+
+});
+  
+</script>
 </body>
 </html>

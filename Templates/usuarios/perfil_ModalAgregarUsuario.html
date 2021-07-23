@@ -65,3 +65,118 @@ por ejemplo:
         </form>
     </div>
 </div>
+<script type="text/javascript">
+	//validar campos jquery validtor
+  $(document).ready(function() {
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+  
+  $.validator.addMethod("formEmail", function (value, element) {
+     var pattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+     return this.optional(element) || pattern.test(value);
+  }, "Debe ingresar un email válido");
+
+  $.validator.addMethod("nombresSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar nombres válidos");
+
+  $.validator.addMethod("apellidosSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar apellidos válidos");
+
+  $.validator.addMethod("checklower", function(value) {
+    return /[a-z]/.test(value);
+  });
+  $.validator.addMethod("checkupper", function(value) {
+    return /[A-Z]/.test(value);
+  });
+  $.validator.addMethod("checkdigit", function(value) {
+    return /[0-9]/.test(value);
+  });
+  $.validator.addMethod("pwcheck", function(value) {
+    return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) && /[a-z]/.test(value) && /\d/.test(value) && /[A-Z]/.test(value);
+  });
+
+  $("#form_agregar").validate({
+    rules: {
+      email: { required:true, formEmail: true},
+      nombres: { required: true, nombresSinNum: true},
+      apellidos: { required: true, apellidosSinNum: true},
+      password1: { minlength: 8,
+      maxlength: 30,
+      required: true,
+      //pwcheck: true,
+      checklower: true,
+      checkupper: true,
+      checkdigit: true}, 
+      password2: { equalTo: "#password1"}
+    },
+    messages : {
+      email : {
+        required : "Este campo es requerido",
+        email    : "Debes ingresar un email válido"
+      },
+      nombres : {
+        required : "Este campo es requerido",
+      },
+      apellidos : {
+        required : "Este campo es requerido",
+      },
+      password1: {
+        required: "Este campo es requerido",
+        minlength: "La contraseña debe contener almenos 8 caracteres",
+        pwcheck: "La contraseña no es lo suficientemente segura",
+        checklower: "Necesitas al menos 1 alfabeto en minúscula",
+        checkupper: "Necesitas al menos 1 alfabeto en mayúscula",
+        checkdigit: "Necesitas al menos 1 dígito"
+      },
+      password2: {
+        equalTo: "Las contraseñas no coinciden",
+        required: "Este campo es requerido",
+      }
+    },
+    submitHandler: function(form) {
+        form.submit();
+    },
+    onkeyup: function( element, event ) {
+        if ( event.which === 9 && this.elementValue(element) === "" ) {
+            return;
+        } else if ( element.name in this.submitted || element === this.lastElement ) {
+            this.element(element);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);  
+       // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');   // disables button
+        }
+    },
+    onclick: function( element ) {
+        // click on selects, radiobuttons and checkboxes
+        if ( element.name in this.submitted ) {
+            this.element(element);
+
+        // or option elements, check parent select in that case
+        } else if ( element.parentNode.name in this.submitted ) {
+            this.element(element.parentNode);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);          // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');     // disables button
+        }
+    }
+  
+
+  });
+
+});
+</script>

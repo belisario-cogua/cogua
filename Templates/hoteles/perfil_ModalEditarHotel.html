@@ -52,3 +52,69 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    //validar campos jquery validtor
+  $(document).ready(function() {
+    var habilitarButton3 = document.getElementById('bloquear_button_agregar');
+    habilitarButton3.disabled= true;
+
+
+  $("#form_editar").validate({
+    rules: {
+      precio: { required:true, min: 0.1}
+    },
+    messages : {
+      nombre : {
+        required : "Este campo es requerido",
+      },
+      descripcion : {
+        required : "Este campo es requerido",
+      },
+      precio : {
+        required : "Este campo es requerido",
+        min: "Por favor, ingresa un valor mayor o igual a 0.1"
+      }
+    },
+    submitHandler: function(form) {
+        form.submit();
+    },
+    onkeyup: function( element, event ) {
+        if ( event.which === 9 && this.elementValue(element) === "" ) {
+            return;
+        } else if ( element.name in this.submitted || element === this.lastElement ) {
+            this.element(element);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);  
+       // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');   // disables button
+        }
+    },
+    onclick: function( element ) {
+        // click on selects, radiobuttons and checkboxes
+        if ( element.name in this.submitted ) {
+            this.element(element);
+
+        // or option elements, check parent select in that case
+        } else if ( element.parentNode.name in this.submitted ) {
+            this.element(element.parentNode);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);          // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');     // disables button
+        }
+    }
+  
+
+  });
+
+});
+</script>

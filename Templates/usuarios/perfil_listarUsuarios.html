@@ -220,6 +220,7 @@
 {% block extrajs %}
 <script src="{% static 'personal/js/usuarios/templates.js' %}"></script>
 
+
 <script type="text/javascript">
   
   $('#tabla_usuarios').dataTable({
@@ -232,6 +233,6 @@
      e.preventDefault();
      $('#tabla_usuarios').DataTable().search($(this).val()).draw();
   });
-
+  
 </script>
 {% endblock extrajs %}

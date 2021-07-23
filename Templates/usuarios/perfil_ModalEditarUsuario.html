@@ -69,3 +69,85 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+	//validar campos jquery validtor
+  $(document).ready(function() {
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+  
+  $.validator.addMethod("formEmail", function (value, element) {
+     var pattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+     return this.optional(element) || pattern.test(value);
+  }, "Debe ingresar un email válido");
+
+  $.validator.addMethod("nombresSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar nombres válidos");
+
+  $.validator.addMethod("apellidosSinNum", function (value, element) {
+    var pattern = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/g;
+    return this.optional(element) || pattern.test(value);
+  }, "Debes ingresar apellidos válidos");
+
+  $("#form_editar").validate({
+    rules: {
+      email: { required:true, formEmail: true},
+      nombres: { required: true, nombresSinNum: true},
+      apellidos: { required: true, apellidosSinNum: true}
+    },
+    messages : {
+      email : {
+        required : "Este campo es requerido",
+        email    : "Debes ingresar un email válido"
+      },
+      nombres : {
+        required : "Este campo es requerido",
+      },
+      apellidos : {
+        required : "Este campo es requerido",
+      }
+    },
+    submitHandler: function(form) {
+        form.submit();
+    },
+    onkeyup: function( element, event ) {
+        if ( event.which === 9 && this.elementValue(element) === "" ) {
+            return;
+        } else if ( element.name in this.submitted || element === this.lastElement ) {
+            this.element(element);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);  
+       // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');   // disables button
+        }
+    },
+    onclick: function( element ) {
+        // click on selects, radiobuttons and checkboxes
+        if ( element.name in this.submitted ) {
+            this.element(element);
+
+        // or option elements, check parent select in that case
+        } else if ( element.parentNode.name in this.submitted ) {
+            this.element(element.parentNode);
+        }
+
+        this.checkForm();
+
+        if (this.valid()) { // checks form for validity
+            $('#bloquear_button_agregar').prop('disabled', false);          // enables button
+        } else {
+            $('#bloquear_button_agregar').prop('disabled', 'disabled');     // disables button
+        }
+    }
+  
+
+  });
+
+});
+</script>

@@ -1,6 +1,31 @@
 /* mis css personalizados */
 /* inicio: css globales*/
   /*inicio: buttons confirm sweetalert*/
+  .resaltar-input label.error {
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
+    font-weight: normal !important;
+}
+
+.resaltar-input input.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+.resaltar-textarea label.error {
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
+    font-weight: normal !important;
+}
+.resaltar-textarea textarea.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
   .swal2-popup .swal2-styled:focus {
       box-shadow: none !important;
   }

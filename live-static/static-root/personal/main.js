@@ -82,7 +82,7 @@ function mostrarErroresEditar(errores){
 	    for (var i in errores.responseJSON.error[item]) {
 	      // object message error django
 	      var $input = $("input[name='"+ item +"']");
-	      $input.before('<div class = "alert alert-danger alert-dismissible fade show" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Oops! </strong>' + errores.responseJSON.error[item][i] + '</div>');
+	      $input.before('<div class = "alert alert-danger alert-dismissible fade show" ><button type="button" class="close" data-dismiss="alert">&times;</button><strong></strong>' + errores.responseJSON.error[item][i] + '</div>');
 	    }
 		 
 	}

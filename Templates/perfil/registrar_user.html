@@ -137,11 +137,6 @@
 <script src="{% static 'personal/main.js' %}"></script>
 <script src="{% static 'personal/jquery.validate.min.js' %}"></script>
 <script type="text/javascript">
-  
-  $(document).ready(function() {
-    var habilitarButton = document.getElementById('bloquear_button_agregar');
-    habilitarButton.disabled= true;
-  
   $.validator.addMethod("formEmail", function (value, element) {
      var pattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
      return this.optional(element) || pattern.test(value);
@@ -169,6 +164,11 @@
   $.validator.addMethod("pwcheck", function(value) {
     return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) && /[a-z]/.test(value) && /\d/.test(value) && /[A-Z]/.test(value);
   });
+  $(document).ready(function() {
+    var habilitarButton = document.getElementById('bloquear_button_agregar');
+    habilitarButton.disabled= true;
+  
+  
 
   $("#form_registrar_user").validate({
     errorPlacement: function(error, element) {

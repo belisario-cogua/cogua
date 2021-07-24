@@ -250,6 +250,7 @@ function registrarUser(){
 	  error: function(error){
 	    //aqui se llama la funcion de mostrarErroresAgregar()
 	    //que esta en main.js
+	    console.log(error)
 	    mostrarErroresAgregar(error);
 	    //vuelve a desbloquear el button
 	    bloquearButton();

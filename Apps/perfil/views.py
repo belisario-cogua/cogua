@@ -61,6 +61,7 @@ class RegistrarUser(CreateView):
             if form.is_valid():
                 #form.save()
                 # Create an inactive user with no password:
+                print("dentro del formulario valido...............")
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()

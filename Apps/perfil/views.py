@@ -56,6 +56,8 @@ class RegistrarUser(CreateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             form = self.form_class(data=request.POST,files=request.FILES)
+            print("formulario.........")
+            print(form)
             if form.is_valid():
                 #form.save()
                 # Create an inactive user with no password:

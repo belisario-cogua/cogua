@@ -232,6 +232,8 @@ function registrarUser(){
 	  contentType: false,
 	  processData: false,
 	  success: function(response){
+	  	console.log("revisando respuesta....")
+	  	console.log(response)
 	    Swal.fire({
 	      title: 'Un paso más ' + primernombre + '!',
 	      html:
@@ -248,6 +250,7 @@ function registrarUser(){
 	              })
 	  },
 	  error: function(error){
+	  	console.log("revisando error....")
 	    //aqui se llama la funcion de mostrarErroresAgregar()
 	    //que esta en main.js
 	    console.log(error)

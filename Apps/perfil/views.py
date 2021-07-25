@@ -65,11 +65,8 @@ class RegistrarUser(CreateView):
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()
-                print("formulario save............")
                 current_site = get_current_site(request)
-                print("formulario current_site.......")
                 mail_subject = 'Activa tu cuenta de COGUA'
-                print("formulario mail_subject...........")
                 message = render_to_string('perfil/acc_active_email.html', {
                     'user': user,
                     'domain': current_site.domain,
@@ -78,11 +75,11 @@ class RegistrarUser(CreateView):
                 })
                 print("formulario message...........")
                 to_email = form.cleaned_data.get('email')
-                print("formulario to_email.............")
+                print(f"formulario to_email.............{to_email}")
                 email = EmailMessage(
                             mail_subject, message, to=[to_email]
                 )
-                print("formulario email...........")
+                print(f"formulario email...........{email}")
                 email.send()
                 print("formulario email send.........")
                 mensaje = f'{self.model.__name__} registrado correctamente!'

@@ -67,6 +67,9 @@ class RegistrarUser(CreateView):
                 user.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Activa tu cuenta de COGUA'
+                print(f'form 1: {user}')
+                print(f'form 2: {current_site}')
+                print(f'form 3: {current_site.domain}')
                 message = render_to_string('perfil/acc_active_email.html', {
                     'user': user,
                     'domain': current_site.domain,

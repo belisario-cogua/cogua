@@ -30,12 +30,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "live-static", "media-root")
 
 #lineas de configuracion para envio de correo electrino de confirmacion al crear nuevos usuarios
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True 
-EMAIL_HOST = 'smtp.gmail.com' 
-EMAIL_HOST_USER = 'gad10cogua@gmail.com' 
-EMAIL_HOST_PASSWORD = get_config('EMAIL_HOST_PASSWORD') 
-EMAIL_PORT = 25
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = True 
+#EMAIL_HOST = 'smtp.gmail.com' 
+#EMAIL_HOST_USER = 'gad10cogua@gmail.com' 
+#EMAIL_HOST_PASSWORD = get_config('EMAIL_HOST_PASSWORD') 
+#EMAIL_PORT = 25
 #fin lineas de configuracion para envio de correo electrino de confirmacion al crear nuevos usuarios
 DJANGO_NOTIFICATIONS_CONFIG = {
       'USE_JSONFIELD': True,

@@ -53,10 +53,9 @@ import Turismo.configuracion.produccion as produccion
 #LoginRequiredMixin es otra manera de de proteger nuestra vista
 #es decir necesita iniciar sesion para dirgirise al perfil de ussuario
 #de esta manera se hace desde las clases y no desde la url como lo hace login_required
-print(produccion.EMAIL_HOST_USER)
 
-
-class RegistrarUser(CreateView):
+#Inicio para registrar ussuario con email
+'''class RegistrarUser(CreateView):
     model = Usuario
     form_class = RegistrarUsuarioForm
     template_name = 'perfil/registrar_user.html'
@@ -131,6 +130,34 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('El enlace de activación no es válido.')
 
+'''
+#Fin para registrar ussuario con email
+class RegistrarUser(CreateView):
+    model = Usuario
+    form_class = RegistrarUsuarioForm
+    template_name = 'perfil/registrar_user.html'
+    success_url = reverse_lazy('templates_perfil:perfil')
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            form = self.form_class(data=request.POST,files=request.FILES)
+            if form.is_valid():
+                form.save()
+                mensaje = 'Usuario Registrado correctamente'
+                response = JsonResponse({'mensaje':mensaje,'url':self.success_url})
+                response.status_code = 201
+                email = self.request.POST['email']
+                password = self.request.POST['password1']
+                user = authenticate(email=email,password =password)
+                login(self.request, user)
+                return response
+            else:
+                mensaje = 'El usuario no se ha podido registrar'
+                error = form.errors
+                response = JsonResponse({'mensaje':mensaje,'error':error})
+                response.status_code = 400
+                return response
+        else:
+            return redirect('registrar_user')
 
 class EditarUserActual(UpdateView):
     model = Usuario

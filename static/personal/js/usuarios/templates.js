@@ -232,9 +232,7 @@ function registrarUser(){
 	  contentType: false,
 	  processData: false,
 	  success: function(response){
-	  	console.log("revisando respuesta....")
-	  	console.log(response)
-	    Swal.fire({
+	    /*Swal.fire({
 	      title: 'Un paso más ' + primernombre + '!',
 	      html:
 	          '<p>Revisa tu bandeja de entrada de tu correo electrónico y haz clic en el enlace de cogua para confirmar tu cuenta.</p>'+'<p style="color:#9e9e9e";>'+email+'</p>',
@@ -247,14 +245,25 @@ function registrarUser(){
 	                } else {
 	                  window.location.href = response.url;
 	                }
+	              })*/
+	    Swal.fire({
+	      title: 'Felicidades ' + primernombre + '!',
+	      html:
+	          'Ya eres parte de nuestra comunidad.'+
+	          '<br><b>Ahora ya puedes realizar tus reservar sin problemas</b>',
+	      icon: 'success',
+	      allowOutsideClick: false,
+	      confirmButtonText: `OK`
+	    }).then((result) => {
+	                if (result.isConfirmed) {
+	                  window.location.href = response.url;
+	                } else {
+	                  window.location.href = response.url;
+	                }
 	              })
 	  },
 	  error: function(error){
-	  	console.log("revisando error....")
-	    //aqui se llama la funcion de mostrarErroresAgregar()
-	    //que esta en main.js
-	    console.log(error)
-		
+		mostrarErroresAgregar(error);
 	    //vuelve a desbloquear el button
 	    bloquearButton();
 	  }

@@ -359,3 +359,51 @@ function editarPasswordUsuarioActual(){
 		}
 	});
 }
+
+//atajos para la vista de ussuarios
+Mousetrap.bind(['alt+d'], function() {
+  url = "/perfil_admin/registrar_usuario/"
+  abrir_modal_agregar(url)
+  return false;
+});
+Mousetrap.bind(['left'], function() {
+  $("#tabla_usuarios_previous").click();
+  return false;
+});
+Mousetrap.bind(['right'], function() {
+  $("#tabla_usuarios_next").click();
+  return false;
+});
+Mousetrap.bind(['alt+x'], function() {
+  cerrar_modal_agregar()
+  return false;
+});
+Mousetrap.bind(['1'], function() {
+  $("#id_nombres").show();
+  $("#id_nombres").focus();
+  return false;
+});
+Mousetrap.bind(['2'], function() {
+  $("#id_apellidos").show();
+  $("#id_apellidos").focus();
+  return false;
+});
+Mousetrap.bind(['3'], function() {
+  $("#id_email").show();
+  $("#id_email").focus();
+  return false;
+});
+Mousetrap.bind(['4'], function() {
+  $("#password1").show();
+  $("#password1").focus();
+  return false;
+});
+Mousetrap.bind(['5'], function() {
+  $("#password2").show();
+  $("#password2").focus();
+  return false;
+});
+Mousetrap.bind(['6'], function() {
+  $("#id_imagen").click();
+  return false;
+});

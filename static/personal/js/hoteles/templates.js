@@ -174,3 +174,9 @@ function eliminarSweetAlertHotel(pk,nombre){
 	  }
 	})
 }
+
+Mousetrap.bind(['alt+d'], function() {
+  url = "/perfil_admin/agregar_hotel/"
+  abrir_modal_agregar(url)
+  return false;
+});

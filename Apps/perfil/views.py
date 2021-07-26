@@ -43,10 +43,19 @@ from django.db.models import Sum
 from Apps.publicaciones.models import Publicacion, Comentario
 from django.db.models import F
 from django.db.models import Count, Max
+
+#librerias de envio de correo actualizado
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import Turismo.configuracion.produccion as produccion
 # Create your views here.
 #LoginRequiredMixin es otra manera de de proteger nuestra vista
 #es decir necesita iniciar sesion para dirgirise al perfil de ussuario
 #de esta manera se hace desde las clases y no desde la url como lo hace login_required
+print(produccion.EMAIL_HOST_USER)
+
+
 class RegistrarUser(CreateView):
     model = Usuario
     form_class = RegistrarUsuarioForm
@@ -65,26 +74,31 @@ class RegistrarUser(CreateView):
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()
-                current_site = get_current_site(request)
-                mail_subject = 'Activa tu cuenta de COGUA'
-                print(f'form 1: {user}')
-                print(f'form 2: {current_site}')
-                print(f'form 3: {current_site.domain}')
-                message = render_to_string('perfil/acc_active_email.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token':account_activation_token.make_token(user),
-                })
-                print("formulario message...........")
-                to_email = form.cleaned_data.get('email')
-                print(f"formulario to_email.............{to_email}")
-                email = EmailMessage(
-                            mail_subject, message, to=[to_email]
-                )
-                print(f"formulario email...........{email}")
-                email.send()
-                print("formulario email send.........")
+
+                data = {}
+                try:
+                    mailServer =smtplib.SMTP(produccion.EMAIL_HOST, produccion.EMAIL_PORT)
+                    print(mailServer.ehlo())
+                    mailServer.starttls()
+                    print(mailServer.ehlo())
+                    mailServer.login(produccion.EMAIL_HOST_USER, produccion.EMAIL_HOST_PASSWORD)
+                    print("conectando...")
+
+                    email_to = form.cleaned_data.get('email')
+                    mensaje = MIMEMultipart()
+                    mensaje['From'] = produccion.EMAIL_HOST_USER
+                    mensaje['To'] = email_to
+                    mensaje['Subject'] = "Tienes un correo"
+                    current_site = get_current_site(request)
+                    content = render_to_string('perfil/acc_active_email.html',{'user':user,'domain': current_site.domain,'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token':account_activation_token.make_token(user)})
+                    mensaje.attach(MIMEText(content,'html'))
+                    mailServer.sendmail(produccion.EMAIL_HOST_USER,email_to,mensaje.as_string())
+                    print("correo enviado")
+                except Exception as e:
+                    data['error'] = str(e)
+                    print("error")
+                    print(e)
                 mensaje = f'{self.model.__name__} registrado correctamente!'
                 error = 'No hay error!'
                 response = JsonResponse({'mensaje':mensaje,'error':error,'url':self.success_url})

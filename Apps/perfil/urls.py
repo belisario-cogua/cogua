@@ -81,4 +81,7 @@ urlpatterns = [
 	#EditarImagenes
 	path('perfil/listar_imagenes/home/', ListarImagenesHome.as_view(), name = 'listar_imagenes_home'),
 	path('perfil/editar_imagen_home/<int:pk>/',EditarImagenesHome.as_view(), name = 'editar_imagen_home'),
+
+	#Ayuda
+	path('admin/ayuda/',PerfilAyudaAdmin.as_view(), name='ayuda'),
 ]

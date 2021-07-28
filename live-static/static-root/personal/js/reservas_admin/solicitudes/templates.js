@@ -90,8 +90,8 @@ function listarSolicitudesReservas(){
 				fila += '<td class="fila-table"><a href="#" class="link" onclick="abrir_modal_detalles(\'/perfil_admin/reserva_detalles_deporte/'+response[i]['pk']+'/\');">' + fechaInicial(fecha) +'</a></td>';
 				fila += '<td class="text-center fila-table">';
 				if (response[i]["fields"]['confirmar'] == false) {
-					fila += '<button type="button" class="btn btn-xs tableButton" onclick="confirmarReservaDeporte(\''+response[i]['pk']+'\',\''+usuario+'\',\''+modelo+'\');">';
-					fila += '<img src="/static/personal/icons/espera.png" style="width:25px;height:25px;float:right;"/></button>';
+					fila += '<button type="button" style="border-radius:50%" class="btn btn-info btn-xs tableButton cambiar-color-button-editar" onclick="confirmarReservaDeporte(\''+response[i]['pk']+'\',\''+usuario+'\',\''+modelo+'\');">';
+					fila += '<i class="fas fa-user-clock"></i></button>';
 				}else{
 					fila += '<button type="button" class="btn btn-xs tableButton" onclick="cancelarReservaDeporte(\''+response[i]['pk']+'\',\''+usuario+'\',\''+modelo+'\');">';
 					fila += '<img src="/static/personal/icons/comprobar.png" style="width:25px;height:25px;float:right;"/></button></td>';

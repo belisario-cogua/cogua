@@ -1073,3 +1073,6 @@ class EditarImagenesHome(LoginAndSuperStaffMixin,UpdateView):
 
         else:
             return redirect('templates_perfil:listar_imagenes_home')
+
+class PerfilAyudaAdmin(LoginAndSuperStaffMixin, TemplateView):
+    template_name = 'perfil/ayuda/ayuda.html'

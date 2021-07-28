@@ -1,0 +1,259 @@
+{% extends 'perfil/perfil_user.html' %}
+{% load staticfiles %}
+{% block titulo %}CoGua | Ayuda{% endblock titulo %}
+
+{% block cssextras %}
+  <link rel="stylesheet" href="{% static 'personal/Perfil/css/perfil_listarSolicitudesReservas.css' %}">
+  <link rel="stylesheet" href="{% static 'personal/Perfil/css/ayuda.css' %}">
+{% endblock cssextras %}
+{% block carga_tabla %}
+<div id="contenedor_carga_tabla">
+  <div id="carga_tabla"></div>
+</div>
+{% endblock carga_tabla %}
+
+{% block menu_open %}
+<li class="nav-item pu-menu-hover">
+  <a href="{% url 'templates_perfil:perfil' %}" class="nav-link">
+    <i class="nav-icon fas fa-user-circle perfil-icon-reservas" style=""></i>
+    <p class="pu-color-p">Perfil</p>
+  </a>
+</li>
+{% if request.user.is_staff %}
+<li class="nav-item pu-menu-hover">
+  <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link" onclick="solicitud_reducir_cero();">
+    <i class="nav-icon fas fa-user-plus perfil-icon" style="font-size: 15px;"></i>
+    <p class="pu-color-p">Solicitudes
+      <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
+    </p>
+  </a>
+</li>
+{% endif %}
+  {% if request.user.is_staff %}
+    <li class="nav-item">
+      <a href="#" class="nav-link animar-mi-menu">
+        <i class="nav-icon fas fa-user-shield pu-color-i" style="font-size: 15px;"></i>
+          <p>
+            Administrar
+            <i class="right fas fa-angle-left"></i>
+          </p>
+      </a>
+      <ul class="nav nav-treeview">
+        {% if request.user.is_superuser %}
+          <li class="nav-item pu-mover-submenu-icon">
+            <a href="{% url 'templates_usuario:listar_usuario' %}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p class="pu-mover-submenu-text">Usuarios</p>
+            </a>
+          </li>
+        {% endif %}
+          <li class="nav-item pu-mover-submenu-icon">
+            <a href="{% url 'templates_hotel:listar_hoteles' %}" class="nav-link">
+              <i class="nav-icon fas fa-concierge-bell"></i>
+              <p class="pu-mover-submenu-text">Cabañas</p>
+            </a>
+          </li>
+          <li class="nav-item pu-mover-submenu-icon">
+            <!-- {% url 'nombre de la url principal:listar_deporte' } -->
+            <a href="{% url 'templates_deporte:listar_deporte' %}" class="nav-link">
+              <i class="nav-icon fas fa-biking"></i>
+              <p class="pu-mover-submenu-text">Deportes</p>
+            </a>
+          </li>
+          <li class="nav-item pu-mover-submenu-icon">
+            <a href="{% url 'templates_turismo:listar_turismos' %}" class="nav-link">
+              <i class="nav-icon  fas fa-globe-asia"></i>
+              <p class="pu-mover-submenu-text">Lugares Turísticos</p>
+            </a>
+          </li>
+
+          <li class="nav-item pu-mover-submenu-icon">
+            <a href="{% url 'templates_plato:listar_platos' %}" class="nav-link">
+              <i class="nav-icon fas fa-utensils"></i>
+              <p class="pu-mover-submenu-text">Platos Tipicos</p>
+            </a>
+          </li>
+
+          <li class="nav-item pu-mover-submenu-icon">
+            <a href="{% url 'templates_publicaciones:listar_publicaciones' %}" class="nav-link">
+              <i class="nav-icon fas fa-stream"></i>
+              <p class="pu-mover-submenu-text">Publicaciones</p>
+            </a>
+          </li>
+      </ul>
+    </li>
+  {% endif %}
+{% endblock menu_open %}
+
+{% block menu_open_reservaciones %}
+  <li class="nav-item">
+    {% if request.user.is_staff %}
+    <a href="#" class="nav-link animar-mi-menu">
+      <i class="nav-icon fab fa-resolving"></i>
+        <p>
+          Reservaciones
+          <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    {% else %}
+    <a href="#" class="nav-link active animar-mi-menu">
+      <i class="nav-icon fab fa-resolving"></i>
+        <p>
+          Mis Reservas
+          <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    {% endif %}
+    <ul class="nav nav-treeview">
+      {% if request.user.is_staff %}
+        {% if reserva_deportes or reserva_hoteles or reserva_platos or reserva_turismos%}
+            {% if reserva_hoteles %}
+              <li class="nav-item pu-mover-submenu-icon">
+                <a href="{% url 'templates_perfil:listar_reservas_hoteles' %}" class="nav-link">
+                  <i class="nav-icon fas fa-concierge-bell"></i>
+                  <p class="pu-mover-submenu-text">Cabañas</p>
+                </a>
+              </li>
+            {% endif %}
+            {% if reserva_deportes %}
+            <li class="nav-item pu-mover-submenu-icon">
+              <!-- {% url 'nombre de la url principal:listar_deporte' } -->
+              <a href="{% url 'templates_perfil:listar_reservas_deportes' %}"  class="nav-link">
+                <i class="nav-icon fas fa-biking"></i>
+                <p class="pu-mover-submenu-text">Deportes</p>
+              </a>
+            </li>
+            {% endif %}
+            {% if reserva_turismos %}
+            <li class="nav-item pu-mover-submenu-icon">
+              <a href="{% url 'templates_perfil:listar_reservas_turismos' %}" class="nav-link ">
+                <i class="nav-icon  fas fa-globe-asia"></i>
+                <p class="pu-mover-submenu-text">Lugares Turísticos</p>
+              </a>
+            </li>
+            {% endif %}
+            {% if reserva_platos %}
+            <li class="nav-item pu-mover-submenu-icon">
+              <a href="{% url 'templates_perfil:listar_reservas_platos' %}" class="nav-link">
+                <i class="nav-icon fas fa-utensils"></i>
+                <p class="pu-mover-submenu-text">Platos Tipicos</p>
+              </a>
+            </li>
+            {% endif %}
+            
+        {% else %}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-ban"></i>
+              <p>No existen Reservas</p>
+            </a>
+          </li>
+        {% endif %}
+      {% else %}
+        <li class="nav-item">
+          <a href="{% url 'templates_turismo:listar_turismos' %}" class="nav-link">
+            <i class="nav-icon fas fa-mountain"></i>
+            <p>Mi Reserva</p>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </li>
+{% endblock menu_open_reservaciones %}
+{% block ayuda %}
+<li class="nav-item pu-menu-hover">
+  <a href="{% url 'templates_perfil:ayuda' %}"  class="nav-link active" >
+    <i class="nav-icon far fa-circle text-info" style="font-size: 15px;"></i>
+    <p class="pu-color-p" style="color: #F9ECF9">Ayuda</p>
+  </a>
+</li>
+{% endblock ayuda%}
+{% block tablatitulo %}
+<div class="pu-titulo-todo-div" style="margin-top: 20px;">
+
+    <h1 class="m-0 pu-titulo-div" style="font-size: 1.51971rem; font-family: Arial,sans-serif">Ayuda</h1>
+
+</div><!-- /.row -->
+{% endblock tablatitulo %}
+{% block navtabla %}
+
+{% endblock navtabla %}
+{% block tabla %}
+
+  <div class="ayuda">
+        <h1>1. Cambio de contraseña</h1>
+        <p>Para realizar el cambio de contraseña, debes dar clic en el icono de configuración <img src="{% static 'personal/imagen/config.jpg' %}" style="width: 30px;"> y seleccionar "Cambiar mi contraseña" <br>La nueva contraseña debe tener almenos 8 caracteres.</p>
+        
+        <h1>2. Solicitudes</h1>
+        <p>En está sección se muestran las solicitudes de las reservaciones realizadas por los usuarios, donde solamente se muestran aquellas reservas que aún no se han caducado, es decir, si la fecha inicial de la reserva es menor a la fecha actual, este ya no se mostrará en esta sección.</p>
+        <h2><span>2.1</span> Estados</h2>
+        <p style="margin-left: 50px;"> En esta sección se distribuye las reservas a través de estados los cuales son: solicitudes sin confirmar, solicitudes aceptados, solicitudes cancelados. <br><img src="{% static 'personal/imagen/estados.jpg' %}"></p>
+        <h2><span>2.2</span> Aceptar solicitudes</h2>
+        <p style="margin-left: 50px;">Para aceptar las solictudes, debes hacer clic en la opcion de aceptar solicitudes. [icono]<br>Para cancelar las solictudes, debes hacer clic en la opcion de cancelar solicitudes. [icono]</p>
+
+        <h1>3. Combinaciones de teclas</h1>
+        <p>La aplicacion web "Cogua Turismos" tiene agregado ciertas combinaciones de teclas para los respectivos atajos de teclados, los cuales son los siguientes:</p>
+        <h2><span>3.1</span> Perfil de Usuario</h2>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder al <span style="font-weight: bold">perfil de usuario</span> presiona la tecla <span style="float: right;">[p]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder al <span style="font-weight: bold">perfil de administración de cogua</span> presiona las teclas <span style="float: right;">[ctrl + a]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de solicitudes</span>presiona la tecla <span style="float: right;">[s]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de usuarios</span> presiona las teclas <span style="float: right;">[a + u]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de cabañas</span> presiona las teclas <span style="float: right;">[a + c]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de deportes</span> presiona las teclas <span style="float: right;">[a + d]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de lugares turísticos</span> presiona las teclas <span style="float: right;">[a + l]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de platos típicos</span> presiona las teclas <span style="float: right;">[a + t]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de administracion de publicaciones</span> presiona las teclas <span style="float: right;">[a + p]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de reservaciones de cabañas</span> presiona las teclas <span style="float: right;">[r + c]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de reservaciones de deportes</span> presiona las teclas <span style="float: right;">[r + d]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de reservaciones de lugares turísticos</span> presiona las teclas <span style="float: right;">[r + l]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">sección de reservaciones de platos típicos</span> presiona las teclas <span style="float: right;">[r + t]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">página de las cabañas</span> presiona la tecla <span style="float: right;">[c]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">página de los deportes</span> presiona la tecla <span style="float: right;">[d]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">página de los lugares turísticos</span> presiona la tecla <span style="float: right;">[l]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">página de los platos típicos</span> presiona la tecla <span style="float: right;">[t]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para Acceder a la <span style="font-weight: bold">página de home</span> presiona la tecla <span style="float: right;">[h]</span></p>
+
+        <h2><span>3.2</span> Módulos de administración</h2>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para agregar un <span style="font-weight: bold">nuevo usuario</span> presiona las teclas <span style="float: right;">[ctrl + d]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para salir de un <span style="font-weight: bold">modal</span> presiona las teclas <span style="float: right;">[ctrl + x]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para selccionar el <span style="font-weight: bold">buscador</span> presiona la tecla <span style="float: right;">[b]</span></p>
+        <p style="margin-left: 50px;margin-right: 60px;"><span>-</span> Para digirte de una página a otra en una  <span style="font-weight: bold">tabla</span></p>
+        <p style="margin-left: 70px;margin-right: 60px;">Presionar el botón<span style="float: right;">[left]</span></p>
+        <p style="margin-left: 70px;margin-right: 60px;">Presionar el botón<span style="float: right;">[right]</span></p>
+
+        <h1>4. Utilizar el chatbot</h1>
+        <p>para utilizar el chatbot simplemente haz clic en el icono del chatbot [icono]</p>
+    </div>
+
+  <!-- Contenedor del modal -->
+  <div class="modal fade" id="modalAgregar" rol="dialog">
+
+  </div>
+  <div class="modal fade " data-backdrop="static" id="modalDetalles" rol="dialog">
+
+  </div>
+  <div class="modal fade" id="modalEditar" rol="dialog">
+
+  </div>
+  <div class="modal fade" id="modalEliminar" rol="dialog">
+
+  </div>
+{% endblock tabla %}
+
+{% block extrajs %}
+<script src="{% static 'personal/js/reservas_admin/solicitudes/templates.js' %}"></script>
+<script type="text/javascript">
+  
+  $('#tabla-solicitudes-turismos').dataTable({
+    responsive: true,
+    "bFilter": true // show search input
+  });
+  $("#tabla-solicitudes-turismos_filter").addClass("hidden"); // hidden search input
+
+  $("#search").on("input", function (e) {
+     e.preventDefault();
+     $('#tabla-solicitudes-turismos').DataTable().search($(this).val()).draw();
+  });
+
+</script>
+{% endblock extrajs %}

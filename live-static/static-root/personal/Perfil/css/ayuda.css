@@ -1,0 +1,20 @@
+.ayuda{
+	background-color: #fff;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-bottom: 20px;
+}
+.ayuda h1{
+	font-size: 20px;
+	margin-left: 10px;
+}
+.ayuda h2{
+	font-size: 18px;
+	margin-left: 30px;
+	color: #524f4f;
+}
+.ayuda p{
+	margin-left: 20px;
+	margin-right: 25px;
+	color: #706e6e;
+}

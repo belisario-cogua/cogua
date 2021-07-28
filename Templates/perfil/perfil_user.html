@@ -243,7 +243,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
             {% if request.user.is_staff %}
             <li class="nav-item pu-menu-hover">
               <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link" onclick="solicitud_reducir_cero();">
-                <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
+                <i class="nav-icon fas fa-user-plus perfil-icon" style="font-size: 15px;"></i>
                 <p class="pu-color-p">Solicitudes
                   <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
                 </p>
@@ -491,12 +491,14 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
               </p>
             </a>
           </li>
+          {% block ayuda %}
           <li class="nav-item pu-menu-hover">
-            <a href="#" class="nav-link">
+            <a href="{% url 'templates_perfil:ayuda' %}"  class="nav-link">
               <i class="nav-icon far fa-circle text-info" style="font-size: 15px;"></i>
-              <p class="pu-color-p" style="color: #F9ECF9">Información</p>
+              <p class="pu-color-p" style="color: #F9ECF9">Ayuda</p>
             </a>
           </li>
+          {% endblock ayuda%}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -712,7 +714,7 @@ background: linear-gradient(180deg, rgba(255,255,255,1) 29%, rgba(13,73,105,1) 1
     chat-title="Asistente de Cogua"
     agent-id="e917072b-d526-427c-afbf-c8621b82e7b4"
     language-code="es"
-    chat-icon="{% static 'personal/imagen/usuario.png' %}"
+    chat-icon="{% static 'personal/imagen/chatbot.png' %}"
     user-id
   ></df-messenger>
   

@@ -21,7 +21,7 @@
 {% if request.user.is_staff %}
 <li class="nav-item pu-menu-hover">
   <a href="{% url 'templates_perfil:listar_solicitudes_reservas' %}" class="nav-link active" onclick="solicitud_reducir_cero();">
-    <i class="nav-icon fas fa-ad perfil-icon" style=""></i>
+    <i class="nav-icon fas fa-user-plus perfil-icon" style="font-size: 15px;"></i>
     <p class="pu-color-p">Solicitudes
       <span id="solicitud" class="solicitud-counter" data-value="{{ user.solicitud }}" style="display: none;">{{ user.solicitud }}</span>
     </p>
